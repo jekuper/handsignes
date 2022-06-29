@@ -1,3 +1,3 @@
 # handsignes game concept
 
-if you require build result. please contact me
+Windows build: https://github.com/jekuper/handsignes/tree/master/PCBuild
