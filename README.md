@@ -1,3 +1,3 @@
-# emotionalMaze
+# handsignes game concept
 
-source code of this game: https://jekuper.itch.io/emotional-maze
+if you require build result. please contact me
