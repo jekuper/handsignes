@@ -3055,6 +3055,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cloneIndex: 0
+  materials:
+  - {fileID: 2100000, guid: 6ab135e9aceb55e4c8f75fcfb939d995, type: 2}
+  - {fileID: 2100000, guid: 9bf626a126509904ab6c8777392672f1, type: 2}
+  - {fileID: 2100000, guid: 7b5201c3a7ecfdb459fca8611a9cc9cd, type: 2}
+  - {fileID: 2100000, guid: 322d922f70883244eb671d152b699e54, type: 2}
+  renderer: {fileID: 332831623}
 --- !u!1 &1406855579
 GameObject:
   m_ObjectHideFlags: 0

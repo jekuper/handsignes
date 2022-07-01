@@ -9,15 +9,15 @@ public enum CloneType {
 }
 public static class ClonesManager {
 
-    public static Dictionary<int, PlayerData> clones = new Dictionary<int, PlayerData>();
+    public static Dictionary<int, PlayerData> clones = new Dictionary<int, PlayerData> () {
+        {0, new PlayerData() }
+    };
     public static int activeIndex = 0;
 
     private static int nextCloneIndex = 0;
 
     public static void AddBasePlayer (GameObject obj) {
-        PlayerData dt = new PlayerData ();
-        dt.instance = obj;
-        clones.Add (nextCloneIndex, dt);
+        clones[0].instance = obj;
         nextCloneIndex++;
     }
     public static void AddClone (GameObject obj, CloneType cloneType) {

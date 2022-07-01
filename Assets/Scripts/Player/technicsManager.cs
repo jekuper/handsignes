@@ -54,9 +54,13 @@ public class technicsManager : MonoBehaviour {
         AddTechnic (BlowFireParticle, "01210", 200);
         AddTechnic (BlowWaterParticle, "12010", 200);
         AddTechnic (EarthWall, "0210", 60);
-        AddTechnic (CreateClone, "120", 100);
-        AddTechnic (SwitchToClone, "0", 0);
         AddTechnic (EarthPrison, "01012");
+        
+        AddTechnic (CreateSimpleClone, "120", 100);
+        AddTechnic (CreateAdvancedClone, "2102", 150);
+        AddTechnic (CreateShadowClone, "102101");
+
+        AddTechnic (SwitchToClone, "0", 0);
 
 
         //        timer = timerInitValue;
@@ -195,11 +199,31 @@ public class technicsManager : MonoBehaviour {
 
         return responce;
     }
-    public technicResponce CreateClone () {
+    public technicResponce CreateSimpleClone () {
         technicResponce responce = new technicResponce ();
 
         GameObject clone = Instantiate (clonePrefab, camHolder.position + camHolder.forward * 3, Quaternion.identity);
         ClonesManager.AddClone (clone, CloneType.Simple);
+        return responce;
+    }
+    public technicResponce CreateAdvancedClone () {
+        technicResponce responce = new technicResponce ();
+
+        GameObject clone = Instantiate (clonePrefab, camHolder.position + camHolder.forward * 3, Quaternion.identity);
+        ClonesManager.AddClone (clone, CloneType.Advanced);
+        return responce;
+    }
+    public technicResponce CreateShadowClone () {
+        technicResponce responce = new technicResponce ();
+
+        if (ClonesManager.clones[ClonesManager.activeIndex].mana / 2 < 2) {
+            responce.isExecutedOK = false;
+            return responce;
+        }
+
+        responce.manaCost = ClonesManager.clones[ClonesManager.activeIndex].mana / 2;
+        GameObject clone = Instantiate (clonePrefab, camHolder.position + camHolder.forward * 3, Quaternion.identity);
+        ClonesManager.AddClone (clone, CloneType.Shadow);
         return responce;
     }
     public technicResponce SwitchToClone () {
