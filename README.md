@@ -11,7 +11,7 @@ Windows build:
 
 _https://github.com/jekuper/handsignes/blob/master/PCBuild1.0.0.rar_
 
-## What I plan to do next?
+## What next?
 
 Team fight mode - same as battle royale but people can split into commands how they would like to
 
