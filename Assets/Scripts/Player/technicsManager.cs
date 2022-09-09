@@ -4,14 +4,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using Mirror;
 
-public class technicsManager : MonoBehaviour {
+public class technicsManager : NetworkBehaviour {
     public static readonly int interactableMask = ((1 << 8) | (1 << 7));
     public static readonly int cloneMask = (1 << 8);
 
 
     public float timerInitValue = .5f;
-    public float shiftForce = 5;
 
     [SerializeField]private TextMeshProUGUI technicsTimer;
     [SerializeField]private Sprite[] iconSprites;
@@ -26,9 +26,12 @@ public class technicsManager : MonoBehaviour {
 
     private Rigidbody rb;
     private Dictionary<string, Technic> technics = new Dictionary<string, Technic> ();
+    [SyncVar]
     private float timer = -1;
     private string buffer = "";
     private bool isOff = false;
+
+    public NetworkIdentity idenity;
 
 
     public void TurnOff () {
@@ -48,71 +51,70 @@ public class technicsManager : MonoBehaviour {
         isOff = false;
     }
     private void Start () {
-        rb = GetComponent<Rigidbody> ();
+        technicsTimer = NetworkLevelData.singleton.TechnicsTimer;
+        icons = NetworkLevelData.singleton.icons;
+        particlesSpawnPoint = NetworkLevelData.singleton.ParticlesSpawnPoint;
+        camHolder = NetworkLevelData.singleton.CamHolder;
+        mainCamera = NetworkLevelData.singleton.Cam;
 
+        rb = GetComponent<Rigidbody> ();
+        idenity = GetComponent<NetworkIdentity> ();
 
         AddTechnic (BlowFireParticle, "01210", 200);
         AddTechnic (BlowWaterParticle, "12010", 200);
         AddTechnic (EarthWall, "0210", 60);
         AddTechnic (EarthPrison, "01012");
-        
-        AddTechnic (CreateSimpleClone, "120", 100);
-        AddTechnic (CreateAdvancedClone, "2102", 150);
-        AddTechnic (CreateShadowClone, "102101");
-
-        AddTechnic (SwitchToClone, "0", 0);
 
 
         //        timer = timerInitValue;
         technicsTimer.text = timerInitValue.ToString ("0.0") + "s";
         UpdateIcons ();
     }
-    private void AddTechnic (Func<technicResponce> act, string tag, int manaCost) {
+
+    private void AddTechnic (Func<NetworkConnectionToClient, technicExecutionResult> act, string tag, int manaCost) {
         technics.Add (tag, new Technic (act, tag, manaCost));
     }
-    private void AddTechnic (Func<technicResponce> act, string tag) {
+    private void AddTechnic (Func<NetworkConnectionToClient, technicExecutionResult> act, string tag) {
         technics.Add (tag, new Technic (act, tag));
     }
 
     private void Update () {
-        if (isOff)
+        if (Cursor.lockState != CursorLockMode.Locked) {
             return;
+        }
+        if (isOff == false && GetComponent<NetworkIdentity> ().hasAuthority) {
+            if (timer > 0) {
+                timer -= Time.deltaTime;
+                technicsTimer.text = timer.ToString("0.0") + "s";
+                if (timer <= 0) {
+                    technicsTimer.text = timerInitValue.ToString ("0.0") + "s";
+                    SearchAndExecute ();
+                    buffer = "";
+                    armAnim.SetInteger ("signType", -1);
+                    UpdateIcons ();
+                }
+            }
 
-        if (timer > 0) {
-            timer -= Time.deltaTime;
-            technicsTimer.text = timer.ToString("0.0") + "s";
-            if (timer <= 0) {
-                technicsTimer.text = timerInitValue.ToString ("0.0") + "s";
-                SearchAndExecute ();
-                buffer = "";
-                armAnim.SetInteger ("signType", -1);
+            if (Input.GetMouseButtonDown (0) && buffer.Length < 6) {
+                buffer += "0";
+                timer = timerInitValue;
+                armAnim.SetInteger ("signType", 0);
+
+                UpdateIcons ();
+            }
+            if (Input.GetMouseButtonDown (1) && buffer.Length < 6) {
+                buffer += "1";
+                timer = timerInitValue;
+                armAnim.SetInteger ("signType", 1);
+                UpdateIcons ();
+            }
+            if (Input.GetMouseButtonDown (2) && buffer.Length < 6) {
+                buffer += "2";
+                timer = timerInitValue;
+                armAnim.SetInteger ("signType", 2);
                 UpdateIcons ();
             }
         }
-
-        if (Input.GetMouseButtonDown (0) && buffer.Length < 6) {
-            buffer += "0";
-            timer = timerInitValue;
-            armAnim.SetInteger ("signType", 0);
-            armAnim.SetTrigger ("signChanged");
-
-            UpdateIcons ();
-        }
-        if (Input.GetMouseButtonDown (1) && buffer.Length < 6) {
-            buffer += "1";
-            timer = timerInitValue;
-            armAnim.SetInteger ("signType", 1);
-            armAnim.SetTrigger ("signChanged");
-            UpdateIcons ();
-        }
-        if (Input.GetMouseButtonDown (2) && buffer.Length < 6) {
-            buffer += "2";
-            timer = timerInitValue;
-            armAnim.SetInteger ("signType", 2);
-            armAnim.SetTrigger ("signChanged");
-            UpdateIcons ();
-        }
-
     }
 
     private void UpdateIcons () {
@@ -130,17 +132,22 @@ public class technicsManager : MonoBehaviour {
         if (isOff)
             return;
 
-        if (ClonesManager.clones[ClonesManager.activeIndex].cloneType == CloneType.Simple && buffer != "0") {
-            return;
-        }
+//        if (ClonesManager.clones[ClonesManager.activeIndex].cloneType == CloneType.Simple && buffer != "0") {
+//            return;
+//        }
 
 //        Debug.Log (buffer);
         if (!technics.ContainsKey (buffer)) {
             return;
         }
-        technics[buffer].Execute();
+        CmdExecute (buffer);
         buffer = "";
     }
+    [Command]
+    public void CmdExecute (string technicTag) {
+        technics[technicTag].Execute (idenity.connectionToClient);
+    }
+
     private GameObject GetHoverObject (int layerMask = ~0, float maxDistance = 10000) {
         Ray ray = mainCamera.ScreenPointToRay (new Vector2(Screen.width / 2, Screen.height / 2));
         RaycastHit hit;
@@ -153,40 +160,51 @@ public class technicsManager : MonoBehaviour {
     }
 
     #region TECHNICS
+    
+    [Server]
+    public technicExecutionResult BlowFireParticle (NetworkConnectionToClient connection) {
+        technicExecutionResult responce = new technicExecutionResult ();
 
-    public technicResponce BlowFireParticle () {
-        technicResponce responce = new technicResponce ();
-
-        Instantiate (firePariticle, particlesSpawnPoint);
+        GameObject firePariticleInst = Instantiate (firePariticle);
+        NetworkServer.Spawn (firePariticleInst, GetComponent<NetworkIdentity>().connectionToClient);
+//        firePariticleInst.GetComponent<ParticlesSync> ().target = particlesSpawnPoint;
         return responce;
     }
-    public technicResponce BlowWaterParticle () {
-        technicResponce responce = new technicResponce ();
+    [Server]
+    public technicExecutionResult BlowWaterParticle (NetworkConnectionToClient connection) {
+        technicExecutionResult responce = new technicExecutionResult ();
 
-        Instantiate (waterParticle, particlesSpawnPoint);
+        GameObject waterPariticleInst = Instantiate (waterParticle);
+        NetworkServer.Spawn (waterPariticleInst, GetComponent<NetworkIdentity> ().connectionToClient);
+//        waterPariticleInst.GetComponent<ParticlesSync> ().target = particlesSpawnPoint;
         return responce;
     }
-    public technicResponce EarthWall () {
-        technicResponce responce = new technicResponce ();
+    [Server]
+    public technicExecutionResult EarthWall (NetworkConnectionToClient connection) {
+        technicExecutionResult responce = new technicExecutionResult ();
 
         Vector3 pos = transform.position + orientation.forward * 2;
         pos.y = transform.position.y - 1f;
-        Instantiate (earthWall, pos, orientation.rotation);
+
+        GameObject wall = Instantiate (earthWall, pos, orientation.rotation);
+
+        NetworkServer.Spawn (wall);
         return responce;
     }
-    public technicResponce EarthPrison () {
-        technicResponce responce = new technicResponce ();
+    [Server]
+    public technicExecutionResult EarthPrison (NetworkConnectionToClient connection) {
+        technicExecutionResult responce = new technicExecutionResult ();
 
         GameObject hover = GetHoverObject (interactableMask, 7);
         if (hover == null) {
             responce.isExecutedOK = false;
             return responce;
         }
-        Vector3 RefSize = hover.GetComponent<MeshRenderer>().bounds.size;
+        Vector3 RefSize = hover.GetComponentInChildren<Renderer>().bounds.size;
         RefSize += new Vector3(0.5f, 0.5f, 0.5f);
 
         float estimatedManaCost = 6.4f * RefSize.x * RefSize.y * RefSize.z;
-        if (estimatedManaCost > ClonesManager.clones[ClonesManager.activeIndex].mana) {
+        if (estimatedManaCost > NetworkDataBase.data[connection].mana) {
             responce.isExecutedOK = false;
             return responce;
         }
@@ -197,45 +215,7 @@ public class technicsManager : MonoBehaviour {
         var Parent = hover.transform.parent;
         prison.transform.localScale = Parent ? new Vector3 (RefSize.x / Parent.lossyScale.x, RefSize.y / Parent.lossyScale.y, RefSize.z / Parent.lossyScale.z) : RefSize;
 
-        return responce;
-    }
-    public technicResponce CreateSimpleClone () {
-        technicResponce responce = new technicResponce ();
-
-        GameObject clone = Instantiate (clonePrefab, camHolder.position + camHolder.forward * 3, Quaternion.identity);
-        ClonesManager.AddClone (clone, CloneType.Simple);
-        return responce;
-    }
-    public technicResponce CreateAdvancedClone () {
-        technicResponce responce = new technicResponce ();
-
-        GameObject clone = Instantiate (clonePrefab, camHolder.position + camHolder.forward * 3, Quaternion.identity);
-        ClonesManager.AddClone (clone, CloneType.Advanced);
-        return responce;
-    }
-    public technicResponce CreateShadowClone () {
-        technicResponce responce = new technicResponce ();
-
-        if (ClonesManager.clones[ClonesManager.activeIndex].mana / 2 < 2) {
-            responce.isExecutedOK = false;
-            return responce;
-        }
-
-        responce.manaCost = ClonesManager.clones[ClonesManager.activeIndex].mana / 2;
-        GameObject clone = Instantiate (clonePrefab, camHolder.position + camHolder.forward * 3, Quaternion.identity);
-        ClonesManager.AddClone (clone, CloneType.Shadow);
-        return responce;
-    }
-    public technicResponce SwitchToClone () {
-        technicResponce responce = new technicResponce ();
-
-        GameObject hover = GetHoverObject (cloneMask, 10);
-        if (hover == null) {
-            responce.isExecutedOK = false;
-            return responce;
-        }
-
-        ClonesManager.SwitchToClone (hover);
+        NetworkServer.Spawn (prison.gameObject, GetComponent<NetworkIdentity> ().connectionToClient);
 
         return responce;
     }
@@ -244,35 +224,37 @@ public class technicsManager : MonoBehaviour {
 }
 
 public class Technic {
-    public Func<technicResponce> start = null;
+    public Func<NetworkConnectionToClient, technicExecutionResult> start = null;
     public bool isCalculatedManaCost = false;
     public string tag = "-";
     public int manaCost = 0;
 
-    public Technic (Func<technicResponce> resp, string _tag = "-", int _manaCost = 0) {
+    public Technic (Func<NetworkConnectionToClient, technicExecutionResult> resp, string _tag = "-", int _manaCost = 0) {
         start = resp;
         manaCost = _manaCost;
         tag = _tag;
     }
-    public Technic (Func<technicResponce> resp, string _tag = "-") {
+    public Technic (Func<NetworkConnectionToClient, technicExecutionResult> resp, string _tag = "-") {
         start = resp;
         isCalculatedManaCost = true;
         tag = _tag;
     }
-    public void Execute () {
-        if (!isCalculatedManaCost && ClonesManager.clones[ClonesManager.activeIndex].mana < manaCost)
+    [Server]
+    public void Execute (NetworkConnectionToClient connection) {
+        if (!isCalculatedManaCost && NetworkDataBase.data[connection].mana < manaCost)
             return;
-        technicResponce resp = start ();
+        technicExecutionResult resp = start (connection);
         if(resp.isExecutedOK) {
             if (!isCalculatedManaCost)
-                ClonesManager.clones[ClonesManager.activeIndex].mana -= manaCost;
+                NetworkDataBase.data[connection].mana -= manaCost;
             else
-                ClonesManager.clones[ClonesManager.activeIndex].mana -= resp.manaCost;
+                NetworkDataBase.data[connection].mana -= resp.manaCost;
         }
+        connection.identity.GetComponent<LobbyPlayerManager> ().TargetUpdateProfileData (NetworkDataBase.data[connection]);
     }
 }
 
-public class technicResponce {
+public class technicExecutionResult {
     public bool isExecutedOK = true;
     public float manaCost = 0;
 }

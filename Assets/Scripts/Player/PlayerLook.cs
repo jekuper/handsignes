@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Animations.Rigging;
 
 public class PlayerLook : MonoBehaviour
 {
@@ -10,10 +11,11 @@ public class PlayerLook : MonoBehaviour
     [SerializeField] private float sensX = 100f;
     [SerializeField] private float sensY = 100f;
 
-    [SerializeField] Transform cam = null;
     [SerializeField] Transform orientation = null;
 
     [SerializeField] Texture cursorTexture;
+    [SerializeField] Transform camPosition;
+    [SerializeField] Transform headMeshBone;
 
     float mouseX;
     float mouseY;
@@ -24,6 +26,9 @@ public class PlayerLook : MonoBehaviour
     float yRotation;
 
     private void OnGUI () {
+        if (Cursor.lockState != CursorLockMode.Locked) {
+            return;
+        }
         GUI.DrawTexture (new Rect (Screen.width / 2, Screen.height / 2, 10, 10), cursorTexture);
     }
 
@@ -33,17 +38,24 @@ public class PlayerLook : MonoBehaviour
         Cursor.visible = false;
     }
 
+
+
     private void Update()
     {
+        if (Cursor.lockState != CursorLockMode.Locked) {
+            return;
+        }
+
         mouseX = Input.GetAxisRaw("Mouse X");
         mouseY = Input.GetAxisRaw("Mouse Y");
          
         yRotation += mouseX * sensX * multiplier;
         xRotation -= mouseY * sensY * multiplier;
 
-        xRotation = Mathf.Clamp(xRotation, -90f, 90f);
+        xRotation = Mathf.Clamp(xRotation, -90, 90f);
 
-        cam.transform.rotation = Quaternion.Euler(xRotation, yRotation, wallRun.tilt);
         orientation.transform.rotation = Quaternion.Euler(0, yRotation, 0);
+        camPosition.rotation = Quaternion.Euler(xRotation, yRotation, wallRun.tilt);
+        headMeshBone.rotation = Quaternion.Euler(xRotation, yRotation, wallRun.tilt);
     }
 }

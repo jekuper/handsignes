@@ -1,12 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Mirror;
 
-public class shuriken : MonoBehaviour {
+public class shuriken : NetworkBehaviour {
     private Rigidbody rb;
+    [SyncVar]
     private Vector3 startPosition;
+    [SyncVar]
     private float initTime;
-    private bool isStuck = false;
+    [SyncVar]
+    public string ownerNickname;
 
 
     private void Start () {
@@ -15,15 +19,27 @@ public class shuriken : MonoBehaviour {
         initTime = Time.time;
     }
 
+    [Server]
+    public void SetOwner (string nickname) {
+        ownerNickname = nickname;
+    }
+
     private void Update () {
-        if (Time.time - initTime > 20) {
-            Destroy (gameObject);
-        }
-        if (Vector3.Distance (startPosition, transform.position) > 35) {
-            Destroy (gameObject);
+        if (NetworkServer.active) {
+            if (Time.time - initTime > 20) {
+                NetworkServer.Destroy (gameObject);
+            }
+            if (Vector3.Distance (startPosition, transform.position) > 35) {
+                NetworkServer.Destroy (gameObject);
+            }
         }
     }
+
+    [ServerCallback]
     private void OnCollisionEnter (Collision collision) {
-        Destroy (gameObject);
+        if (collision.gameObject.tag == "Player") {
+
+        }
+        NetworkServer.Destroy (gameObject);
     }
 }

@@ -2,8 +2,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum BodyStates {
+    grounded,
+    WallRunning,
+    Jumping,
+}
+
 public class PlayerMovement : MonoBehaviour
 {
+    public static float wallDirection = 1;
+    public static bool isWallRunning = false;
+
     float playerHeight = 2f;
 
     [SerializeField] Transform orientation;
@@ -13,14 +22,6 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] float moveSpeed = 6f;
     [SerializeField] float airMultiplier = 0.4f;
     float movementMultiplier = 10f;
-
-    [Header ("Shifting")]
-    [SerializeField] float shiftForce = 25f;
-    [SerializeField] float shiftManaCost = 11f;
-    [SerializeField] float shiftRecoverTimerMax = 2;
-    [SerializeField] int shiftCountMax = 2;
-    float shiftRecoverTimer = 2;
-    int shiftCount = 2;
 
     [Header("Sprinting")]
     [SerializeField] float walkSpeed = 4f;
@@ -33,7 +34,6 @@ public class PlayerMovement : MonoBehaviour
     [Header("Keybinds")]
     [SerializeField] KeyCode jumpKey = KeyCode.Space;
     [SerializeField] KeyCode sprintKey = KeyCode.LeftShift;
-    [SerializeField] KeyCode shiftKey = KeyCode.LeftShift;
 
     [Header("Drag")]
     [SerializeField] float groundDrag = 6f;
@@ -48,7 +48,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] float groundDistance = 0.2f;
 
     [Header ("Animations")]
-    [SerializeField] Animator anim;
+    [SerializeField] Animator bodyAnim;
 
     public bool isGrounded { get; private set; }
 
@@ -76,13 +76,14 @@ public class PlayerMovement : MonoBehaviour
     }
     private void Start()
     {
+        spawnPoint = NetworkLevelData.singleton.SpawnPoint;
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true;
     }
 
     private void Update() {
-        isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
 
+        ControlGrounded ();
         MyInput();
         ControlDrag();
         ControlSpeed();
@@ -90,19 +91,6 @@ public class PlayerMovement : MonoBehaviour
         if (Input.GetKeyDown(jumpKey) && isGrounded)
         {
             Jump();
-        }
-        if (Input.GetKeyDown (shiftKey) && ClonesManager.clones[ClonesManager.activeIndex].mana >= shiftManaCost && shiftCount > 0) {
-            ClonesManager.clones[ClonesManager.activeIndex].mana -= shiftManaCost;
-            shiftCount--;
-            Shift ();
-        }
-
-        if (shiftCount < shiftCountMax) {
-            shiftRecoverTimer -= Time.deltaTime;
-            if (shiftRecoverTimer <= 0) {
-                shiftRecoverTimer = shiftRecoverTimerMax;
-                shiftCount++;
-            }
         }
 
         HandleAnimations ();
@@ -113,6 +101,11 @@ public class PlayerMovement : MonoBehaviour
     {
         horizontalMovement = Input.GetAxisRaw("Horizontal");
         verticalMovement = Input.GetAxisRaw("Vertical");
+
+        if (Cursor.lockState != CursorLockMode.Locked) {
+            horizontalMovement = 0;
+            verticalMovement = 0;
+        }
 
         moveDirection = orientation.forward * verticalMovement + orientation.right * horizontalMovement;
     }
@@ -126,6 +119,10 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    void ControlGrounded () {
+        bool newGrounded = Physics.CheckSphere (groundCheck.position, groundDistance, groundMask);
+        isGrounded = newGrounded;
+    }
     void ControlSpeed()
     {
         if (Input.GetKey(sprintKey) && isGrounded)
@@ -171,15 +168,17 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    public void Shift () {
-        rb.AddForce (spawnPoint.forward * shiftForce, ForceMode.Impulse);
-    }
-
     private void HandleAnimations () {
-        if (moveDirection == Vector3.zero) {
-            anim.SetFloat ("Speed", 0, 0.2f, Time.deltaTime);
-        } else {
-            anim.SetFloat ("Speed", 1, 0.2f, Time.deltaTime);
+        bodyAnim.SetFloat ("SpeedHorizontal", horizontalMovement, 0.2f, Time.deltaTime);
+        bodyAnim.SetFloat ("SpeedVertical", verticalMovement, 0.2f, Time.deltaTime);
+        bodyAnim.SetFloat ("wallDirection", (int)wallDirection);
+        
+        if (isWallRunning) {
+            bodyAnim.SetInteger ("state", (int)BodyStates.WallRunning);
+        } else if (isGrounded) {
+            bodyAnim.SetInteger ("state", (int)BodyStates.grounded);
+        } else if (!isGrounded) {
+            bodyAnim.SetInteger ("state", (int)BodyStates.Jumping);
         }
     }
 }

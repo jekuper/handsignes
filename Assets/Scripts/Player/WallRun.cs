@@ -8,6 +8,7 @@ public class WallRun : MonoBehaviour
     [SerializeField] private Transform orientation;
 
     [Header("Detection")]
+    [SerializeField] private LayerMask wallMask;
     [SerializeField] private float wallDistance = .5f;
     [SerializeField] private float minimumJumpHeight = 1.5f;
 
@@ -17,10 +18,7 @@ public class WallRun : MonoBehaviour
 
     [Header("Camera")]
     [SerializeField] private Camera cam;
-    [SerializeField] private Camera overflowCam;
-    [SerializeField] private float fov;
     [SerializeField] private float wallRunfov;
-    [SerializeField] private float wallRunfovTime;
     [SerializeField] private float camTilt;
     [SerializeField] private float camTiltTime;
 
@@ -41,13 +39,14 @@ public class WallRun : MonoBehaviour
 
     private void Start()
     {
+        cam = NetworkLevelData.singleton.Cam;
         rb = GetComponent<Rigidbody>();
     }
 
     void CheckWall()
     {
-        wallLeft = Physics.Raycast(transform.position, -orientation.right, out leftWallHit, wallDistance);
-        wallRight = Physics.Raycast(transform.position, orientation.right, out rightWallHit, wallDistance);
+        wallLeft = Physics.Raycast(transform.position, -orientation.right, out leftWallHit, wallDistance, wallMask);
+        wallRight = Physics.Raycast(transform.position, orientation.right, out rightWallHit, wallDistance, wallMask);
     }
 
     private void Update()
@@ -75,17 +74,23 @@ public class WallRun : MonoBehaviour
         {
             StopWallRun();
         }
-
-        overflowCam.fieldOfView = cam.fieldOfView;
     }
 
     void StartWallRun()
     {
+        PlayerMovement.isWallRunning = true;
+        if (wallLeft) {
+            PlayerMovement.wallDirection = -1;
+        }
+        if (wallRight) {
+            PlayerMovement.wallDirection = 1;
+        }
+
         rb.useGravity = false;
 
         rb.AddForce(Vector3.down * wallRunGravity, ForceMode.Force);
 
-        cam.fieldOfView = Mathf.Lerp(cam.fieldOfView, wallRunfov, wallRunfovTime * Time.deltaTime);
+        CameraFOVmanager.singleton.AddCommand (wallRunfov, FOVchangeSource.WallRun);
 
         if (wallLeft)
             tilt = Mathf.Lerp(tilt, -camTilt, camTiltTime * Time.deltaTime);
@@ -97,12 +102,14 @@ public class WallRun : MonoBehaviour
         {
             if (wallLeft)
             {
+                PlayerMovement.isWallRunning = false;
                 Vector3 wallRunJumpDirection = transform.up + leftWallHit.normal;
                 rb.velocity = new Vector3(rb.velocity.x, 0, rb.velocity.z);
                 rb.AddForce(wallRunJumpDirection * wallRunJumpForce * 100, ForceMode.Force);
             }
             else if (wallRight)
             {
+                PlayerMovement.isWallRunning = false;
                 Vector3 wallRunJumpDirection = transform.up + rightWallHit.normal;
                 rb.velocity = new Vector3(rb.velocity.x, 0, rb.velocity.z); 
                 rb.AddForce(wallRunJumpDirection * wallRunJumpForce * 100, ForceMode.Force);
@@ -113,8 +120,8 @@ public class WallRun : MonoBehaviour
     void StopWallRun()
     {
         rb.useGravity = true;
+        PlayerMovement.isWallRunning = false;
 
-        cam.fieldOfView = Mathf.Lerp(cam.fieldOfView, fov, wallRunfovTime * Time.deltaTime);
         tilt = Mathf.Lerp(tilt, 0, camTiltTime * Time.deltaTime);
     }
 }
