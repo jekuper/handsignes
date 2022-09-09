@@ -65,41 +65,41 @@ public class LobbyGUI : NetworkBehaviour
             switchButtonText.text = "Host";
             backButtonText.text = "Back";
 
-            hostWindow.SetActive (false);
-            clientWindow.SetActive (true);
-            roomWindow.SetActive (false);
-            switchButton.SetActive (true);
+            hostWindow?.SetActive (false);
+            clientWindow?.SetActive (true);
+            roomWindow?.SetActive (false);
+            switchButton?.SetActive (true);
         } else if (mode == LobbyMode.Host) {
             switchButtonText.text = "Client";
             backButtonText.text = "Back";
 
-            hostWindow.SetActive (true);
-            clientWindow.SetActive (false);
-            roomWindow.SetActive (false);
-            switchButton.SetActive (true);
+            hostWindow?.SetActive (true);
+            clientWindow?.SetActive (false);
+            roomWindow?.SetActive (false);
+            switchButton?.SetActive (true);
         } else if (mode == LobbyMode.Room) {
             backButtonText.text = "Stop";
 
-            hostWindow.SetActive (false);
-            clientWindow.SetActive (false);
-            roomWindow.SetActive (true);
-            switchButton.SetActive (false);
+            hostWindow?.SetActive (false);
+            clientWindow?.SetActive (false);
+            roomWindow?.SetActive (true);
+            switchButton?.SetActive (false);
         }
     }
     public void ShowLoading () {
         if (load_message == null || loadWindow == null || load_gif == null || load_okButton == null)
             return;
         load_message.text = "Loading";
-        loadWindow.SetActive (true);
-        load_gif.SetActive (true);
-        load_okButton.SetActive (false);
+        loadWindow?.SetActive (true);
+        load_gif?.SetActive (true);
+        load_okButton?.SetActive (false);
     }
     public void StopLoading (string message = "") {
         if (load_message == null || load_gif == null || load_okButton == null)
             return;
         load_message.text = message;
-        load_gif.SetActive (false);
-        load_okButton.SetActive (true);
+        load_gif?.SetActive (false);
+        load_okButton?.SetActive (true);
     }
     public void ShowMessage (string message) {
         ShowLoading ();
@@ -108,7 +108,7 @@ public class LobbyGUI : NetworkBehaviour
     public void HideLoading () {
         if (load_message == null || loadWindow == null)
             return;
-        loadWindow.SetActive (false);
+        loadWindow?.SetActive (false);
         load_message.text = "";
     }
 
