@@ -12,7 +12,9 @@ public class NetworkLevelData : MonoBehaviour
     public Image ThrowableImage;
     public TextMeshProUGUI ThrowableCounter;
     public TextMeshProUGUI TechnicsTimer;
-    public Image[] icons;
+    public UIPositionEffector technicsTimerEffector;
+    public Image[] signsIcons;
+    public UIPositionEffector[] signsEffectors;
 
     public Transform ParticlesSpawnPoint;
     public Transform CamHolder;

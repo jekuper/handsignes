@@ -14,11 +14,11 @@ public class technicsManager : NetworkBehaviour {
     public float timerInitValue = .5f;
 
     [SerializeField]private TextMeshProUGUI technicsTimer;
+    [SerializeField]private UIPositionEffector technicsTimerEffector;
     [SerializeField]private Sprite[] iconSprites;
-    [SerializeField]private Image[] icons;
-    [SerializeField] private Transform particlesSpawnPoint;
+    [SerializeField]private Image[] signsIcons;
+    [SerializeField]private UIPositionEffector[] signsEffectors;
     [SerializeField] private Transform orientation;
-    [SerializeField] private Transform camHolder;
     [SerializeField] private Camera mainCamera;
     [SerializeField] private Animator armAnim;
 
@@ -36,7 +36,8 @@ public class technicsManager : NetworkBehaviour {
 
     public void TurnOff () {
         buffer = "";
-        technicsTimer.color = new Color (technicsTimer.color.r, technicsTimer.color.g, technicsTimer.color.b, 0);
+        HideSingsIcons ();
+        HideTimer ();
         timer = 0.001f; 
         UpdateIcons ();
         armAnim.SetInteger ("signType", -1);
@@ -44,17 +45,35 @@ public class technicsManager : NetworkBehaviour {
     }
     public void TurnOn () {
         buffer = "";
-        technicsTimer.color = new Color (technicsTimer.color.r, technicsTimer.color.g, technicsTimer.color.b, 1);
+        ShowTimer ();
         timer = 0.001f;
         UpdateIcons ();
         armAnim.SetInteger ("signType", -1);
         isOff = false;
     }
+    private void HideSingsIcons () {
+        for (int i = 0; i < signsEffectors.Length; i++)
+            HideSignIcon (i);
+    }
+    private void HideTimer () {
+        technicsTimerEffector.SetFromIndex (0);
+    }
+    private void HideSignIcon (int index) {
+        signsEffectors[index].SetFromIndex (0);
+    }
+    private void ShowTimer () {
+        technicsTimerEffector.SetFromIndex (1);
+    }
+    private void ShowSignIcon (int index) {
+        signsEffectors[index].SetFromIndex (1);
+    }
+
+
     private void Start () {
         technicsTimer = NetworkLevelData.singleton.TechnicsTimer;
-        icons = NetworkLevelData.singleton.icons;
-        particlesSpawnPoint = NetworkLevelData.singleton.ParticlesSpawnPoint;
-        camHolder = NetworkLevelData.singleton.CamHolder;
+        technicsTimerEffector = NetworkLevelData.singleton.technicsTimerEffector;
+        signsIcons = NetworkLevelData.singleton.signsIcons;
+        signsEffectors = NetworkLevelData.singleton.signsEffectors;
         mainCamera = NetworkLevelData.singleton.Cam;
 
         rb = GetComponent<Rigidbody> ();
@@ -67,7 +86,7 @@ public class technicsManager : NetworkBehaviour {
 
 
         //        timer = timerInitValue;
-        technicsTimer.text = timerInitValue.ToString ("0.0") + "s";
+        technicsTimer.text = timerInitValue.ToString ("0.0");
         UpdateIcons ();
     }
 
@@ -85,9 +104,9 @@ public class technicsManager : NetworkBehaviour {
         if (isOff == false && GetComponent<NetworkIdentity> ().hasAuthority) {
             if (timer > 0) {
                 timer -= Time.deltaTime;
-                technicsTimer.text = timer.ToString("0.0") + "s";
+                technicsTimer.text = timer.ToString("0.0");
                 if (timer <= 0) {
-                    technicsTimer.text = timerInitValue.ToString ("0.0") + "s";
+                    technicsTimer.text = timerInitValue.ToString ("0.0");
                     SearchAndExecute ();
                     buffer = "";
                     armAnim.SetInteger ("signType", -1);
@@ -119,11 +138,11 @@ public class technicsManager : NetworkBehaviour {
 
     private void UpdateIcons () {
         for (int i = 0; i < buffer.Length; i++) {
-            icons[i].sprite = iconSprites[buffer[i] - '0'];
-            icons[i].color = Color.white;
+            signsIcons[i].sprite = iconSprites[buffer[i] - '0'];
+            ShowSignIcon (i);
         }
-        for (int i = buffer.Length; i < icons.Length; i++) {
-            icons[i].color = new Color (0, 0, 0, 0);
+        for (int i = buffer.Length; i < signsIcons.Length; i++) {
+            HideSignIcon (i);
         }
     }
 

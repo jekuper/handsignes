@@ -5,7 +5,7 @@ using Mirror;
 
 public class PauseMenu : NetworkBehaviour
 {
-    [SerializeField]Animator animator;
+    [SerializeField] UIPositionEffector pauseMenuEffector;
     [SerializeField] GameObject InGameUI;
 
     bool isVisible = false;
@@ -16,8 +16,7 @@ public class PauseMenu : NetworkBehaviour
 
 
         InGameUI.SetActive (false);
-        animator.SetTrigger ("firstTrigger");
-        animator.SetBool ("isVisible", true);
+        pauseMenuEffector.SetFromIndex (1);
         isVisible = true;
     }
     public void HideMenu () {
@@ -25,7 +24,7 @@ public class PauseMenu : NetworkBehaviour
         Cursor.visible = false;
 
         InGameUI.SetActive (true);
-        animator.SetBool ("isVisible", false);
+        pauseMenuEffector.SetFromIndex (0);
         isVisible = false;
     }
 

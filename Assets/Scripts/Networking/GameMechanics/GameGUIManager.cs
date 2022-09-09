@@ -61,13 +61,13 @@ public class GameGUIManager : MonoBehaviour
     #region HealthGUI
     public void UpdateHealthCounter () {
         HealthCounter.text = NetworkDataBase.LocalUserData.health.ToString();
-        healthBarForeground.sizeDelta = new Vector2 ((healthBarBackground.rect.width - 8) * (NetworkDataBase.LocalUserData.health / NetworkDataBase.LocalUserData.healthMax), healthBarForeground.sizeDelta.y);
+        healthBarForeground.sizeDelta = new Vector2 ((healthBarBackground.rect.width) * (NetworkDataBase.LocalUserData.health / NetworkDataBase.LocalUserData.healthMax), healthBarForeground.sizeDelta.y);
     }
     #endregion
     #region ManaGUI
     public void UpdateManaCounter () {
         ManaCounter.text = NetworkDataBase.LocalUserData.mana.ToString ("0");
-        manaBarForeground.sizeDelta = new Vector2 ((manaBarBackground.rect.width - 8) * (NetworkDataBase.LocalUserData.mana / NetworkDataBase.LocalUserData.manaMax), manaBarForeground.sizeDelta.y);
+        manaBarForeground.sizeDelta = new Vector2 ((manaBarBackground.rect.width) * (NetworkDataBase.LocalUserData.mana / NetworkDataBase.LocalUserData.manaMax), manaBarForeground.sizeDelta.y);
     }
     #endregion
 }
