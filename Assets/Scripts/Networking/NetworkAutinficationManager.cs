@@ -39,8 +39,11 @@ public class NetworkAutinficationManager : NetworkAuthenticator
             NetworkDataBase.LocalUserData = responce.newData;
             ClientAccept ();
         } else if (responce.Code == 1) {
-            Debug.LogError (responce.Message);
-            NetworkManager.singleton.StopClient ();
+//            Debug.LogError (responce.Message);
+            NetworkManager.singleton.StopClient (); 
+            if (LobbyGUI.singleton != null) {
+                LobbyGUI.singleton.StopLoading (responce.Message);
+            }
         }
     }
     #endregion

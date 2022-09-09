@@ -172,6 +172,11 @@ public class LobbyGUI : NetworkBehaviour
         HideLoading ();
         UpdateGUI ();
     }
+    public override void OnStopClient () {
+        base.OnStopClient ();
+        mode = LobbyMode.Host;
+        UpdateGUI ();
+    }
     public override void OnStartServer () {
         base.OnStartServer ();
         HideLoading ();

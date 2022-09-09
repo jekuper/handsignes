@@ -62,7 +62,7 @@ public class NetworkHandsignesManager : NetworkManager
         base.OnStopClient ();
         NetworkDataBase.LocalUserData.isReady = false;
         if (LobbyGUI.singleton != null) {
-            LobbyGUI.singleton.StopLoading ("connection failed, check ip address");
+            LobbyGUI.singleton.ShowMessage ("connection aborted, check ip address");
         } else {
             SceneManager.LoadSceneAsync ("PlayModeSelect");
             Destroy(gameObject);
