@@ -6,8 +6,8 @@ using UnityEngine;
 public class katanaManager : MonoBehaviour
 {
     public float damage = 30;
+    public bool isOff = false;
 
-    private bool isOff = false;
     private bool isTriggerOff = false;
     [SerializeField] private Animator armAnim;
     [SerializeField] private GamePlayerManager gamePlayerManagerLink;
@@ -38,10 +38,11 @@ public class katanaManager : MonoBehaviour
         if (!gamePlayerManagerLink.GetComponent<NetworkIdentity> ().hasAuthority) {
             return;
         }
-        if (Input.GetKeyDown (KeyCode.Mouse0) && !isOff) {
+        if (!isOff && Input.GetKeyDown (KeyCode.Mouse0)) {
             armAnim.SetTrigger("strike");
         }
     }
+    
 
     [ServerCallback]
     public void TriggerResponce (Collider other) {

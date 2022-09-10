@@ -13,6 +13,7 @@ public class FOVchangeCommand {
 
 public class CameraFOVmanager : MonoBehaviour
 {
+    [SerializeField] float defaultFOV = 70;
     [SerializeField] private Camera[] affectedCameras;
     private List<FOVchangeCommand> commands = new List<FOVchangeCommand> ();
 
@@ -23,7 +24,7 @@ public class CameraFOVmanager : MonoBehaviour
     }
 
     private void Update () {
-        float resultFOV = 90;
+        float resultFOV = defaultFOV;
 
         commands.Sort ((x, y) => x.source.CompareTo (y.source));
         commands.Reverse ();

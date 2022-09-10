@@ -9,7 +9,7 @@ Well you can use a vast amount of combinations and you sword in order to have fu
 ## Where to download it?
 Windows build: 
 
-_https://github.com/jekuper/handsignes/blob/master/PCBuild1.0.0.rar_
+_https://github.com/jekuper/handsignes/blob/master/PCBuild.rar_
 
 ## What next?
 
