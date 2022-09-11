@@ -48,7 +48,7 @@ MonoBehaviour:
   sceneId: 0
   serverOnly: 0
   visible: 0
-  m_AssetId: 
+  m_AssetId: f692447019dbd1b459073f2a3e837e1e
   hasSpawned: 0
 --- !u!114 &2042819802674059822
 MonoBehaviour:
@@ -65,3 +65,6 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   GUIprefab: {fileID: 842436778206730826, guid: 9ea09fe1f8fbe41428b4fd5d1237b439, type: 3}
+  localNickname: 
+  gamePlayerManager: {fileID: 0}
+  spawnedGUI: {fileID: 0}

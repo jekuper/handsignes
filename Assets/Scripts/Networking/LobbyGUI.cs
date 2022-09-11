@@ -43,8 +43,7 @@ public class LobbyGUI : NetworkBehaviour
 
     private LobbyMode mode = LobbyMode.Host;
 
-
-    public void Awake () {
+    private LobbyGUI () {
         singleton = this;
     }
 
@@ -156,6 +155,7 @@ public class LobbyGUI : NetworkBehaviour
             mode = LobbyMode.Host;
             UpdateGUI ();
         } else {
+            Debug.Log ("back pressed");
             NetworkManager.singleton.StopHost ();
             Destroy (NetworkManager.singleton.gameObject);
             SceneManager.LoadScene ("PlayModeSelect");
@@ -183,7 +183,7 @@ public class LobbyGUI : NetworkBehaviour
     }
     public override void OnStopServer () {
         base.OnStopServer ();
-        StopLoading ("host failed.");
+        HideLoading ();
     }
 
     public void OnNickNameChanged () {

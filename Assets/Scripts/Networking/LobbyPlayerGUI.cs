@@ -42,6 +42,7 @@ public class LobbyPlayerGUI : MonoBehaviour
         if (!isDeleteable ()) {
             return;
         }
+        StopAllCoroutines ();
         StartCoroutine (Fade(readyImage, 0));
         StartCoroutine (Fade(deleteImage, 1));
     }
@@ -49,6 +50,7 @@ public class LobbyPlayerGUI : MonoBehaviour
         if (!isDeleteable ()) {
             return;
         }
+        StopAllCoroutines ();
         StartCoroutine (Fade (readyImage, 1));
         StartCoroutine (Fade (deleteImage, 0));
     }

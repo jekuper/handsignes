@@ -26,7 +26,7 @@ public class SettingsManager : MonoBehaviour
         set.nickname = nicknameField.text;
 
         string json = JsonConvert.SerializeObject (set);
-        FileManager.SaveId ("setttings.save", json);
+        FileManager.SaveId ("setttings", json);
 
         LoadSettings ();
     }
@@ -35,7 +35,7 @@ public class SettingsManager : MonoBehaviour
         nicknameField.text = set.nickname;
     }
     public static Settings LoadSettings () {
-        string json = FileManager.ConnectLines (FileManager.LoadId ("setttings.save"), "");
+        string json = FileManager.ConnectLines (FileManager.LoadId ("setttings"), "");
 
         Settings set = JsonConvert.DeserializeObject<Settings> (json);
 

@@ -72,8 +72,7 @@ public class kunai : NetworkBehaviour
         if (hitData.transform.gameObject.tag == "Player") {
             NetworkConnectionToClient hitConnection = NetworkDataBase.GetConnectionByNickname (hitData.transform.gameObject.GetComponent<GamePlayerManager> ().localNickname);
             if (NetworkDataBase.GetDataByNickname (ownerNickname).teamIndex != NetworkDataBase.data[hitConnection].teamIndex) {
-                NetworkDataBase.data[hitConnection].health -= damage;
-                hitConnection.identity.GetComponent<LobbyPlayerManager> ().TargetUpdateProfileData (NetworkDataBase.data[hitConnection]);
+                NetworkBRManager.brSingleton.ApplyDamage (hitConnection, damage);
             }
             playerHitEffect ();
             NetworkServer.Destroy (gameObject);

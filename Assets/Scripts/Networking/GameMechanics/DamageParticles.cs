@@ -17,8 +17,7 @@ public class DamageParticles : NetworkBehaviour
             ProfileData hit2Data = NetworkDataBase.GetDataByNickname (nick2);
 
             if (hit1Data.teamIndex != hit2Data.teamIndex) {
-                hit2Data.health -= damage;
-                NetworkDataBase.GetConnectionByNickname (nick2).identity.GetComponent<LobbyPlayerManager> ().TargetUpdateProfileData (hit2Data);
+                NetworkBRManager.brSingleton.ApplyDamage (nick2, damage);
             }
         }
     }

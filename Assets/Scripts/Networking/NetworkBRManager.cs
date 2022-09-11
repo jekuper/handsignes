@@ -8,16 +8,16 @@ public struct UpdateReadyStatusRequest : NetworkMessage {
     public bool newState;
 }
 
-public class NetworkHandsignesManager : NetworkManager
+public class NetworkBRManager : NetworkManager
 {
-    public static NetworkHandsignesManager handsignSingleton;
+    public static NetworkBRManager brSingleton;
 
     public GameObject LobbyPlayer;
     public GameObject GamePlayer;
 
     public override void Awake () {
         base.Awake ();
-        handsignSingleton = this;
+        brSingleton = this;
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
     }
@@ -64,6 +64,7 @@ public class NetworkHandsignesManager : NetworkManager
         if (LobbyGUI.singleton != null) {
             LobbyGUI.singleton.ShowMessage ("connection aborted, check ip address");
         } else {
+            Debug.Log ("unable to locate LobbyGUI");
             SceneManager.LoadSceneAsync ("PlayModeSelect");
             Destroy(gameObject);
         }
@@ -90,5 +91,20 @@ public class NetworkHandsignesManager : NetworkManager
 
     #endregion
 
+    #region Public Funcitons
+    public void ApplyDamage (string nickname, float damage) {
+        ApplyDamage (NetworkDataBase.GetConnectionByNickname(nickname), damage);
+    }
+    public void ApplyDamage (NetworkConnectionToClient connection, float damage) {
+        ProfileData data = NetworkDataBase.data[connection];
+        data.health -= damage;
+        if (data.health <= 0) {
+            Die (connection);
+        }
+        connection.identity.GetComponent<LobbyPlayerManager> ().TargetUpdateProfileData (data);
+    }
+    public void Die (NetworkConnectionToClient playerConn) {
 
+    }
+    #endregion
 }

@@ -15,7 +15,7 @@ public class LobbyPlayerManager : NetworkBehaviour
 
     public LobbyPlayerGUI spawnedGUI;
 
-    private void Awake () {
+    public void Awake () {
         DontDestroyOnLoad (gameObject);
     }
 
