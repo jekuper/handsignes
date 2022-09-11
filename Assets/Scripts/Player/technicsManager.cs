@@ -101,7 +101,7 @@ public class technicsManager : NetworkBehaviour {
         if (Cursor.lockState != CursorLockMode.Locked) {
             return;
         }
-        if (isOff == false && GetComponent<NetworkIdentity> ().hasAuthority) {
+        if (isOff == false && hasAuthority) {
             if (timer > 0) {
                 timer -= Time.deltaTime;
                 technicsTimer.text = timer.ToString("0.0");
@@ -269,7 +269,7 @@ public class Technic {
             else
                 NetworkDataBase.data[connection].mana -= resp.manaCost;
         }
-        connection.identity.GetComponent<LobbyPlayerManager> ().TargetUpdateProfileData (NetworkDataBase.data[connection]);
+        connection.identity.GetComponent<NetworkPlayerManager> ().TargetUpdateProfileData (NetworkDataBase.data[connection]);
     }
 }
 

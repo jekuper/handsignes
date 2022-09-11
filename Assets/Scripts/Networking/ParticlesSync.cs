@@ -5,11 +5,10 @@ using UnityEngine;
 
 public class ParticlesSync : NetworkBehaviour
 {
-    [SerializeField] NetworkIdentity idenity;
 
     [ClientCallback]
     private void Update () {
-        if (idenity.hasAuthority) {
+        if (hasAuthority) {
             transform.position = NetworkLevelData.singleton.ParticlesSpawnPoint.position;
             transform.rotation = NetworkLevelData.singleton.ParticlesSpawnPoint.rotation;
             cmdSyncPlanePosition (transform.position, transform.rotation);
@@ -21,7 +20,7 @@ public class ParticlesSync : NetworkBehaviour
     }
     [ClientRpc]
     private void ServerSyncPosition (Vector3 currentPosition, Quaternion currentRotation) {
-        if (!idenity.hasAuthority) {
+        if (!hasAuthority) {
             transform.position = currentPosition;
             transform.rotation = currentRotation;
         }

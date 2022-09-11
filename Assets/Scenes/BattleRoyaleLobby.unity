@@ -170,7 +170,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Port: 7777
-  DualMode: 1
+  DualMode: 0
   NoDelay: 1
   Interval: 10
   Timeout: 10000
@@ -201,12 +201,12 @@ MonoBehaviour:
   dontDestroyOnLoad: 1
   runInBackground: 1
   autoStartServerBuild: 1
-  serverTickRate: 30
+  serverTickRate: 60
   offlineScene: 
   onlineScene: 
   transport: {fileID: 11606524}
   networkAddress: localhost
-  maxConnections: 100
+  maxConnections: 50
   authenticator: {fileID: 11606526}
   playerPrefab: {fileID: 4510049604545260297, guid: f692447019dbd1b459073f2a3e837e1e, type: 3}
   autoCreatePlayer: 1

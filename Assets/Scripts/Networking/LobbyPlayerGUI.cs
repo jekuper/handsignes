@@ -16,9 +16,9 @@ public class LobbyPlayerGUI : MonoBehaviour
     public Color readyColor;
     public Color notReadyColor;
 
-    private LobbyPlayerManager manager;
+    private NetworkPlayerManager manager;
 
-    public void Initiate (LobbyPlayerManager _manager, ProfileData data) {
+    public void Initiate (NetworkPlayerManager _manager, ProfileData data) {
         nickname.text = data.nickname;
         manager = _manager;
         if (data.isReady) {

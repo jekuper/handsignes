@@ -32,7 +32,7 @@ public class NetworkBRManager : NetworkManager
         NetworkServer.AddPlayerForConnection (conn, player);
 
         foreach (var item in NetworkDataBase.data) {
-            item.Key.identity.GetComponent<LobbyPlayerManager> ().RpcInitiate (item.Value);
+            item.Key.identity.GetComponent<NetworkPlayerManager> ().RpcInitiate (item.Value);
         }
     }
 
@@ -46,8 +46,8 @@ public class NetworkBRManager : NetworkManager
             GameObject GamePlayerInst = Instantiate (GamePlayer, new Vector3(Random.Range(-5, 5), 2, 0), Quaternion.identity);
             NetworkServer.Spawn (GamePlayerInst, item.Key);
             GamePlayerInst.GetComponent<GamePlayerManager> ().localNickname = item.Value.nickname;
-            GamePlayerInst.GetComponent<GamePlayerManager> ().mainNetworkPlayer = item.Key.identity.GetComponent<LobbyPlayerManager> ();
-            item.Key.identity.GetComponent<LobbyPlayerManager> ().gamePlayerManager = GamePlayerInst.GetComponent<GamePlayerManager> ();
+            GamePlayerInst.GetComponent<GamePlayerManager> ().mainNetworkPlayer = item.Key.identity.GetComponent<NetworkPlayerManager> ();
+            item.Key.identity.GetComponent<NetworkPlayerManager> ().gamePlayerManager = GamePlayerInst.GetComponent<GamePlayerManager> ();
         }
         base.OnServerSceneChanged (sceneName);
     }
@@ -84,7 +84,7 @@ public class NetworkBRManager : NetworkManager
 
     private void UpdateProfileDataHandler (NetworkConnectionToClient conn, UpdateReadyStatusRequest request) {
         NetworkDataBase.data[conn].isReady = request.newState;
-        conn.identity.GetComponent<LobbyPlayerManager> ().RpcInitiate (NetworkDataBase.data[conn]);
+        conn.identity.GetComponent<NetworkPlayerManager> ().RpcInitiate (NetworkDataBase.data[conn]);
         NetworkDataBase.UpdateReadyStatus ();
     }
 
@@ -98,13 +98,15 @@ public class NetworkBRManager : NetworkManager
     public void ApplyDamage (NetworkConnectionToClient connection, float damage) {
         ProfileData data = NetworkDataBase.data[connection];
         data.health -= damage;
+        connection.identity.GetComponent<NetworkPlayerManager> ().TargetUpdateProfileData (data);
         if (data.health <= 0) {
             Die (connection);
         }
-        connection.identity.GetComponent<LobbyPlayerManager> ().TargetUpdateProfileData (data);
     }
     public void Die (NetworkConnectionToClient playerConn) {
-
+        NetworkPlayerManager player = playerConn.identity.GetComponent<NetworkPlayerManager> ();
+        player.RpcDie ();
+        NetworkServer.Destroy (player.gamePlayerManager.gameObject);
     }
     #endregion
 }

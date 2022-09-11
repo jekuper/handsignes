@@ -63,7 +63,7 @@ public class ThrowMechanic : NetworkBehaviour
     [Command(requiresAuthority = false)]
     public void CmdSwitchThrowable (throwableType type, NetworkConnectionToClient sender = null) {
         NetworkDataBase.data[sender].throwableInUse = type;
-        sender.identity.GetComponent<LobbyPlayerManager> ().TargetUpdateProfileData (NetworkDataBase.data[sender]);
+        sender.identity.GetComponent<NetworkPlayerManager> ().TargetUpdateProfileData (NetworkDataBase.data[sender]);
     }
 
     [Command(requiresAuthority = false)]
@@ -73,7 +73,7 @@ public class ThrowMechanic : NetworkBehaviour
         kunai.GetComponent<kunai> ().SetOwner (NetworkDataBase.data[sender].nickname);
 
         NetworkDataBase.data[sender].kunaiCount--;
-        sender.identity.GetComponent<LobbyPlayerManager>().TargetUpdateProfileData (NetworkDataBase.data[sender]);
+        sender.identity.GetComponent<NetworkPlayerManager>().TargetUpdateProfileData (NetworkDataBase.data[sender]);
 
     }
 
@@ -86,7 +86,7 @@ public class ThrowMechanic : NetworkBehaviour
         shuriken.GetComponent<shuriken> ().SetOwner (NetworkDataBase.data[sender].nickname);
 
         NetworkDataBase.data[sender].shurikenCount--;
-        sender.identity.GetComponent<LobbyPlayerManager> ().TargetUpdateProfileData (NetworkDataBase.data[sender]);
+        sender.identity.GetComponent<NetworkPlayerManager> ().TargetUpdateProfileData (NetworkDataBase.data[sender]);
 
     }
 }

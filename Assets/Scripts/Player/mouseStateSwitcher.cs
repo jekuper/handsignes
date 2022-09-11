@@ -8,7 +8,7 @@ public class mouseStateSwitcher : MonoBehaviour
 
     [SerializeField]private Animator armAnim;
     [SerializeField]private technicsManager tm;
-    [SerializeField]private katanaManager wm;
+    [SerializeField]private KatanaManager wm;
 
     private void Start () {
         SetState (NetworkDataBase.LocalInternalUserData.mouseState);

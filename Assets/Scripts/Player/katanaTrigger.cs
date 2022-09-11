@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class katanaTrigger : MonoBehaviour
+public class KatanaTrigger : MonoBehaviour
 {
-    [SerializeField] katanaManager link;
+    [SerializeField] KatanaManager link;
     [SerializeField] private GameObject bloodParticle;
     [SerializeField] private Transform bloodSpawnPoint;
 

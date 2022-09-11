@@ -72,10 +72,14 @@ public class LobbyGUI : NetworkBehaviour
             switchButtonText.text = "Client";
             backButtonText.text = "Back";
 
-            hostWindow?.SetActive (true);
-            clientWindow?.SetActive (false);
-            roomWindow?.SetActive (false);
-            switchButton?.SetActive (true);
+            if (hostWindow != null)
+                hostWindow?.SetActive (true);
+            if (clientWindow != null)
+                clientWindow?.SetActive (false);
+            if (roomWindow != null)
+                roomWindow?.SetActive (false);
+            if (switchButton != null)
+                switchButton?.SetActive (true);
         } else if (mode == LobbyMode.Room) {
             backButtonText.text = "Stop";
 

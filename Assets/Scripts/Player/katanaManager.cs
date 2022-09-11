@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class katanaManager : MonoBehaviour
+public class KatanaManager : MonoBehaviour
 {
     public float damage = 30;
     public bool isOff = false;
@@ -11,7 +11,7 @@ public class katanaManager : MonoBehaviour
     private bool isTriggerOff = false;
     [SerializeField] private Animator armAnim;
     [SerializeField] private GamePlayerManager gamePlayerManagerLink;
-    [SerializeField] private katanaTrigger triggerManager;
+    [SerializeField] private KatanaTrigger triggerManager;
 
     public void TurnOn () {
         isOff = false;
@@ -35,7 +35,7 @@ public class katanaManager : MonoBehaviour
         if (Cursor.lockState != CursorLockMode.Locked) {
             return;
         }
-        if (!gamePlayerManagerLink.GetComponent<NetworkIdentity> ().hasAuthority) {
+        if (!gamePlayerManagerLink.hasAuthority) {
             return;
         }
         if (!isOff && Input.GetKeyDown (KeyCode.Mouse0)) {

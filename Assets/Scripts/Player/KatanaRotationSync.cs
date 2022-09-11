@@ -7,7 +7,7 @@ public class KatanaRotationSync : NetworkBehaviour
 {
     [SerializeField] Transform shoulderR;
     [SerializeField] Transform camHolder;
-    [SerializeField] katanaManager katanaM;
+    [SerializeField] KatanaManager katanaM;
     [SerializeField] Transform networkTransfer;
 
     private void Start () {

@@ -9,7 +9,7 @@ public class GamePlayerManager : NetworkBehaviour
     [SyncVar(hook =nameof(NicknameRecieved))] 
     public string localNickname;
     [SyncVar]
-    public LobbyPlayerManager mainNetworkPlayer;
+    public NetworkPlayerManager mainNetworkPlayer;
 
     [Range(0.01f, 1f)]
     public float manaCountSync = 0.5f;
@@ -25,13 +25,13 @@ public class GamePlayerManager : NetworkBehaviour
 
     private void Start () {
         GetComponent<technicsManager> ().enabled = true;
-        if (GetComponent<NetworkIdentity> ().hasAuthority) {
+        if (hasAuthority) {
             GetComponent<PlayerMovement> ().enabled = true;
             GetComponent<PlayerLook> ().enabled = true;
             GetComponent<WallRun> ().enabled = true;
             GetComponent<DashMechanic> ().enabled = true;
             GetComponent<mouseStateSwitcher> ().enabled = true;
-            GetComponentInChildren<katanaManager> ().enabled = true;
+            GetComponentInChildren<KatanaManager> ().enabled = true;
             headMesh.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.ShadowsOnly;
 
             NetworkLevelData.singleton.CameraMovement.cameraPosition = cameraPos;
