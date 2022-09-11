@@ -64,6 +64,18 @@ public class NetworkAutinficationManager : NetworkAuthenticator
 
     private void RequestChecker (NetworkConnectionToClient conn, AuthenticationRequest request) {
         Debug.Log ("authenfication request");
+        if (LobbyGUI.singleton == null) {
+            AuthenticationResponce responce = new AuthenticationResponce {
+                Code = 1,
+                Message = "game have already started",
+            };
+            conn.Send (responce);
+
+            conn.isAuthenticated = false;
+
+            StartCoroutine (DelayedDisconnection (conn, 1));
+            return;
+        }
         if (NetworkDataBase.NicknameExistChecker (request.nickname)) {
             AuthenticationResponce responce = new AuthenticationResponce {
                 Code = 1,

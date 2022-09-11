@@ -51,7 +51,7 @@ public class NetworkPlayerManager : NetworkBehaviour
     public void RpcDie () {
         if (hasAuthority) {
             NetworkLevelData.singleton.CamHolder.GetComponent<CameraController>().enabled = true;
-            BRMenuesManager.singleton.ShowObserveMenu ();
+            BRGUI.singleton.ShowObserveMenu ();
         }
     }
 

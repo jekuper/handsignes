@@ -22,6 +22,19 @@ public class NetworkBRManager : NetworkManager
         Cursor.visible = true;
     }
 
+    #region Client
+    public override void OnStopClient () {
+        base.OnStopClient ();
+        NetworkDataBase.LocalUserData.isReady = false;
+        if (LobbyGUI.singleton != null) {
+            LobbyGUI.singleton.ShowMessage ("connection aborted, check ip address");
+        } else {
+            SceneManager.LoadSceneAsync ("PlayModeSelect");
+            Destroy(gameObject);
+        }
+    }
+    #endregion
+    #region SERVER
     public override void OnServerAddPlayer (NetworkConnectionToClient conn) {
         if (LobbyGUI.singleton == null) {
             base.OnServerAddPlayer (conn);
@@ -40,10 +53,18 @@ public class NetworkBRManager : NetworkManager
         NetworkDataBase.UpdateReadyStatus ();
         base.OnServerConnect (conn);
     }
+    public override void OnServerDisconnect (NetworkConnectionToClient conn) {
+        NetworkDataBase.data.Remove (conn);
+        NetworkDataBase.UpdateReadyStatus ();
+        if (LobbyGUI.singleton == null) {
+            CheckForWinner ();
+        }
+        base.OnServerDisconnect (conn);
+    }
 
     public override void OnServerSceneChanged (string sceneName) {
         foreach (var item in NetworkDataBase.data) {
-            GameObject GamePlayerInst = Instantiate (GamePlayer, new Vector3(Random.Range(-5, 5), 2, 0), Quaternion.identity);
+            GameObject GamePlayerInst = Instantiate (GamePlayer, new Vector3 (Random.Range (-5, 5), 2, 0), Quaternion.identity);
             NetworkServer.Spawn (GamePlayerInst, item.Key);
             GamePlayerInst.GetComponent<GamePlayerManager> ().localNickname = item.Value.nickname;
             GamePlayerInst.GetComponent<GamePlayerManager> ().mainNetworkPlayer = item.Key.identity.GetComponent<NetworkPlayerManager> ();
@@ -52,26 +73,6 @@ public class NetworkBRManager : NetworkManager
         base.OnServerSceneChanged (sceneName);
     }
 
-    public override void OnServerDisconnect (NetworkConnectionToClient conn) {
-        NetworkDataBase.data.Remove (conn);
-        NetworkDataBase.UpdateReadyStatus ();
-        base.OnServerDisconnect (conn);
-    }
-
-    public override void OnStopClient () {
-        base.OnStopClient ();
-        NetworkDataBase.LocalUserData.isReady = false;
-        if (LobbyGUI.singleton != null) {
-            LobbyGUI.singleton.ShowMessage ("connection aborted, check ip address");
-        } else {
-            Debug.Log ("unable to locate LobbyGUI");
-            SceneManager.LoadSceneAsync ("PlayModeSelect");
-            Destroy(gameObject);
-        }
-    }
-
-
-    #region SERVER
     public override void OnStartServer () {
         NetworkServer.RegisterHandler<UpdateReadyStatusRequest> (UpdateProfileDataHandler, false);
         base.OnStartServer ();
@@ -105,8 +106,21 @@ public class NetworkBRManager : NetworkManager
     }
     public void Die (NetworkConnectionToClient playerConn) {
         NetworkPlayerManager player = playerConn.identity.GetComponent<NetworkPlayerManager> ();
+        CheckForWinner ();
         player.RpcDie ();
         NetworkServer.Destroy (player.gamePlayerManager.gameObject);
+    }
+    public void CheckForWinner () {
+        int winnerTeam = NetworkDataBase.CheckForWinner ();
+        if (winnerTeam == -1)
+            return;
+        List<NetworkConnectionToClient> keys = new List<NetworkConnectionToClient> (NetworkDataBase.data.Keys);
+        foreach (var item in keys) {
+            ProfileData Value = NetworkDataBase.data[item];
+            NetworkDataBase.data[item] = new ProfileData (Value.nickname, false, Value.teamIndex);
+            item.identity.GetComponent<NetworkPlayerManager> ().TargetUpdateProfileData (NetworkDataBase.data[item]);
+        }
+        BRGUI.singleton.RpcShowWinMenu (winnerTeam);
     }
     #endregion
 }
