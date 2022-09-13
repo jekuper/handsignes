@@ -46,6 +46,10 @@ public class LobbyGUI : NetworkBehaviour
     private LobbyGUI () {
         singleton = this;
     }
+    private void Start () {
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+    }
 
     public void swithcerPressed () {
         NetworkManager.singleton.StopHost ();

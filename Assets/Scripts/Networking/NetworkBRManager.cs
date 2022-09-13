@@ -29,6 +29,8 @@ public class NetworkBRManager : NetworkManager
         if (LobbyGUI.singleton != null) {
             LobbyGUI.singleton.ShowMessage ("connection aborted, check ip address");
         } else {
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
             SceneManager.LoadSceneAsync ("PlayModeSelect");
             Destroy(gameObject);
         }

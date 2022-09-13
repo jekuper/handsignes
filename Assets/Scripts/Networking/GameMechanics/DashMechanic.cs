@@ -40,7 +40,7 @@ public class DashMechanic : MonoBehaviour
                 }
             }
         }
-        if (Input.GetKeyDown (actionCode) && chargedDashCount > 0 && Cursor.lockState != CursorLockMode.Locked) {
+        if (Input.GetKeyDown (actionCode) && chargedDashCount > 0 && Cursor.lockState == CursorLockMode.Locked) {
             StartCoroutine (Dash ());
             chargedDashCount--;
             reloadTimer = DashReloadTime;

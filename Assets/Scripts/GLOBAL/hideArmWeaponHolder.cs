@@ -6,6 +6,7 @@ public class hideArmWeaponHolder : MonoBehaviour
 {
     [SerializeField] private GameObject weaponHolder;
     public void HideWeapon () {
+        Debug.Log ("weapon hidden");
         weaponHolder.SetActive (false);
     }
     public void ShowWeapon () {

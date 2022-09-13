@@ -40,6 +40,7 @@ public class KatanaManager : MonoBehaviour
         }
         if (!isOff && Input.GetKeyDown (KeyCode.Mouse0)) {
             armAnim.SetTrigger("strike");
+            armAnim.SetFloat ("randFloat", (1f / 3f) * Random.Range (0, 3));
         }
     }
     

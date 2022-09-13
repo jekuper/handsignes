@@ -14,8 +14,8 @@ public class GamePlayerManager : NetworkBehaviour
     [Range(0.01f, 1f)]
     public float manaCountSync = 0.5f;
     public float manaIncreaseSpeed = 10f;
+    public Transform cameraPos;
 
-    [SerializeField] private Transform cameraPos;
     [SerializeField] private TextMeshProUGUI nicknameText;
     [SerializeField] private RectTransform healthBarBackground;
     [SerializeField] private RectTransform healthBarForeground;

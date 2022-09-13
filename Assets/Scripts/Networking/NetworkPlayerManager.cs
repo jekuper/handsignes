@@ -44,8 +44,10 @@ public class NetworkPlayerManager : NetworkBehaviour
     [TargetRpc]
     public void TargetUpdateProfileData (ProfileData dataNew) {
         NetworkDataBase.LocalUserData = dataNew;
-        GameGUIManager.singleton.UpdateThrowable ();
-        gamePlayerManager.CmdUpdateHealth ();
+        if (GameGUIManager.singleton != null)
+            GameGUIManager.singleton.UpdateThrowable ();
+        if (gamePlayerManager != null)
+            gamePlayerManager.CmdUpdateHealth ();
     }
     [ClientRpc]
     public void RpcDie () {

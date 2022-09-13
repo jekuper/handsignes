@@ -493,7 +493,6 @@ MonoBehaviour:
   signsIcons: []
   signsEffectors: []
   orientation: {fileID: 2013665070654484877}
-  mainCamera: {fileID: 0}
   armAnim: {fileID: 5376009461621501365}
   firePariticle: {fileID: 2043691798486302199, guid: bfa2da35737542646a3faa39b1134e22, type: 3}
   waterParticle: {fileID: 8983032645576610850, guid: 4f9d098a48afd904c999f883fa0536ab, type: 3}
@@ -549,7 +548,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   syncMode: 0
-  syncInterval: 0.1
+  syncInterval: 0.05
   clientAuthority: 1
   animator: {fileID: 5376009461621501365}
 --- !u!114 &7012240568925599949
@@ -1016,6 +1015,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0412bd690a5186347940c386f0852236, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &5696354597784867914
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5817598753949603568}
+  m_Layer: 0
+  m_Name: serverCameraRef
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5817598753949603568
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5696354597784867914}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.15, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8688108096862112071}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5944209834108147001
 GameObject:
   m_ObjectHideFlags: 0
@@ -1043,7 +1073,8 @@ Transform:
   m_LocalPosition: {x: -0, y: 0.05, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 5817598753949603568}
   m_Father: {fileID: 6765438497891164624}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1363,6 +1394,10 @@ PrefabInstance:
     - target: {fileID: -3178810093534752495, guid: a73ef05492ada5d4d947e0ba73342aaa, type: 3}
       propertyPath: m_Layer
       value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: -3178810093534752495, guid: a73ef05492ada5d4d947e0ba73342aaa, type: 3}
+      propertyPath: m_TagString
+      value: PlayerBodyMesh
       objectReference: {fileID: 0}
     - target: {fileID: -3098776098441328574, guid: a73ef05492ada5d4d947e0ba73342aaa, type: 3}
       propertyPath: m_Layer

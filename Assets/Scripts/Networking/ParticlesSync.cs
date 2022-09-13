@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(ParticleSystem))]
 public class ParticlesSync : NetworkBehaviour
 {
 
@@ -13,6 +14,14 @@ public class ParticlesSync : NetworkBehaviour
             transform.rotation = NetworkLevelData.singleton.ParticlesSpawnPoint.rotation;
             cmdSyncPlanePosition (transform.position, transform.rotation);
         }
+    }
+    [Server]
+    public void Stop () {
+        RpcStop ();
+    }
+    [ClientRpc]
+    private void RpcStop () {
+        GetComponent<ParticleSystem> ().Stop ();
     }
     [Command]
     private void cmdSyncPlanePosition (Vector3 currentPosition, Quaternion currentRotation) {
