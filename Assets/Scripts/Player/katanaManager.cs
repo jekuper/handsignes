@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class KatanaManager : MonoBehaviour
 {
-    public float damage = 30;
+    public float damage = 15;
     public bool isOff = false;
 
     private bool isTriggerOff = false;

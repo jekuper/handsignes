@@ -220,8 +220,10 @@ MonoBehaviour:
   - {fileID: 2043691798486302199, guid: bfa2da35737542646a3faa39b1134e22, type: 3}
   - {fileID: 8983032645576610850, guid: 4f9d098a48afd904c999f883fa0536ab, type: 3}
   - {fileID: 1556788705910130835, guid: 8c4fa352f51fc904dbcd802309620a2d, type: 3}
+  - {fileID: 309555849028218927, guid: 057d6a524157b8e498ef9aa052efca0a, type: 3}
   LobbyPlayer: {fileID: 4510049604545260297, guid: f692447019dbd1b459073f2a3e837e1e, type: 3}
   GamePlayer: {fileID: 2013665070833911389, guid: b8466f968dcab774683c035d940f458e, type: 3}
+  deathParticle: {fileID: 309555849028218927, guid: 057d6a524157b8e498ef9aa052efca0a, type: 3}
 --- !u!114 &11606526
 MonoBehaviour:
   m_ObjectHideFlags: 0

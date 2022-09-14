@@ -211,7 +211,7 @@ public class technicsManager : NetworkBehaviour {
     public technicExecutionResult EarthPrison (NetworkConnectionToClient connection) {
         technicExecutionResult responce = new technicExecutionResult ();
 
-        GameObject hover = GetHoverObject (connection, interactableMask, 7);
+        GameObject hover = GetHoverObject (connection, interactableMask, 12);
         if (hover == null) {
             responce.isExecutedOK = false;
             return responce;

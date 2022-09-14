@@ -14,6 +14,7 @@ public class NetworkBRManager : NetworkManager
 
     public GameObject LobbyPlayer;
     public GameObject GamePlayer;
+    public GameObject deathParticle;
 
     public override void Awake () {
         base.Awake ();
@@ -108,6 +109,8 @@ public class NetworkBRManager : NetworkManager
     }
     public void Die (NetworkConnectionToClient playerConn) {
         NetworkPlayerManager player = playerConn.identity.GetComponent<NetworkPlayerManager> ();
+        GameObject deathParticleInst = Instantiate (deathParticle, player.transform.position, Quaternion.identity);
+        NetworkServer.Spawn (deathParticleInst);
         CheckForWinner ();
         player.RpcDie ();
         NetworkServer.Destroy (player.gamePlayerManager.gameObject);

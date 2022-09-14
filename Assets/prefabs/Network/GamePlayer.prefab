@@ -1695,7 +1695,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b00439f62e1f2642aab32f46612ca7f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 30
+  damage: 15
   isOff: 0
   armAnim: {fileID: 5376009461621501365}
   gamePlayerManagerLink: {fileID: 7447176837962784829}

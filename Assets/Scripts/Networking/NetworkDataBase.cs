@@ -28,8 +28,8 @@ public class ProfileData {
     public float manaRecoverSpeed = 10;
 
 
-    public int kunaiCountMax = 5;
-    public int kunaiCount = 5;
+    public int kunaiCountMax = 10;
+    public int kunaiCount = 10;
 
     public int shurikenCountMax = 10;
     public int shurikenCount = 10;
