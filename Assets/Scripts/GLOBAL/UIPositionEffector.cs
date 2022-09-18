@@ -18,6 +18,8 @@ public class UIPositionEffector : MonoBehaviour
 
     public void SetTarget (Vector2 newTarget) {
         target = newTarget;
+        if (rect == null)
+            rect = GetComponent<RectTransform> ();
         speed = Vector2.Distance (rect.anchoredPosition, target) / animationTime;
     }
     public void SetFromIndex (int index) {

@@ -21,8 +21,6 @@ public class technicsManager : NetworkBehaviour {
     [SerializeField] private Animator armAnim;
     [SerializeField] private GameObject firePariticle, waterParticle, earthWall, earthPrison, clonePrefab;
 
-    private Dictionary<string, Technic> technics = new Dictionary<string, Technic> ();
-
     [SyncVar]
     private List<ParticlesSync> stopAfterDeath = new List<ParticlesSync> ();
     [SyncVar]
@@ -77,24 +75,27 @@ public class technicsManager : NetworkBehaviour {
 
         idenity = GetComponent<NetworkIdentity> ();
 
-        AddTechnic (BlowFireParticle, "01210", 200);
-        AddTechnic (BlowWaterParticle, "12010", 200);
-        AddTechnic (EarthWall, "0210", 60);
-        AddTechnic (EarthPrison, "01012");
+        if (hasAuthority) {
+            AddTechnic (BlowFireParticle, "01210", 200, "creates flow of fire. Each particle have X damage. 5 seconds long", "fire flow");
+            AddTechnic (BlowWaterParticle, "12010", 200, "description for water here", "water flow");
+            AddTechnic (EarthWall, "0210", 60, "description for wall here", "wall");
+            AddTechnic (EarthPrison, "01012", "description for prison here", "earth prison");
 
 
-        //        timer = timerInitValue;
-        technicsTimer.text = timerInitValue.ToString ("0.0");
-        UpdateIcons ();
+            //        timer = timerInitValue;
+            technicsTimer.text = timerInitValue.ToString ("0.0");
+            UpdateIcons ();
+        }
     }
-    private void AddTechnic (Func<NetworkConnectionToClient, technicExecutionResult> act, string tag, int manaCost) {
-        technics.Add (tag, new Technic (act, tag, manaCost));
+    private void AddTechnic (Func<NetworkConnectionToClient, technicExecutionResult> act, string tag, int manaCost, string description, string name) {
+        NetworkDataBase.technics.Add (tag, new Technic (act, tag, manaCost, description, name));
     }
-    private void AddTechnic (Func<NetworkConnectionToClient, technicExecutionResult> act, string tag) {
-        technics.Add (tag, new Technic (act, tag));
+    private void AddTechnic (Func<NetworkConnectionToClient, technicExecutionResult> act, string tag, string description, string name) {
+        NetworkDataBase.technics.Add (tag, new Technic (act, tag, description, name));
     }
 
     private void Update () {
+
         if (Cursor.lockState != CursorLockMode.Locked) {
             return;
         }
@@ -152,7 +153,7 @@ public class technicsManager : NetworkBehaviour {
 //        }
 
 //        Debug.Log (buffer);
-        if (!technics.ContainsKey (buffer)) {
+        if (!NetworkDataBase.technics.ContainsKey (buffer)) {
             return;
         }
         CmdExecute (buffer);
@@ -160,7 +161,7 @@ public class technicsManager : NetworkBehaviour {
     }
     [Command]
     public void CmdExecute (string technicTag) {
-        technics[technicTag].Execute (idenity.connectionToClient);
+        NetworkDataBase.technics[technicTag].Execute (idenity.connectionToClient);
     }
 
     private GameObject GetHoverObject (NetworkConnectionToClient connection, int layerMask = ~0, float maxDistance = 10000) {
@@ -242,6 +243,7 @@ public class technicsManager : NetworkBehaviour {
 
     #endregion
 
+    //TODO: prevent array overflow with nulls
     [ServerCallback]
     private void OnDestroy () {
         foreach (var item in stopAfterDeath) {
@@ -256,16 +258,22 @@ public class Technic {
     public bool isCalculatedManaCost = false;
     public string tag = "-";
     public int manaCost = 0;
+    public string description = "";
+    public string name = "";
 
-    public Technic (Func<NetworkConnectionToClient, technicExecutionResult> resp, string _tag = "-", int _manaCost = 0) {
+    public Technic (Func<NetworkConnectionToClient, technicExecutionResult> resp, string _tag = "-", int _manaCost = 0, string _description = "", string _name = "") {
         start = resp;
         manaCost = _manaCost;
         tag = _tag;
+        description = _description;
+        name = _name;
     }
-    public Technic (Func<NetworkConnectionToClient, technicExecutionResult> resp, string _tag = "-") {
+    public Technic (Func<NetworkConnectionToClient, technicExecutionResult> resp, string _tag = "-", string _description = "", string _name = "") {
         start = resp;
         isCalculatedManaCost = true;
         tag = _tag;
+        description = _description;
+        name = _name;
     }
     [Server]
     public void Execute (NetworkConnectionToClient connection) {

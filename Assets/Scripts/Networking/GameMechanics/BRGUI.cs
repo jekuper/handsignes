@@ -13,6 +13,7 @@ public class BRGUI : NetworkBehaviour
     }
     public GameObject winMenu_startButton;
     [SerializeField] GameObject GameUI;
+    [SerializeField] GameObject descMenu;
     [SerializeField] GameObject winScreen;
     [SerializeField] TextMeshProUGUI winMenu_ResultText;
     [SerializeField] UIPositionEffector pauseMenuEffector;
@@ -42,7 +43,11 @@ public class BRGUI : NetworkBehaviour
         Cursor.visible = false;
 
         pauseMenuEffector.SetFromIndex (0);
+        descMenu.SetActive (false);
         isPauseMenuVisible = false;
+    }
+    public void ToggleTechnicsDescMenu () {
+        descMenu.SetActive (!descMenu.activeSelf);
     }
     public void ShowObserveMenu () {
         if (isWinMenuVisible)
