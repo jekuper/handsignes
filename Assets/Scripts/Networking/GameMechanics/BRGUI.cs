@@ -73,8 +73,10 @@ public class BRGUI : NetworkBehaviour
             winMenu_ResultText.text = "DEFEAT";
             winMenu_ResultText.color = new Color(0.8313726f, 0.1333333f, 0f);
         }
-        observeB1.SetFromIndex (2);
-        observeB2.SetFromIndex (2);
+        //        observeB1.MoveToCenter();
+        //        observeB2.MoveToCenter();
+        observeB1.SetFromIndex(2);
+        observeB2.SetFromIndex(2);
 
         winScreen.SetActive (true);
     }
@@ -90,6 +92,8 @@ public class BRGUI : NetworkBehaviour
     }
     [Server]
     public void OnRematchPressed () {
+        NetworkDataBase.technics.Clear();
+        NetworkDataBase.LocalInternalUserData = new InternalProfileData();
         NetworkManager.singleton.ServerChangeScene ("Map1");
     }
     [ClientRpc]

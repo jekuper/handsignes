@@ -51,6 +51,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] Animator bodyAnim;
 
     public bool isGrounded { get; private set; }
+    public bool controlsEnabled = true;
 
     Vector3 moveDirection;
     Vector3 slopeMoveDirection;
@@ -99,8 +100,16 @@ public class PlayerMovement : MonoBehaviour
 
     void MyInput()
     {
-        horizontalMovement = Input.GetAxisRaw("Horizontal");
-        verticalMovement = Input.GetAxisRaw("Vertical");
+        if (controlsEnabled)
+        {
+            horizontalMovement = Input.GetAxisRaw("Horizontal");
+            verticalMovement = Input.GetAxisRaw("Vertical");
+        }
+        else
+        {
+            horizontalMovement = 0;
+            verticalMovement = 0;
+        }
 
         if (Cursor.lockState != CursorLockMode.Locked) {
             horizontalMovement = 0;
@@ -112,7 +121,7 @@ public class PlayerMovement : MonoBehaviour
 
     void Jump()
     {
-        if (isGrounded)
+        if (isGrounded && controlsEnabled)
         {
             rb.velocity = new Vector3(rb.velocity.x, 0, rb.velocity.z);
             rb.AddForce(transform.up * jumpForce, ForceMode.Impulse);

@@ -25,6 +25,8 @@ public class technicsManager : NetworkBehaviour {
     private List<ParticlesSync> stopAfterDeath = new List<ParticlesSync> ();
     [SyncVar]
     private float timer = -1;
+    [SyncVar]
+    public bool isRegeningMana = false;
 
     private string buffer = "";
     private bool isOff = false;
@@ -80,6 +82,7 @@ public class technicsManager : NetworkBehaviour {
             AddTechnic (BlowWaterParticle, "12010", 200, "description for water here", "water flow");
             AddTechnic (EarthWall, "0210", 60, "description for wall here", "wall");
             AddTechnic (EarthPrison, "01012", "description for prison here", "earth prison");
+            AddTechnic (ToogleManaRegen, "2", "Toogles mana regenration. You can not move during mana regen", "regen mana");
 
 
             //        timer = timerInitValue;
@@ -168,8 +171,12 @@ public class technicsManager : NetworkBehaviour {
         Transform cam = connection.identity.GetComponent<NetworkPlayerManager> ().gamePlayerManager.cameraPos;
         Ray ray = new Ray(cam.position, cam.forward);
         RaycastHit hit;
-        if (Physics.Raycast (ray, out hit, maxDistance, layerMask, QueryTriggerInteraction.Ignore)) {
-            return hit.transform.gameObject;
+        if (Physics.Raycast (ray, out hit, maxDistance)) {
+            Debug.Log(hit.transform.name);
+            Debug.Log(layerMask);
+            Debug.Log(hit.collider.gameObject.layer);
+            if (((1 << hit.collider.gameObject.layer) & layerMask) != 0)
+                return hit.transform.gameObject;
         }
         return null;
     }
@@ -184,6 +191,17 @@ public class technicsManager : NetworkBehaviour {
         stopAfterDeath.Add (firePariticleInst.GetComponent<ParticlesSync> ());
         NetworkServer.Spawn (firePariticleInst, GetComponent<NetworkIdentity>().connectionToClient);
 //        firePariticleInst.GetComponent<ParticlesSync> ().target = particlesSpawnPoint;
+        return responce;
+    }
+    [Server]
+    public technicExecutionResult ToogleManaRegen(NetworkConnectionToClient connection)
+    {
+        technicExecutionResult responce = new technicExecutionResult();
+
+        if (isRegeningMana)
+            isRegeningMana = false;
+        else
+            isRegeningMana = true;
         return responce;
     }
     [Server]
@@ -222,9 +240,9 @@ public class technicsManager : NetworkBehaviour {
             Debug.LogError ("CITICAL ERROR: player mesh not found!!");
         }
         Vector3 RefSize = skin.GetComponent<Renderer> ().bounds.size;
-        RefSize += new Vector3(0.5f, 0.5f, 0.5f);
+        RefSize += new Vector3(1f, 1f, 1f);
 
-        float estimatedManaCost = 6.4f * RefSize.x * RefSize.y * RefSize.z;
+        float estimatedManaCost = 7f * RefSize.x * RefSize.y * RefSize.z;
         if (estimatedManaCost > NetworkDataBase.data[connection].mana) {
             responce.isExecutedOK = false;
             return responce;

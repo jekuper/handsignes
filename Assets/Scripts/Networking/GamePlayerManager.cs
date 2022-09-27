@@ -11,9 +11,6 @@ public class GamePlayerManager : NetworkBehaviour
     [SyncVar]
     public NetworkPlayerManager mainNetworkPlayer;
 
-    [Range(0.01f, 1f)]
-    public float manaCountSync = 0.5f;
-    public float manaIncreaseSpeed = 10f;
     public Transform cameraPos;
 
     [SerializeField] private TextMeshProUGUI nicknameText;
@@ -25,6 +22,7 @@ public class GamePlayerManager : NetworkBehaviour
 
     private void Start () {
         GetComponent<technicsManager> ().enabled = true;
+        GetComponent<manaRegen> ().enabled = true;
         if (hasAuthority) {
             GetComponent<PlayerMovement> ().enabled = true;
             GetComponent<PlayerLook> ().enabled = true;
@@ -42,23 +40,6 @@ public class GamePlayerManager : NetworkBehaviour
             foreach (SkinnedMeshRenderer item in mr) {
                 item.gameObject.layer = 0;
             }
-        }
-
-        if (NetworkServer.active) {
-            StartCoroutine (PassiveManaSync());
-        }
-    }
-
-    private IEnumerator PassiveManaSync () {
-        while (true) {
-            yield return new WaitForSeconds (manaCountSync);
-            mainNetworkPlayer.TargetUpdateProfileData (NetworkDataBase.GetDataByNickname(mainNetworkPlayer.localNickname));
-        }
-    }
-    private void Update () {
-        if (NetworkServer.active) {
-            ProfileData dt = NetworkDataBase.GetDataByNickname (mainNetworkPlayer.localNickname);
-            NetworkDataBase.GetDataByNickname (mainNetworkPlayer.localNickname).mana = Mathf.Clamp((Time.deltaTime * manaIncreaseSpeed) + dt.mana, 0, dt.manaMax);
         }
     }
 

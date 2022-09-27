@@ -15,6 +15,7 @@ public class DashMechanic : MonoBehaviour
 
     public float StartDashTime = .3f;
     public float DashSpeed = 10f;
+    public bool controlsEnabled = true;
 
     [SerializeField] Transform camHolder;
 
@@ -40,7 +41,7 @@ public class DashMechanic : MonoBehaviour
                 }
             }
         }
-        if (Input.GetKeyDown (actionCode) && chargedDashCount > 0 && Cursor.lockState == CursorLockMode.Locked) {
+        if (Input.GetKeyDown (actionCode) && controlsEnabled && chargedDashCount > 0 && Cursor.lockState == CursorLockMode.Locked) {
             StartCoroutine (Dash ());
             chargedDashCount--;
             reloadTimer = DashReloadTime;

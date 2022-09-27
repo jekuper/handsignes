@@ -6,7 +6,7 @@ using Newtonsoft.Json;
 
 public class Settings {
     public string nickname = "";
-    
+    public Dictionary<string, KeyCode> inputSettings = new Dictionary<string, KeyCode>();
 }
 
 public class SettingsManager : MonoBehaviour

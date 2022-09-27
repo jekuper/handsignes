@@ -290,6 +290,7 @@ GameObject:
   - component: {fileID: 4255031255676732370}
   - component: {fileID: 4683864077595781062}
   - component: {fileID: 8103218303087925456}
+  - component: {fileID: 4406008075915738861}
   - component: {fileID: 2013665070833911371}
   - component: {fileID: 2013665070833911368}
   - component: {fileID: 7012240568925599949}
@@ -335,7 +336,7 @@ Rigidbody:
   m_AngularDrag: 0.05
   m_UseGravity: 1
   m_IsKinematic: 0
-  m_Interpolate: 1
+  m_Interpolate: 2
   m_Constraints: 80
   m_CollisionDetection: 1
 --- !u!114 &7447176837962784829
@@ -354,8 +355,6 @@ MonoBehaviour:
   syncInterval: 0.1
   localNickname: 
   mainNetworkPlayer: {fileID: 0}
-  manaCountSync: 0.1
-  manaIncreaseSpeed: 10
   cameraPos: {fileID: 8688108096862112071}
   nicknameText: {fileID: 772865980121356332}
   healthBarBackground: {fileID: 5835243026914316838}
@@ -392,6 +391,7 @@ MonoBehaviour:
     m_Bits: 8
   groundDistance: 0.1
   bodyAnim: {fileID: 5376009461621501365}
+  controlsEnabled: 1
 --- !u!114 &2013665070833911365
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -452,6 +452,7 @@ MonoBehaviour:
   cameraFov: 120
   StartDashTime: 0.1
   DashSpeed: 60
+  controlsEnabled: 1
   camHolder: {fileID: 0}
 --- !u!114 &4255031255676732370
 MonoBehaviour:
@@ -499,6 +500,7 @@ MonoBehaviour:
   earthWall: {fileID: 315341318854090276, guid: 97f455b6ce507064b8907c2a13626523, type: 3}
   earthPrison: {fileID: 1556788705910130835, guid: 8c4fa352f51fc904dbcd802309620a2d, type: 3}
   clonePrefab: {fileID: 7498779301873320939, guid: dd5dd41db069cfc49926fbb75452d01b, type: 3}
+  isRegeningMana: 0
   idenity: {fileID: 0}
 --- !u!114 &8103218303087925456
 MonoBehaviour:
@@ -518,6 +520,25 @@ MonoBehaviour:
   camHolder: {fileID: 0}
   katanaM: {fileID: 8953141603435015086}
   networkTransfer: {fileID: 9213856540655313162}
+--- !u!114 &4406008075915738861
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2013665070833911389}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f67d3eebdc8661145a2959b12240f997, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
+  techManager: {fileID: 4683864077595781062}
+  dashManager: {fileID: 6389759652140365337}
+  manager: {fileID: 7447176837962784829}
+  movement: {fileID: 2013665070833911364}
+  manaIncreaseSpeed: 10
 --- !u!114 &2013665070833911371
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -599,7 +620,7 @@ MonoBehaviour:
   bufferSizeLimit: 64
   catchupThreshold: 4
   catchupMultiplier: 0.1
-  onlySyncOnChange: 1
+  onlySyncOnChange: 0
   bufferResetMultiplier: 5
   positionSensitivity: 0.01
   rotationSensitivity: 0.01
@@ -633,7 +654,7 @@ MonoBehaviour:
   bufferSizeLimit: 64
   catchupThreshold: 4
   catchupMultiplier: 0.1
-  onlySyncOnChange: 1
+  onlySyncOnChange: 0
   bufferResetMultiplier: 5
   positionSensitivity: 0.01
   rotationSensitivity: 0.01
@@ -657,7 +678,7 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   clientAuthority: 1
-  sendInterval: 0.205
+  sendInterval: 0.05
   syncPosition: 0
   syncRotation: 1
   syncScale: 0
@@ -668,7 +689,7 @@ MonoBehaviour:
   bufferSizeLimit: 64
   catchupThreshold: 4
   catchupMultiplier: 0.1
-  onlySyncOnChange: 1
+  onlySyncOnChange: 0
   bufferResetMultiplier: 5
   positionSensitivity: 0.01
   rotationSensitivity: 0.01
@@ -703,7 +724,7 @@ MonoBehaviour:
   bufferSizeLimit: 64
   catchupThreshold: 4
   catchupMultiplier: 0.1
-  onlySyncOnChange: 1
+  onlySyncOnChange: 0
   bufferResetMultiplier: 5
   positionSensitivity: 0.01
   rotationSensitivity: 0.01

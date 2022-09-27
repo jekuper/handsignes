@@ -135,6 +135,7 @@ GameObject:
   - component: {fileID: 11606525}
   - component: {fileID: 11606526}
   - component: {fileID: 11606524}
+  - component: {fileID: 11606527}
   m_Layer: 0
   m_Name: NetworkManager
   m_TagString: Untagged
@@ -172,10 +173,10 @@ MonoBehaviour:
   Port: 7777
   DualMode: 0
   NoDelay: 1
-  Interval: 10
+  Interval: 5
   Timeout: 10000
-  FastResend: 2
-  CongestionWindow: 0
+  FastResend: 0
+  CongestionWindow: 1
   SendWindowSize: 4096
   ReceiveWindowSize: 4096
   MaxRetransmit: 40
@@ -201,7 +202,7 @@ MonoBehaviour:
   dontDestroyOnLoad: 1
   runInBackground: 1
   autoStartServerBuild: 1
-  serverTickRate: 60
+  serverTickRate: 120
   offlineScene: 
   onlineScene: 
   transport: {fileID: 11606524}
@@ -242,6 +243,20 @@ MonoBehaviour:
   OnClientAuthenticated:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &11606527
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 11606522}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc654f29862fc2643b948f772ebb9e68, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  color: {r: 1, g: 1, b: 1, a: 1}
+  padding: 2
 --- !u!1 &30051835
 GameObject:
   m_ObjectHideFlags: 0
@@ -2757,7 +2772,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: OK
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 893f245f64f860341bc7594dc4f90990, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -2821,7 +2836,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 0
+  m_hasFontAssetChanged: 1
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!222 &996204400

@@ -23,10 +23,13 @@ public class KatanaManager : MonoBehaviour
     }
 
     public void TurnTriggerOn () {
+        Debug.Log("trigger turn on");
         isTriggerOff = false;
-        triggerManager.GetComponent<Collider> ().enabled = true;
+        triggerManager.GetComponent<Collider>().enabled = true;
     }
-    public void TurnTriggerOff () {
+    public void TurnTriggerOff ()
+    {
+        Debug.Log("trigger turn off");
         isTriggerOff = true;
         triggerManager.GetComponent<Collider> ().enabled = false;
     }
