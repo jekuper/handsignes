@@ -29,7 +29,7 @@ public class GamePlayerManager : NetworkBehaviour
             GetComponent<WallRun> ().enabled = true;
             GetComponent<DashMechanic> ().enabled = true;
             GetComponent<mouseStateSwitcher> ().enabled = true;
-            GetComponentInChildren<KatanaManager> ().enabled = true;
+            GetComponent<KatanaManager> ().enabled = true;
             headMesh.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.ShadowsOnly;
 
             NetworkLevelData.singleton.CameraMovement.cameraPosition = cameraPos;

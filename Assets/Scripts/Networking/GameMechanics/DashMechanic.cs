@@ -1,8 +1,9 @@
+using Mirror;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DashMechanic : MonoBehaviour
+public class DashMechanic : NetworkBehaviour
 {
 
     public KeyCode actionCode;
@@ -15,6 +16,7 @@ public class DashMechanic : MonoBehaviour
 
     public float StartDashTime = .3f;
     public float DashSpeed = 10f;
+    [SyncVar]
     public bool controlsEnabled = true;
 
     [SerializeField] Transform camHolder;

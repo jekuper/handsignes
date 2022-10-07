@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Mirror;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,7 +9,7 @@ public enum BodyStates {
     Jumping,
 }
 
-public class PlayerMovement : MonoBehaviour
+public class PlayerMovement : NetworkBehaviour
 {
     public static float wallDirection = 1;
     public static bool isWallRunning = false;
@@ -51,6 +52,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] Animator bodyAnim;
 
     public bool isGrounded { get; private set; }
+    [SyncVar]
     public bool controlsEnabled = true;
 
     Vector3 moveDirection;

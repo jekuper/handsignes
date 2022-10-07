@@ -92,7 +92,7 @@ public class BRGUI : NetworkBehaviour
     }
     [Server]
     public void OnRematchPressed () {
-        NetworkDataBase.technics.Clear();
+        NetworkDataBase.technicDescription.Clear();
         NetworkDataBase.LocalInternalUserData = new InternalProfileData();
         NetworkManager.singleton.ServerChangeScene ("Map1");
     }

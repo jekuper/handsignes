@@ -21,8 +21,8 @@ public class TechnicDescriptionMenu : MonoBehaviour
     public void Show (string tag) {
         if (!isListLoaded)
             LoadList ();
-        descriptionText.text = NetworkDataBase.technics[tag].description;
-        nameText.text = NetworkDataBase.technics[tag].name;
+        descriptionText.text = NetworkDataBase.technicDescription[tag].description;
+        nameText.text = NetworkDataBase.technicDescription[tag].name;
         
         LoadTag (tag);
     }
@@ -37,9 +37,9 @@ public class TechnicDescriptionMenu : MonoBehaviour
     public void LoadList () {
         bool isFirst = true;
         isListLoaded = true;
-        foreach (var item in NetworkDataBase.technics) {
+        foreach (var item in NetworkDataBase.technicDescription) {
             GameObject elem = Instantiate (listElement, list);
-            elem.GetComponent<TechnicDescription> ().Load (item.Value);
+            elem.GetComponent<TechnicDescriptionBlock> ().Load (item.Value);
             if (isFirst) {
                 Show (item.Value.tag);
             }

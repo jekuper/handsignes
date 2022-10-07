@@ -21,6 +21,8 @@ public class technicsManager : NetworkBehaviour {
     [SerializeField] private Animator armAnim;
     [SerializeField] private GameObject firePariticle, waterParticle, earthWall, earthPrison, clonePrefab;
 
+    private Dictionary<string, Technic> technics = new Dictionary<string, Technic>();
+    
     [SyncVar]
     private List<ParticlesSync> stopAfterDeath = new List<ParticlesSync> ();
     [SyncVar]
@@ -77,31 +79,34 @@ public class technicsManager : NetworkBehaviour {
 
         idenity = GetComponent<NetworkIdentity> ();
 
+        AddTechnic (BlowFireParticle, "01210", 200, "creates flow of fire. Each particle have X damage. 5 seconds long", "fire flow");
+        AddTechnic (BlowWaterParticle, "12010", 200, "description for water here", "water flow");
+        AddTechnic (EarthWall, "0210", 60, "description for wall here", "wall");
+        AddTechnic (EarthPrison, "01012", "description for prison here", "earth prison");
+        AddTechnic (ToogleManaRegen, "2", "Toogles mana regenration. You can not move during mana regen", "regen mana");
+        
         if (hasAuthority) {
-            AddTechnic (BlowFireParticle, "01210", 200, "creates flow of fire. Each particle have X damage. 5 seconds long", "fire flow");
-            AddTechnic (BlowWaterParticle, "12010", 200, "description for water here", "water flow");
-            AddTechnic (EarthWall, "0210", 60, "description for wall here", "wall");
-            AddTechnic (EarthPrison, "01012", "description for prison here", "earth prison");
-            AddTechnic (ToogleManaRegen, "2", "Toogles mana regenration. You can not move during mana regen", "regen mana");
-
-
             //        timer = timerInitValue;
             technicsTimer.text = timerInitValue.ToString ("0.0");
             UpdateIcons ();
         }
     }
     private void AddTechnic (Func<NetworkConnectionToClient, technicExecutionResult> act, string tag, int manaCost, string description, string name) {
-        NetworkDataBase.technics.Add (tag, new Technic (act, tag, manaCost, description, name));
+        technics.Add (tag, new Technic (act, tag, manaCost, description, name));
+        if (hasAuthority)
+        {
+            NetworkDataBase.technicDescription.Add(tag, new TechnicDescription(tag, name, description));
+        }
     }
     private void AddTechnic (Func<NetworkConnectionToClient, technicExecutionResult> act, string tag, string description, string name) {
-        NetworkDataBase.technics.Add (tag, new Technic (act, tag, description, name));
+        technics.Add (tag, new Technic (act, tag, description, name));
+        if (hasAuthority)
+        {
+            NetworkDataBase.technicDescription.Add(tag, new TechnicDescription(tag, name, description));
+        }
     }
 
     private void Update () {
-
-        if (Cursor.lockState != CursorLockMode.Locked) {
-            return;
-        }
         if (isOff == false && hasAuthority) {
             if (timer > 0) {
                 timer -= Time.deltaTime;
@@ -115,20 +120,20 @@ public class technicsManager : NetworkBehaviour {
                 }
             }
 
-            if (Input.GetMouseButtonDown (0) && buffer.Length < 6) {
+            if (Input.GetMouseButtonDown (0) && Cursor.lockState == CursorLockMode.Locked && buffer.Length < 6) {
                 buffer += "0";
                 timer = timerInitValue;
                 armAnim.SetInteger ("signType", 0);
 
                 UpdateIcons ();
             }
-            if (Input.GetMouseButtonDown (1) && buffer.Length < 6) {
+            if (Input.GetMouseButtonDown (1) && Cursor.lockState == CursorLockMode.Locked && buffer.Length < 6) {
                 buffer += "1";
                 timer = timerInitValue;
                 armAnim.SetInteger ("signType", 1);
                 UpdateIcons ();
             }
-            if (Input.GetMouseButtonDown (2) && buffer.Length < 6) {
+            if (Input.GetMouseButtonDown (2) && Cursor.lockState == CursorLockMode.Locked && buffer.Length < 6) {
                 buffer += "2";
                 timer = timerInitValue;
                 armAnim.SetInteger ("signType", 2);
@@ -151,20 +156,21 @@ public class technicsManager : NetworkBehaviour {
         if (isOff)
             return;
 
-//        if (ClonesManager.clones[ClonesManager.activeIndex].cloneType == CloneType.Simple && buffer != "0") {
-//            return;
-//        }
+        //        if (ClonesManager.clones[ClonesManager.activeIndex].cloneType == CloneType.Simple && buffer != "0") {
+        //            return;
+        //        }
 
-//        Debug.Log (buffer);
-        if (!NetworkDataBase.technics.ContainsKey (buffer)) {
+        //        Debug.Log (buffer);
+        if (!NetworkDataBase.technicDescription.ContainsKey (buffer)) {
             return;
         }
         CmdExecute (buffer);
         buffer = "";
     }
     [Command]
-    public void CmdExecute (string technicTag) {
-        NetworkDataBase.technics[technicTag].Execute (idenity.connectionToClient);
+    public void CmdExecute (string technicTag)
+    {
+        technics[technicTag].Execute (idenity.connectionToClient);
     }
 
     private GameObject GetHoverObject (NetworkConnectionToClient connection, int layerMask = ~0, float maxDistance = 10000) {
@@ -172,9 +178,6 @@ public class technicsManager : NetworkBehaviour {
         Ray ray = new Ray(cam.position, cam.forward);
         RaycastHit hit;
         if (Physics.Raycast (ray, out hit, maxDistance)) {
-            Debug.Log(hit.transform.name);
-            Debug.Log(layerMask);
-            Debug.Log(hit.collider.gameObject.layer);
             if (((1 << hit.collider.gameObject.layer) & layerMask) != 0)
                 return hit.transform.gameObject;
         }
@@ -189,7 +192,7 @@ public class technicsManager : NetworkBehaviour {
 
         GameObject firePariticleInst = Instantiate (firePariticle);
         stopAfterDeath.Add (firePariticleInst.GetComponent<ParticlesSync> ());
-        NetworkServer.Spawn (firePariticleInst, GetComponent<NetworkIdentity>().connectionToClient);
+        NetworkServer.Spawn (firePariticleInst, connection);
 //        firePariticleInst.GetComponent<ParticlesSync> ().target = particlesSpawnPoint;
         return responce;
     }
@@ -237,7 +240,7 @@ public class technicsManager : NetworkBehaviour {
         }
         Transform skin = hover.transform.Find ("Orientation/HumanFPS/cyborgMesh");
         if (skin == null) {
-            Debug.LogError ("CITICAL ERROR: player mesh not found!!");
+            Debug.LogError ("CRITICAL ERROR: player mesh not found!!");
         }
         Vector3 RefSize = skin.GetComponent<Renderer> ().bounds.size;
         RefSize += new Vector3(1f, 1f, 1f);
@@ -294,7 +297,8 @@ public class Technic {
         name = _name;
     }
     [Server]
-    public void Execute (NetworkConnectionToClient connection) {
+    public void Execute (NetworkConnectionToClient connection)
+    {
         if (!isCalculatedManaCost && NetworkDataBase.data[connection].mana < manaCost)
             return;
         technicExecutionResult resp = start (connection);

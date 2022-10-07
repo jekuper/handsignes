@@ -49,6 +49,17 @@ public class ProfileData {
 public class InternalProfileData {
     public mouseState mouseState = mouseState.Weapons;
 }
+public class TechnicDescription
+{
+    public string tag;
+    public string name;
+    public string description;
+    public TechnicDescription (string _tag, string _name, string _desc){
+        tag = _tag;
+        name = _name;
+        description = _desc;
+    }
+}
 
 public static class NetworkDataBase
 {
@@ -124,5 +135,5 @@ public static class NetworkDataBase
     public static ProfileData LocalUserData = new ProfileData();
     public static InternalProfileData LocalInternalUserData = new InternalProfileData();
 
-    public static Dictionary<string, Technic> technics = new Dictionary<string, Technic> ();
+    public static Dictionary<string, TechnicDescription> technicDescription = new Dictionary<string, TechnicDescription> ();
 }
