@@ -60,7 +60,7 @@ public class GameGUIManager : MonoBehaviour
     #endregion
     #region HealthGUI
     public void UpdateHealthCounter () {
-        HealthCounter.text = NetworkDataBase.LocalUserData.health.ToString();
+        HealthCounter.text = NetworkDataBase.LocalUserData.health.ToString("0.0");
         healthBarForeground.sizeDelta = new Vector2 ((healthBarBackground.rect.width) * (NetworkDataBase.LocalUserData.health / NetworkDataBase.LocalUserData.healthMax), healthBarForeground.sizeDelta.y);
     }
     #endregion

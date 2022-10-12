@@ -1,8 +1,9 @@
-﻿using System.Collections;
+﻿using Mirror;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WallRun : MonoBehaviour
+public class WallRun : NetworkBehaviour
 {
     [Header("Movement")]
     [SerializeField] private Transform orientation;
@@ -24,6 +25,8 @@ public class WallRun : MonoBehaviour
 
     public float tilt { get; private set; }
 
+    [SyncVar]
+    public bool controlsEnabled = true;
     private bool wallLeft = false;
     private bool wallRight = false;
 
@@ -34,6 +37,8 @@ public class WallRun : MonoBehaviour
 
     bool CanWallRun()
     {
+        if (!controlsEnabled)
+            return false;
         return !Physics.Raycast(transform.position, Vector3.down, minimumJumpHeight);
     }
 

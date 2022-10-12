@@ -9,6 +9,7 @@ public class mouseStateSwitcher : MonoBehaviour
     [SerializeField]private Animator armAnim;
     [SerializeField]private technicsManager tm;
     [SerializeField]private KatanaManager wm;
+    [SerializeField]private StunManager stun;
 
     private void Start () {
         SetState (NetworkDataBase.LocalInternalUserData.mouseState);
@@ -24,7 +25,9 @@ public class mouseStateSwitcher : MonoBehaviour
     }
     public void ToggleState () {
         if (NetworkDataBase.LocalInternalUserData.mouseState == mouseState.Weapons) {
-            SetState (mouseState.Technics);
+            Debug.Log("is technic stunned: " + stun.IsTechnicStunned);
+            if (!stun.IsTechnicStunned)
+                SetState (mouseState.Technics);
         } else {
             SetState (mouseState.Weapons);
         }

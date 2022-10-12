@@ -9,26 +9,42 @@ public class manaRegen : NetworkBehaviour
     [SerializeField] DashMechanic dashManager;
     [SerializeField] GamePlayerManager manager;
     [SerializeField] PlayerMovement movement;
+    [SerializeField] StunManager stun;
 
     public float manaIncreaseSpeed = 10f;
+
+    private bool lastRegenState = false;
+    private Coroutine regenCoroutine;
 
     [ServerCallback]
     private void Update()
     {
-        if (techManager.isRegeningMana)
+        if (techManager.isRegeningMana && !lastRegenState)
         {
-            movement.controlsEnabled = false;
-            dashManager.controlsEnabled = false;
+            stun.Stun(1000000, true, false);
+            regenCoroutine = StartCoroutine (Regen(0.1f));
+        }
+        else if (!techManager.isRegeningMana && lastRegenState)
+        {
+            stun.StunOff(true, false);
+            StopCoroutine(regenCoroutine);
+        }
+        lastRegenState = techManager.isRegeningMana;
+    }
+    private IEnumerator Regen(float syncFrequency)
+    {
+        float timer = syncFrequency;
 
+        while (true)
+        {
+            timer -= Time.deltaTime;
             ProfileData dt = NetworkDataBase.GetDataByNickname(manager.localNickname);
             NetworkDataBase.GetDataByNickname(manager.localNickname).mana = Mathf.Clamp((Time.deltaTime * manaIncreaseSpeed) + dt.mana, 0, dt.manaMax);
-            //TODO: change from calling every frame to calling every 0.1 seconds.
-            NetworkDataBase.GetConnectionByNickname(manager.localNickname).identity.GetComponent<NetworkPlayerManager>().TargetUpdateProfileData(NetworkDataBase.GetDataByNickname(manager.localNickname));
-        }
-        else
-        {
-            movement.controlsEnabled = true;
-            dashManager.controlsEnabled = true;
+            if (timer <= 0)
+            {
+                NetworkDataBase.GetConnectionByNickname(manager.localNickname).identity.GetComponent<NetworkPlayerManager>().TargetUpdateProfileData(NetworkDataBase.GetDataByNickname(manager.localNickname));
+            }
+            yield return new WaitForEndOfFrame();
         }
     }
 }

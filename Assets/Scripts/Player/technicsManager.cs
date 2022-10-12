@@ -38,20 +38,23 @@ public class technicsManager : NetworkBehaviour {
 
     public void TurnOff () {
         buffer = "";
+        isOff = true;
         HideSingsIcons ();
         HideTimer ();
         timer = 0.001f; 
         UpdateIcons ();
         armAnim.SetInteger ("signType", -1);
-        isOff = true;
     }
     public void TurnOn () {
         buffer = "";
-        ShowTimer ();
-        timer = 0.001f;
-        UpdateIcons ();
-        armAnim.SetInteger ("signType", -1);
         isOff = false;
+        if (NetworkDataBase.LocalInternalUserData.mouseState == mouseState.Technics)
+        {
+            ShowTimer ();
+            timer = 0.001f;
+            UpdateIcons ();
+        }
+        armAnim.SetInteger ("signType", -1);
     }
     private void HideSingsIcons () {
         for (int i = 0; i < signsEffectors.Length; i++)
@@ -79,11 +82,14 @@ public class technicsManager : NetworkBehaviour {
 
         idenity = GetComponent<NetworkIdentity> ();
 
-        AddTechnic (BlowFireParticle, "01210", 200, "creates flow of fire. Each particle have X damage. 5 seconds long", "fire flow");
-        AddTechnic (BlowWaterParticle, "12010", 200, "description for water here", "water flow");
-        AddTechnic (EarthWall, "0210", 60, "description for wall here", "wall");
-        AddTechnic (EarthPrison, "01012", "description for prison here", "earth prison");
+        AddTechnic (BlowFireParticle, "01210", 200, "creates flow of fire. Each particle have 0.5 damage. 5 seconds long", "fire flow");
+        AddTechnic (BlowWaterParticle, "12010", 200, "creates flow of water. Each particle have 0.25 damage. 5 seconds long", "water flow");
+        AddTechnic (EarthWall, "0210", 60, "creates a wall in direction you are looking", "wall");
+        AddTechnic (EarthPrison, "01012", "creates a box around certain player. Before and during using aim on your target player", "earth prison");
         AddTechnic (ToogleManaRegen, "2", "Toogles mana regenration. You can not move during mana regen", "regen mana");
+        AddTechnic (SetKatanaWater, "00", "sets your katana mode to water. If player's body has wet status, than player's view blurs and damage from electro katana is doubled. At the same time, this technic extinguishes your body(dispells body's fire state)", "katana water");
+        AddTechnic (SetKatanaFire, "02", "sets your katana mode to fire. If player's body has fire status, than player gets constant damage untill he dispells it. At the same time, this technic dispells body's wet state and electro state", "katana fire");
+        AddTechnic (SetKatanaElectro, "01", "sets your katana mode to electro. If player's body hast electro status and player doesn't dispell it during next 5 seconds, than he gets stunned for 3 seconds", "katana electro");
         
         if (hasAuthority) {
             //        timer = timerInitValue;
@@ -261,7 +267,32 @@ public class technicsManager : NetworkBehaviour {
 
         return responce;
     }
-
+    [Server]
+    public technicExecutionResult SetKatanaWater (NetworkConnectionToClient connection)
+    {
+        technicExecutionResult responce = new technicExecutionResult();
+        NetworkDataBase.data[connection].katanaState = KatanaState.Water;
+        NetworkBRManager.brSingleton.UnSetBodyState(connection, BodyState.OnFire);
+        connection.identity.GetComponent<NetworkPlayerManager>().TargetUpdateProfileData(NetworkDataBase.data[connection]);
+        return responce;
+    }
+    [Server]
+    public technicExecutionResult SetKatanaFire(NetworkConnectionToClient connection)
+    {
+        technicExecutionResult responce = new technicExecutionResult();
+        NetworkDataBase.data[connection].katanaState = KatanaState.Fire;
+        NetworkBRManager.brSingleton.UnSetBodyState(connection, BodyState.Wet | BodyState.ElectroShock);
+        connection.identity.GetComponent<NetworkPlayerManager>().TargetUpdateProfileData(NetworkDataBase.data[connection]);
+        return responce;
+    }
+    [Server]
+    public technicExecutionResult SetKatanaElectro(NetworkConnectionToClient connection)
+    {
+        technicExecutionResult responce = new technicExecutionResult();
+        NetworkDataBase.data[connection].katanaState = KatanaState.Electro;
+        connection.identity.GetComponent<NetworkPlayerManager>().TargetUpdateProfileData(NetworkDataBase.data[connection]);
+        return responce;
+    }
     #endregion
 
     //TODO: prevent array overflow with nulls

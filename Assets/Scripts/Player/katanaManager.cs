@@ -70,6 +70,14 @@ public class KatanaManager : NetworkBehaviour
     }
     #endregion
 
+    private void Start()
+    {
+        if (hasAuthority)
+        {
+            CmdTurnTriggerOff();
+        }
+    }
+
     private void Update () {
         if (Cursor.lockState != CursorLockMode.Locked) {
             return;
@@ -100,7 +108,24 @@ public class KatanaManager : NetworkBehaviour
 
         if (hit1Data.teamIndex != hit2Data.teamIndex)
         {
-            NetworkBRManager.brSingleton.ApplyDamage(nick2, damage);
+            float damageMultiplier = 1f;
+            if (hit1Data.katanaState.HasFlag(KatanaState.Water))
+            {
+                NetworkBRManager.brSingleton.SetBodyState(nick2, BodyState.Wet);
+            }
+            if (hit1Data.katanaState.HasFlag(KatanaState.Electro))
+            {
+                NetworkBRManager.brSingleton.SetBodyState(nick2, BodyState.ElectroShock);
+                if (hit2Data.bodyState.HasFlag(BodyState.Wet))
+                {
+                    damageMultiplier = 2f;
+                }
+            }
+            if (hit1Data.katanaState.HasFlag(KatanaState.Fire))
+            {
+                NetworkBRManager.brSingleton.SetBodyState(nick2, BodyState.OnFire);
+            }
+            NetworkBRManager.brSingleton.ApplyDamage(nick2, damage * damageMultiplier);
         }
     }
 }

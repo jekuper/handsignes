@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
+using System;
 
 public enum throwableType {
     Kunai,
@@ -10,6 +11,21 @@ public enum throwableType {
 public enum mouseState {
     Weapons,
     Technics
+}
+[Flags]
+public enum BodyState
+{
+    None = 0,
+    Wet = 1,
+    OnFire = 2,
+    ElectroShock = 4,
+}
+public enum KatanaState
+{
+    None = 0,
+    Water = 1,
+    Fire = 2,
+    Electro = 4,
 }
 
 public class ProfileData {
@@ -35,6 +51,8 @@ public class ProfileData {
     public int shurikenCount = 10;
 
     public throwableType throwableInUse = throwableType.Kunai;
+    public BodyState bodyState = BodyState.None;
+    public KatanaState katanaState = KatanaState.None;
 
     public int teamIndex = 0;
 
@@ -86,7 +104,7 @@ public static class NetworkDataBase
             if (LobbyGUI.singleton != null) {
                 LobbyGUI.singleton.room_StartButton.SetActive (IsEverybodyReady);
             } else {
-                RematchCounter counter = Object.FindObjectOfType<RematchCounter> ();
+                RematchCounter counter = UnityEngine.Object.FindObjectOfType<RematchCounter> ();
                 if (counter != null) {
                     if (total == readyAmount) {
                         counter.text = "Waiting for host...";

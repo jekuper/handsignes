@@ -96,9 +96,11 @@ public class NetworkBRManager : NetworkManager
     #endregion
 
     #region Public Funcitons
+    [Server]
     public void ApplyDamage (string nickname, float damage) {
         ApplyDamage (NetworkDataBase.GetConnectionByNickname(nickname), damage);
     }
+    [Server]
     public void ApplyDamage (NetworkConnectionToClient connection, float damage) {
         ProfileData data = NetworkDataBase.data[connection];
         data.health -= damage;
@@ -107,6 +109,31 @@ public class NetworkBRManager : NetworkManager
             Die (connection);
         }
     }
+    [Server]
+    public void SetBodyState(string nickname, BodyState state)
+    {
+        SetBodyState(NetworkDataBase.GetConnectionByNickname(nickname), state);
+    }
+    [Server]
+    public void SetBodyState(NetworkConnectionToClient connection, BodyState state)
+    {
+        ProfileData data = NetworkDataBase.data[connection];
+        data.bodyState |= state;
+        connection.identity.GetComponent<NetworkPlayerManager>().TargetUpdateProfileData(data);
+    }
+    [Server]
+    public void UnSetBodyState(string nickname, BodyState state)
+    {
+        UnSetBodyState(NetworkDataBase.GetConnectionByNickname(nickname), state);
+    }
+    [Server]
+    public void UnSetBodyState(NetworkConnectionToClient connection, BodyState state)
+    {
+        ProfileData data = NetworkDataBase.data[connection];
+        data.bodyState &= ~state;
+        connection.identity.GetComponent<NetworkPlayerManager>().TargetUpdateProfileData(data);
+    }
+
     public void Die (NetworkConnectionToClient playerConn) {
         NetworkPlayerManager player = playerConn.identity.GetComponent<NetworkPlayerManager> ();
         GameObject deathParticleInst = Instantiate (deathParticle, player.transform.position, Quaternion.identity);

@@ -292,6 +292,8 @@ GameObject:
   - component: {fileID: 684281557186576959}
   - component: {fileID: 8103218303087925456}
   - component: {fileID: 4406008075915738861}
+  - component: {fileID: 5079137568832605310}
+  - component: {fileID: 7364008950171888377}
   - component: {fileID: 2013665070833911371}
   - component: {fileID: 2013665070833911368}
   - component: {fileID: 7012240568925599949}
@@ -426,6 +428,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02c4d4837e5dcbd4d96075834d433fad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
   orientation: {fileID: 2013665070654484877}
   wallMask:
     serializedVersion: 2
@@ -438,6 +442,7 @@ MonoBehaviour:
   wallRunfov: 100
   camTilt: 10
   camTiltTime: 10
+  controlsEnabled: 1
 --- !u!114 &6389759652140365337
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -474,7 +479,8 @@ MonoBehaviour:
   switchKey: 113
   armAnim: {fileID: 5376009461621501365}
   tm: {fileID: 4683864077595781062}
-  wm: {fileID: 0}
+  wm: {fileID: 684281557186576959}
+  stun: {fileID: 7364008950171888377}
 --- !u!114 &4683864077595781062
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -563,7 +569,45 @@ MonoBehaviour:
   dashManager: {fileID: 6389759652140365337}
   manager: {fileID: 7447176837962784829}
   movement: {fileID: 2013665070833911364}
+  stun: {fileID: 7364008950171888377}
   manaIncreaseSpeed: 10
+--- !u!114 &5079137568832605310
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2013665070833911389}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 14bec9a06c9b2e5459c2de865bc04b90, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
+  stun: {fileID: 7364008950171888377}
+  pp: {fileID: 0}
+  fireDamage: 0.5
+  electroTimer: 5
+--- !u!114 &7364008950171888377
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2013665070833911389}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 705bbb8ba6a3c3a41b71ce22272e75b2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
+  movement: {fileID: 2013665070833911364}
+  wallrun: {fileID: 2013665070833911362}
+  dashManager: {fileID: 6389759652140365337}
+  technicManager: {fileID: 4683864077595781062}
+  IsTechnicStunned: 0
 --- !u!114 &2013665070833911371
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1777,20 +1821,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: a73ef05492ada5d4d947e0ba73342aaa, type: 3}
   m_PrefabInstance: {fileID: 2013665071826604068}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &8392859951970192356
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1670994234395274613}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7a82e4bb17359ac48863f08078fe80ed, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  manager: {fileID: 684281557186576959}
-  identity: {fileID: 2013665070833911371}
 --- !u!114 &2897287464132574361
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1801,6 +1831,20 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5430401044db35e4abe9826785a28e99, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  manager: {fileID: 684281557186576959}
+  identity: {fileID: 2013665070833911371}
+--- !u!114 &8392859951970192356
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1670994234395274613}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a82e4bb17359ac48863f08078fe80ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   manager: {fileID: 684281557186576959}
