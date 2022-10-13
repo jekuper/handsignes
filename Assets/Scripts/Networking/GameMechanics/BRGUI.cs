@@ -73,8 +73,6 @@ public class BRGUI : NetworkBehaviour
             winMenu_ResultText.text = "DEFEAT";
             winMenu_ResultText.color = new Color(0.8313726f, 0.1333333f, 0f);
         }
-        //        observeB1.MoveToCenter();
-        //        observeB2.MoveToCenter();
         observeB1.SetFromIndex(2);
         observeB2.SetFromIndex(2);
 
@@ -99,6 +97,7 @@ public class BRGUI : NetworkBehaviour
     [ClientRpc]
     public void RpcShowWinMenu (int winnerTeam) {
         ShowWinMenu (winnerTeam);
+        NetworkBRManager.brSingleton.ResetLocalData();
     }
 
     private void Update () {

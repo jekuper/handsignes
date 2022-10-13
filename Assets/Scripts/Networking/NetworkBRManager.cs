@@ -154,5 +154,10 @@ public class NetworkBRManager : NetworkManager
         }
         BRGUI.singleton.RpcShowWinMenu (winnerTeam);
     }
+    [Client]
+    public void ResetLocalData()
+    {
+       NetworkDataBase.LocalInternalUserData = new InternalProfileData();
+    }
     #endregion
 }

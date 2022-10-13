@@ -82,8 +82,8 @@ public class technicsManager : NetworkBehaviour {
 
         idenity = GetComponent<NetworkIdentity> ();
 
-        AddTechnic (BlowFireParticle, "01210", 200, "creates flow of fire. Each particle have 0.5 damage. 5 seconds long", "fire flow");
-        AddTechnic (BlowWaterParticle, "12010", 200, "creates flow of water. Each particle have 0.25 damage. 5 seconds long", "water flow");
+        AddTechnic (BlowFireParticle, "01210", 200, "creates flow of fire. Each particle have 1 damage. 5 seconds long", "fire flow");
+        AddTechnic (BlowWaterParticle, "12010", 200, "creates flow of water. Each particle have 0.5 damage. 5 seconds long", "water flow");
         AddTechnic (EarthWall, "0210", 60, "creates a wall in direction you are looking", "wall");
         AddTechnic (EarthPrison, "01012", "creates a box around certain player. Before and during using aim on your target player", "earth prison");
         AddTechnic (ToogleManaRegen, "2", "Toogles mana regenration. You can not move during mana regen", "regen mana");
