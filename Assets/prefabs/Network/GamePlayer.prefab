@@ -529,10 +529,15 @@ MonoBehaviour:
   syncInterval: 0.1
   damage: 15
   isOff: 0
+  noneTexture: {fileID: 2800000, guid: d18afd83f6b72464185c9ea7faddc178, type: 3}
+  waterTexture: {fileID: 2800000, guid: c86ba65967d1d4947b080ae38006038b, type: 3}
+  fireTexture: {fileID: 2800000, guid: 900c56258abd6f44fa1efa3f5b0e0487, type: 3}
+  electroTexture: {fileID: 2800000, guid: 19ac1cfbbe3d9cc4db7f5737496859b7, type: 3}
   armAnim: {fileID: 5376009461621501365}
   gamePlayerManagerLink: {fileID: 7447176837962784829}
   triggerManager: {fileID: 7104547400863012102}
   weaponHolder: {fileID: 6252616236449768247}
+  katanaRenderer: {fileID: 5988465405858935775}
 --- !u!114 &8103218303087925456
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1365,7 +1370,7 @@ PrefabInstance:
     - target: {fileID: -9155446817384594837, guid: a73ef05492ada5d4d947e0ba73342aaa, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 62568d33d32eaf640ba76a079128609c, type: 2}
+      objectReference: {fileID: 2100000, guid: d35450cc492c07446be6b0307993069c, type: 2}
     - target: {fileID: -8679921383154817045, guid: a73ef05492ada5d4d947e0ba73342aaa, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -1936,7 +1941,7 @@ PrefabInstance:
     - target: {fileID: 492398536449339284, guid: cf991424f1774e24bae297f529429dee, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 62568d33d32eaf640ba76a079128609c, type: 2}
+      objectReference: {fileID: 2100000, guid: fe8309079f8e12a41b4f47636334cd77, type: 2}
     - target: {fileID: 919132149155446097, guid: cf991424f1774e24bae297f529429dee, type: 3}
       propertyPath: m_Name
       value: katana
@@ -1946,6 +1951,11 @@ PrefabInstance:
 --- !u!4 &5928053429647621024 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: cf991424f1774e24bae297f529429dee, type: 3}
+  m_PrefabInstance: {fileID: 6182901684555209803}
+  m_PrefabAsset: {fileID: 0}
+--- !u!137 &5988465405858935775 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 492398536449339284, guid: cf991424f1774e24bae297f529429dee, type: 3}
   m_PrefabInstance: {fileID: 6182901684555209803}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &7816254061155847430
@@ -2030,7 +2040,7 @@ PrefabInstance:
     - target: {fileID: 8415621548017141886, guid: 8b0008c2f95736b41a6b3fefd3d52de7, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 62568d33d32eaf640ba76a079128609c, type: 2}
+      objectReference: {fileID: 2100000, guid: d35450cc492c07446be6b0307993069c, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8b0008c2f95736b41a6b3fefd3d52de7, type: 3}
 --- !u!137 &1779663601192748408 stripped

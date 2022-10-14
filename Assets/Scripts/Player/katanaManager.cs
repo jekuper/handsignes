@@ -7,12 +7,14 @@ public class KatanaManager : NetworkBehaviour
 {
     public float damage = 15;
     public bool isOff = false;
+    public Texture noneTexture, waterTexture, fireTexture, electroTexture;
 
     private bool isTriggerOff = false;
     [SerializeField] private Animator armAnim;
     [SerializeField] private GamePlayerManager gamePlayerManagerLink;
     [SerializeField] private KatanaTrigger triggerManager;
     [SerializeField] private GameObject weaponHolder;
+    [SerializeField] private Renderer katanaRenderer;
 
     public void TurnOn () {
         isOff = false;
@@ -49,8 +51,16 @@ public class KatanaManager : NetworkBehaviour
     #endregion
     #region Hide/Show katana
     [ClientRpc]
-    public void RpcShow()
+    public void RpcShow(KatanaState state)
     {
+        if (state == KatanaState.None)
+            katanaRenderer.material.SetTexture("_MainTex", noneTexture);
+        if (state == KatanaState.Water)
+            katanaRenderer.material.SetTexture("_MainTex", waterTexture);
+        if (state == KatanaState.Fire)
+            katanaRenderer.material.SetTexture("_MainTex", fireTexture);
+        if (state == KatanaState.Electro)
+            katanaRenderer.material.SetTexture("_MainTex", electroTexture);
         weaponHolder.SetActive(true);
     }
     [ClientRpc]
@@ -61,7 +71,7 @@ public class KatanaManager : NetworkBehaviour
     [Command]
     public void CmdShow()
     {
-        RpcShow();
+        RpcShow(NetworkDataBase.data[connectionToClient].katanaState);
     }
     [Command]
     public void CmdHide()
