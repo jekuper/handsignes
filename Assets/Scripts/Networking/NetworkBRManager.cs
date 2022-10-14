@@ -119,6 +119,7 @@ public class NetworkBRManager : NetworkManager
     {
         ProfileData data = NetworkDataBase.data[connection];
         data.bodyState |= state;
+        NetworkDataBase.SanitizeBodyState (connection);
         connection.identity.GetComponent<NetworkPlayerManager>().TargetUpdateProfileData(data);
     }
     [Server]

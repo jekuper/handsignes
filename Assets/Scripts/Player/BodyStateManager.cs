@@ -4,21 +4,28 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering.PostProcessing;
+using UnityEngine.UI;
 
 public class BodyStateManager : NetworkBehaviour
 {
     [SerializeField] StunManager stun;
     [SerializeField] PostProcessVolume pp;
+    [SerializeField] UIPositionEffector[] bodyStatesEffectors;
+    [SerializeField] Image[] bodyStatesImages;
+    [SerializeField] Sprite[] bodyStatesSprites;
     public float fireDamage = 0.5f;
     public float electroTimer = 10f;
 
     private BodyState lastState = BodyState.None;
 
     private Coroutine electroCoroutine;
+    private Dictionary<int, BodyState> cellsData = new Dictionary<int, BodyState>();
 
     private void Start()
     {
         pp = NetworkLevelData.singleton.pp;
+        bodyStatesEffectors = NetworkLevelData.singleton.bodyStatesEffectors;
+        bodyStatesImages = NetworkLevelData.singleton.bodyStatesImages;
     }
 
     private void Update()
@@ -27,33 +34,98 @@ public class BodyStateManager : NetworkBehaviour
         {
             return;
         }
+        HandleWater();
+        HandleFire();
+        HandleElectro();
+
+        lastState = NetworkDataBase.data[connectionToClient].bodyState;
+    }
+    private void HandleWater()
+    {
+        if (NetworkDataBase.data[connectionToClient].bodyState.HasFlag(BodyState.Wet) &&
+           !lastState.HasFlag(BodyState.Wet))
+        {
+            BlurCamera();
+            AddCell (BodyState.Wet);
+        }
+        else if (!NetworkDataBase.data[connectionToClient].bodyState.HasFlag(BodyState.Wet) &&
+          lastState.HasFlag(BodyState.Wet))
+        {
+            UnBlurCamera();
+            DeleteCell(BodyState.Wet);
+        }
+    }
+    private void HandleFire()
+    {
         if (NetworkDataBase.data[connectionToClient].bodyState.HasFlag(BodyState.OnFire) &&
             !lastState.HasFlag(BodyState.OnFire))
         {
             StartCoroutine(OnFireResponce());
-        }
-        if (NetworkDataBase.data[connectionToClient].bodyState.HasFlag(BodyState.Wet) &&
-            !lastState.HasFlag(BodyState.Wet))
+            AddCell(BodyState.OnFire);
+        } else if (!NetworkDataBase.data[connectionToClient].bodyState.HasFlag(BodyState.OnFire) &&
+            lastState.HasFlag(BodyState.OnFire))
         {
-            BlurCamera();
-        } else if (!NetworkDataBase.data[connectionToClient].bodyState.HasFlag(BodyState.Wet) &&
-            lastState.HasFlag(BodyState.Wet))
-        {
-            UnBlurCamera();
+            DeleteCell(BodyState.OnFire);
         }
-
+    }
+    private void HandleElectro()
+    {
         if (NetworkDataBase.data[connectionToClient].bodyState.HasFlag(BodyState.ElectroShock) &&
             !lastState.HasFlag(BodyState.ElectroShock))
         {
             electroCoroutine = StartCoroutine(ElectroResponce());
-        } else if (!NetworkDataBase.data[connectionToClient].bodyState.HasFlag(BodyState.ElectroShock) &&
+            AddCell(BodyState.ElectroShock);
+        }
+        else if (!NetworkDataBase.data[connectionToClient].bodyState.HasFlag(BodyState.ElectroShock) &&
             lastState.HasFlag(BodyState.ElectroShock))
         {
-            stun.StunOff(true, true);
+            DeleteCell(BodyState.ElectroShock);
         }
-
-        lastState = NetworkDataBase.data[connectionToClient].bodyState;
     }
+    [TargetRpc]
+    private void AddCell(BodyState state)
+    {
+        int index = GetFirstFreeUI();
+        cellsData.Add (index, state);
+        bodyStatesEffectors[index].SetFromIndex(1);
+        if (state == BodyState.Wet)
+            bodyStatesImages[index].sprite = bodyStatesSprites[0];
+        if (state == BodyState.OnFire)
+            bodyStatesImages[index].sprite = bodyStatesSprites[1];
+        if (state == BodyState.ElectroShock)
+            bodyStatesImages[index].sprite = bodyStatesSprites[2];
+    }
+    [TargetRpc]
+    private void DeleteCell(BodyState state)
+    {
+        int index = GetCellIndex(state);
+        bodyStatesEffectors[index].SetFromIndex(0);
+        cellsData.Remove(index);
+    }
+    private int GetFirstFreeUI()
+    {
+        for (int i = 0; i < bodyStatesEffectors.Length; i++)
+        {
+            if (!cellsData.ContainsKey(i))
+            {
+                return i;
+            }
+        }
+        Debug.LogError("not enought body state cells");
+        return 0;
+    }
+    private int GetCellIndex(BodyState state)
+    {
+        for (int i = 0; i < bodyStatesEffectors.Length; i++)
+        {
+            if (cellsData.ContainsKey(i) && cellsData[i] == state)
+            {
+                return i;
+            }
+        }
+        return -1;
+    }
+
     [TargetRpc]
     private void BlurCamera()
     {
@@ -93,5 +165,8 @@ public class BodyStateManager : NetworkBehaviour
             yield break;
         }
         stun.Stun (3, true, true);
+        yield return new WaitForSeconds(3);
+        stun.StunOff(true, true);
+        NetworkBRManager.brSingleton.UnSetBodyState(connectionToClient, BodyState.ElectroShock);
     }
 }

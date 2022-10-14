@@ -25,7 +25,6 @@ public class mouseStateSwitcher : MonoBehaviour
     }
     public void ToggleState () {
         if (NetworkDataBase.LocalInternalUserData.mouseState == mouseState.Weapons) {
-            Debug.Log("is technic stunned: " + stun.IsTechnicStunned);
             if (!stun.IsTechnicStunned)
                 SetState (mouseState.Technics);
         } else {

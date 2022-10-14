@@ -17,6 +17,8 @@ public class NetworkLevelData : MonoBehaviour
     public UIPositionEffector technicsTimerEffector;
     public Image[] signsIcons;
     public UIPositionEffector[] signsEffectors;
+    public UIPositionEffector[] bodyStatesEffectors;
+    public Image[] bodyStatesImages;
 
     public Transform ParticlesSpawnPoint;
     public Transform CamHolder;

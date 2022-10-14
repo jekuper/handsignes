@@ -592,6 +592,12 @@ MonoBehaviour:
   syncInterval: 0.1
   stun: {fileID: 7364008950171888377}
   pp: {fileID: 0}
+  bodyStatesEffectors: []
+  bodyStatesImages: []
+  bodyStatesSprites:
+  - {fileID: 21300000, guid: c66924df033dfe94b8c182a4525412c7, type: 3}
+  - {fileID: 21300000, guid: 9c41ad6aef114704399c19535d685a59, type: 3}
+  - {fileID: 21300000, guid: a64910fb6d750794cbbe1fcade9fc953, type: 3}
   fireDamage: 0.5
   electroTimer: 5
 --- !u!114 &7364008950171888377

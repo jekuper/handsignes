@@ -116,6 +116,19 @@ public static class NetworkDataBase
             }
         }
     }
+    public static void SanitizeBodyState(NetworkConnectionToClient connection)
+    {
+        ProfileData data = NetworkDataBase.data[connection];
+        if (data.bodyState.HasFlag(BodyState.Wet) && data.bodyState.HasFlag(BodyState.OnFire))
+        {
+            data.bodyState &= ~(BodyState.Wet | BodyState.OnFire);
+        }
+        if (data.bodyState.HasFlag(BodyState.ElectroShock) && data.bodyState.HasFlag(BodyState.OnFire))
+        {
+            data.bodyState &= ~(BodyState.ElectroShock | BodyState.OnFire);
+        }
+    }
+
     public static int CheckForWinner () {
         int winnerTeam = -1;
         foreach (var playerData in data) {
