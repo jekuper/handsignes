@@ -575,7 +575,7 @@ MonoBehaviour:
   manager: {fileID: 7447176837962784829}
   movement: {fileID: 2013665070833911364}
   stun: {fileID: 7364008950171888377}
-  manaIncreaseSpeed: 10
+  manaIncreaseSpeed: 25
 --- !u!114 &5079137568832605310
 MonoBehaviour:
   m_ObjectHideFlags: 0
