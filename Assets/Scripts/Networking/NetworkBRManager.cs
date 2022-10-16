@@ -141,7 +141,8 @@ public class NetworkBRManager : NetworkManager
         NetworkServer.Spawn (deathParticleInst);
         CheckForWinner ();
         player.RpcDie ();
-        NetworkServer.Destroy (player.gamePlayerManager.gameObject);
+        if (player.gamePlayerManager.gameObject != null)
+            NetworkServer.Destroy (player.gamePlayerManager.gameObject);
     }
     public void CheckForWinner () {
         int winnerTeam = NetworkDataBase.CheckForWinner ();

@@ -19,6 +19,17 @@ public class LavaFloor : NetworkBehaviour
             TriggerResponce (other.attachedRigidbody.GetComponent<GamePlayerManager>().localNickname);
         }
     }
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.tag == "Player")
+        {
+            string nick = other.attachedRigidbody.GetComponent<GamePlayerManager>().localNickname;
+            if (players.ContainsKey(nick))
+            {
+                players.Remove(nick);
+            }
+        }
+    }
     [ServerCallback]
     public void TriggerResponce(string nick2)
     {
