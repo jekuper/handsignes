@@ -4879,4 +4879,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
+  type: 1
   damage: 0.5

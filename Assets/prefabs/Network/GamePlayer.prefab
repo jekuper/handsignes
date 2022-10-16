@@ -294,6 +294,7 @@ GameObject:
   - component: {fileID: 4406008075915738861}
   - component: {fileID: 5079137568832605310}
   - component: {fileID: 7364008950171888377}
+  - component: {fileID: 6877483203183744950}
   - component: {fileID: 2013665070833911371}
   - component: {fileID: 2013665070833911368}
   - component: {fileID: 7012240568925599949}
@@ -598,7 +599,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: c66924df033dfe94b8c182a4525412c7, type: 3}
   - {fileID: 21300000, guid: 9c41ad6aef114704399c19535d685a59, type: 3}
   - {fileID: 21300000, guid: a64910fb6d750794cbbe1fcade9fc953, type: 3}
-  fireDamage: 0.5
+  fireDamage: 2
   electroTimer: 5
 --- !u!114 &7364008950171888377
 MonoBehaviour:
@@ -619,6 +620,20 @@ MonoBehaviour:
   dashManager: {fileID: 6389759652140365337}
   technicManager: {fileID: 4683864077595781062}
   IsTechnicStunned: 0
+--- !u!114 &6877483203183744950
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2013665070833911389}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b29f71269540c3644b6ad8330281acaf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
 --- !u!114 &2013665070833911371
 MonoBehaviour:
   m_ObjectHideFlags: 0
