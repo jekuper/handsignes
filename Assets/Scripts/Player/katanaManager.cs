@@ -104,7 +104,7 @@ public class KatanaManager : NetworkBehaviour
 
     public void TriggerResponce (Collider other) {
         if (other.tag == "Player" && !isTriggerOff && hasAuthority) {
-            CmdTriggerResponce(other.transform.parent.parent.parent.GetComponent<GamePlayerManager>().localNickname);
+            CmdTriggerResponce(other.attachedRigidbody.GetComponent<GamePlayerManager>().localNickname);
         }
     }
     [Command]

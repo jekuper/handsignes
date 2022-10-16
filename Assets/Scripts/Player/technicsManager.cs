@@ -19,7 +19,7 @@ public class technicsManager : NetworkBehaviour {
     [SerializeField]private UIPositionEffector[] signsEffectors;
     [SerializeField] private Transform orientation;
     [SerializeField] private Animator armAnim;
-    [SerializeField] private GameObject firePariticle, waterParticle, earthWall, earthPrison, clonePrefab;
+    [SerializeField] private GameObject firePariticle, waterParticle, earthWall, earthPrison, lavaFloor;
 
     private Dictionary<string, Technic> technics = new Dictionary<string, Technic>();
     
@@ -82,14 +82,15 @@ public class technicsManager : NetworkBehaviour {
 
         idenity = GetComponent<NetworkIdentity> ();
 
-        AddTechnic (BlowFireParticle, "01210", 200, "creates flow of fire. Each particle have 1 damage. 5 seconds long", "fire flow");
-        AddTechnic (BlowWaterParticle, "12010", 200, "creates flow of water. Each particle have 0.5 damage. 5 seconds long", "water flow");
+        AddTechnic (BlowFireParticle, "01210", 150, "creates flow of fire. Each particle have 1 damage. 5 seconds long", "fire flow");
+        AddTechnic (BlowWaterParticle, "12010", 150, "creates flow of water. Each particle have 0.5 damage. 5 seconds long", "water flow");
         AddTechnic (EarthWall, "0210", 60, "creates a wall in direction you are looking", "wall");
         AddTechnic (EarthPrison, "01012", "creates a box around certain player. Before and during using aim on your target player", "earth prison");
-        AddTechnic (ToogleManaRegen, "2", "Toogles mana regenration. You can not move during mana regen", "regen mana");
-        AddTechnic (SetKatanaWater, "00", "sets your katana mode to water. If player's body has wet status, than player's view blurs and damage from electro katana is doubled. At the same time, this technic extinguishes your body(dispells body's fire state)", "katana water");
-        AddTechnic (SetKatanaFire, "02", "sets your katana mode to fire. If player's body has fire status, than player gets constant damage untill he dispells it. At the same time, this technic dispells body's wet state and electro state", "katana fire");
-        AddTechnic (SetKatanaElectro, "01", "sets your katana mode to electro. If player's body hast electro status and player doesn't dispell it during next 5 seconds, than he gets stunned for 3 seconds", "katana electro");
+        AddTechnic (LavaFloor, "02012", 120, "replaces floor with lava under you", "Lava Floor");
+        AddTechnic (ToogleManaRegen, "2", 0, "Toogles mana regenration. You can not move during mana regen", "regen mana");
+        AddTechnic (SetKatanaWater, "00", 0, "sets your katana mode to water. If player's body has wet status, than player's view blurs and damage from electro katana is doubled. At the same time, this technic extinguishes your body(dispells body's fire state)", "katana water");
+        AddTechnic (SetKatanaFire, "02", 0, "sets your katana mode to fire. If player's body has fire status, than player gets constant damage untill he dispells it. At the same time, this technic dispells body's wet state and electro state", "katana fire");
+        AddTechnic (SetKatanaElectro, "01", 0, "sets your katana mode to electro. If player's body hast electro status and player doesn't dispell it during next 5 seconds, than he gets stunned for 3 seconds", "katana electro");
         
         if (hasAuthority) {
             //        timer = timerInitValue;
@@ -233,6 +234,20 @@ public class technicsManager : NetworkBehaviour {
         GameObject wall = Instantiate (earthWall, pos, orientation.rotation);
 
         NetworkServer.Spawn (wall);
+        return responce;
+    }
+    [Server]
+    public technicExecutionResult LavaFloor(NetworkConnectionToClient connection)
+    {
+        technicExecutionResult responce = new technicExecutionResult();
+
+        Vector3 pos = transform.position;
+        pos.y = transform.position.y - 1f;
+
+        GameObject lavaFloorInst = Instantiate(lavaFloor, pos, Quaternion.identity);
+
+        NetworkServer.Spawn(lavaFloorInst);
+        lavaFloorInst.GetComponent<LavaFloor>().teamIndex = NetworkDataBase.data[connection].teamIndex;
         return responce;
     }
     [Server]

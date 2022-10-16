@@ -511,7 +511,7 @@ MonoBehaviour:
   waterParticle: {fileID: 8983032645576610850, guid: 4f9d098a48afd904c999f883fa0536ab, type: 3}
   earthWall: {fileID: 315341318854090276, guid: 97f455b6ce507064b8907c2a13626523, type: 3}
   earthPrison: {fileID: 1556788705910130835, guid: 8c4fa352f51fc904dbcd802309620a2d, type: 3}
-  clonePrefab: {fileID: 7498779301873320939, guid: dd5dd41db069cfc49926fbb75452d01b, type: 3}
+  lavaFloor: {fileID: 3350403446533114857, guid: 58d4e515e1e75d44cbd87df82289891c, type: 3}
   isRegeningMana: 0
   idenity: {fileID: 0}
 --- !u!114 &684281557186576959
