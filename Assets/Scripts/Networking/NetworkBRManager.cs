@@ -21,6 +21,8 @@ public class NetworkBRManager : NetworkManager
         brSingleton = this;
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
+        NetworkDataBase.data.Clear();
+        NetworkDataBase.LocalInternalUserData = new InternalProfileData();
     }
 
     #region Client
@@ -66,12 +68,14 @@ public class NetworkBRManager : NetworkManager
     }
 
     public override void OnServerSceneChanged (string sceneName) {
+        int index = 0;
         foreach (var item in NetworkDataBase.data) {
-            GameObject GamePlayerInst = Instantiate (GamePlayer, new Vector3 (Random.Range (-5, 5), 2, 0), Quaternion.identity);
+            GameObject GamePlayerInst = Instantiate (GamePlayer, new Vector3 (-9 + index % 18, 2, index / 18), Quaternion.identity);
             NetworkServer.Spawn (GamePlayerInst, item.Key);
             GamePlayerInst.GetComponent<GamePlayerManager> ().localNickname = item.Value.nickname;
             GamePlayerInst.GetComponent<GamePlayerManager> ().mainNetworkPlayer = item.Key.identity.GetComponent<NetworkPlayerManager> ();
             item.Key.identity.GetComponent<NetworkPlayerManager> ().gamePlayerManager = GamePlayerInst.GetComponent<GamePlayerManager> ();
+            index++;
         }
         base.OnServerSceneChanged (sceneName);
     }
@@ -137,12 +141,12 @@ public class NetworkBRManager : NetworkManager
 
     public void Die (NetworkConnectionToClient playerConn) {
         NetworkPlayerManager player = playerConn.identity.GetComponent<NetworkPlayerManager> ();
-        GameObject deathParticleInst = Instantiate (deathParticle, player.transform.position, Quaternion.identity);
+        GameObject deathParticleInst = Instantiate (deathParticle, player.gamePlayerManager.transform.position, Quaternion.identity);
         NetworkServer.Spawn (deathParticleInst);
-        CheckForWinner ();
         player.RpcDie ();
         if (player.gamePlayerManager.gameObject != null)
             NetworkServer.Destroy (player.gamePlayerManager.gameObject);
+        CheckForWinner ();
     }
     public void CheckForWinner () {
         int winnerTeam = NetworkDataBase.CheckForWinner ();
@@ -154,6 +158,7 @@ public class NetworkBRManager : NetworkManager
             NetworkDataBase.data[item] = new ProfileData (Value.nickname, false, Value.teamIndex);
             item.identity.GetComponent<NetworkPlayerManager> ().TargetUpdateProfileData (NetworkDataBase.data[item]);
         }
+        NetworkDataBase.UpdateReadyStatus();
         BRGUI.singleton.RpcShowWinMenu (winnerTeam);
     }
     [Client]

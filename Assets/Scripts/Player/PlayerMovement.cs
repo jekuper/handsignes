@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum BodyStates {
+public enum AnimationBodyStates {
     grounded,
     WallRunning,
     Jumping,
@@ -23,11 +23,7 @@ public class PlayerMovement : NetworkBehaviour
     [SerializeField] float moveSpeed = 6f;
     [SerializeField] float airMultiplier = 0.4f;
     float movementMultiplier = 10f;
-
-    [Header("Sprinting")]
-    [SerializeField] float walkSpeed = 4f;
-    [SerializeField] float sprintSpeed = 6f;
-    [SerializeField] float acceleration = 10f;
+    float initMoveSpeed;
 
     [Header("Jumping")]
     public float jumpForce = 5f;
@@ -82,6 +78,7 @@ public class PlayerMovement : NetworkBehaviour
         spawnPoint = NetworkLevelData.singleton.SpawnPoint;
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true;
+        initMoveSpeed = moveSpeed;
     }
 
     private void Update() {
@@ -136,13 +133,13 @@ public class PlayerMovement : NetworkBehaviour
     }
     void ControlSpeed()
     {
-        if (Input.GetKey(sprintKey) && isGrounded)
+        if (NetworkDataBase.LocalUserData.bodyState.HasFlag(BodyState.Earth))
         {
-            moveSpeed = Mathf.Lerp(moveSpeed, sprintSpeed, acceleration * Time.deltaTime);
+            moveSpeed = initMoveSpeed * 0.85f;
         }
         else
         {
-            moveSpeed = Mathf.Lerp(moveSpeed, walkSpeed, acceleration * Time.deltaTime);
+            moveSpeed = initMoveSpeed;
         }
     }
 
@@ -185,11 +182,11 @@ public class PlayerMovement : NetworkBehaviour
         bodyAnim.SetFloat ("wallDirection", (int)wallDirection);
         
         if (isWallRunning) {
-            bodyAnim.SetInteger ("state", (int)BodyStates.WallRunning);
+            bodyAnim.SetInteger ("state", (int)AnimationBodyStates.WallRunning);
         } else if (isGrounded) {
-            bodyAnim.SetInteger ("state", (int)BodyStates.grounded);
+            bodyAnim.SetInteger ("state", (int)AnimationBodyStates.grounded);
         } else if (!isGrounded) {
-            bodyAnim.SetInteger ("state", (int)BodyStates.Jumping);
+            bodyAnim.SetInteger ("state", (int)AnimationBodyStates.Jumping);
         }
     }
 }

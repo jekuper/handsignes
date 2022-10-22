@@ -37,6 +37,7 @@ public class BodyStateManager : NetworkBehaviour
         HandleWater();
         HandleFire();
         HandleElectro();
+        HandleEarth();
 
         lastState = NetworkDataBase.data[connectionToClient].bodyState;
     }
@@ -82,6 +83,19 @@ public class BodyStateManager : NetworkBehaviour
             DeleteCell(BodyState.ElectroShock);
         }
     }
+    private void HandleEarth()
+    {
+        if (NetworkDataBase.data[connectionToClient].bodyState.HasFlag(BodyState.Earth) &&
+            !lastState.HasFlag(BodyState.Earth))
+        {
+            AddCell(BodyState.Earth);
+        }
+        else if (!NetworkDataBase.data[connectionToClient].bodyState.HasFlag(BodyState.Earth) &&
+          lastState.HasFlag(BodyState.Earth))
+        {
+            DeleteCell(BodyState.Earth);
+        }
+    }
     [TargetRpc]
     private void AddCell(BodyState state)
     {
@@ -94,6 +108,8 @@ public class BodyStateManager : NetworkBehaviour
             bodyStatesImages[index].sprite = bodyStatesSprites[1];
         if (state == BodyState.ElectroShock)
             bodyStatesImages[index].sprite = bodyStatesSprites[2];
+        if (state == BodyState.Earth)
+            bodyStatesImages[index].sprite = bodyStatesSprites[3];
     }
     [TargetRpc]
     private void DeleteCell(BodyState state)

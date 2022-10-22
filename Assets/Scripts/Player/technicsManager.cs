@@ -37,6 +37,7 @@ public class technicsManager : NetworkBehaviour {
 
 
     public void TurnOff () {
+        SearchAndExecute();
         buffer = "";
         isOff = true;
         HideSingsIcons ();
@@ -82,15 +83,21 @@ public class technicsManager : NetworkBehaviour {
 
         idenity = GetComponent<NetworkIdentity> ();
 
+        if (hasAuthority)
+        {
+            NetworkDataBase.technicDescription.Clear();
+        }
+
         AddTechnic (BlowFireParticle, "01210", 150, "creates flow of fire. Each particle have 1 damage. 5 seconds long", "fire flow");
         AddTechnic (BlowWaterParticle, "12010", 150, "creates flow of water. Each particle have 0.5 damage. 5 seconds long", "water flow");
         AddTechnic (EarthWall, "0210", 60, "creates a wall in direction you are looking", "wall");
         AddTechnic (EarthPrison, "01012", "creates a box around certain player. Before and during using aim on your target player", "earth prison");
         AddTechnic (LavaFloor, "02012", 120, "replaces floor with lava under you", "Lava Floor");
         AddTechnic (ToogleManaRegen, "2", 0, "Toogles mana regenration. You can not move during mana regen", "regen mana");
-        AddTechnic (SetKatanaWater, "00", 0, "sets your katana mode to water. If player's body has wet status, than player's view blurs and damage from electro katana is doubled. At the same time, this technic extinguishes your body(dispells body's fire state)", "katana water");
-        AddTechnic (SetKatanaFire, "02", 0, "sets your katana mode to fire. If player's body has fire status, than player gets constant damage untill he dispells it. At the same time, this technic dispells body's wet state and electro state", "katana fire");
-        AddTechnic (SetKatanaElectro, "01", 0, "sets your katana mode to electro. If player's body hast electro status and player doesn't dispell it during next 5 seconds, than he gets stunned for 3 seconds", "katana electro");
+        AddTechnic (SetKatanaWater, "00", 0, "sets your katana mode to water. If player's body has wet status, than player's view blurs and damage from electro katana is doubled. Dispells body's fire state", "katana water");
+        AddTechnic (SetKatanaFire, "02", 0, "sets your katana mode to fire. If player's body has fire status, than player gets constant damage untill he dispells it. Dispells body's wet state", "katana fire");
+        AddTechnic (SetKatanaElectro, "01", 0, "sets your katana mode to electro. If player's body has electro status and player doesn't dispell it during next 5 seconds, than he gets stunned for 3 seconds. Dispells body's earth state", "katana electro");
+        AddTechnic (SetKatanaEarth, "000", 0, "sets your katana mode to earth. Move speed decreased by 20%. Dash turns off. Dispells body's electro state", "katana earth");
         
         if (hasAuthority) {
             //        timer = timerInitValue;
@@ -102,14 +109,14 @@ public class technicsManager : NetworkBehaviour {
         technics.Add (tag, new Technic (act, tag, manaCost, description, name));
         if (hasAuthority)
         {
-            NetworkDataBase.technicDescription.Add(tag, new TechnicDescription(tag, name, description));
+            NetworkDataBase.technicDescription.Add(tag, new TechnicDescription(tag, name, description, false, manaCost));
         }
     }
     private void AddTechnic (Func<NetworkConnectionToClient, technicExecutionResult> act, string tag, string description, string name) {
         technics.Add (tag, new Technic (act, tag, description, name));
         if (hasAuthority)
         {
-            NetworkDataBase.technicDescription.Add(tag, new TechnicDescription(tag, name, description));
+            NetworkDataBase.technicDescription.Add(tag, new TechnicDescription(tag, name, description, true, -9999));
         }
     }
 
@@ -296,7 +303,7 @@ public class technicsManager : NetworkBehaviour {
     {
         technicExecutionResult responce = new technicExecutionResult();
         NetworkDataBase.data[connection].katanaState = KatanaState.Fire;
-        NetworkBRManager.brSingleton.UnSetBodyState(connection, BodyState.Wet | BodyState.ElectroShock);
+        NetworkBRManager.brSingleton.UnSetBodyState(connection, BodyState.Wet);
         connection.identity.GetComponent<NetworkPlayerManager>().TargetUpdateProfileData(NetworkDataBase.data[connection]);
         return responce;
     }
@@ -305,6 +312,16 @@ public class technicsManager : NetworkBehaviour {
     {
         technicExecutionResult responce = new technicExecutionResult();
         NetworkDataBase.data[connection].katanaState = KatanaState.Electro;
+        NetworkBRManager.brSingleton.UnSetBodyState(connection, BodyState.Earth);
+        connection.identity.GetComponent<NetworkPlayerManager>().TargetUpdateProfileData(NetworkDataBase.data[connection]);
+        return responce;
+    }
+    [Server]
+    public technicExecutionResult SetKatanaEarth(NetworkConnectionToClient connection)
+    {
+        technicExecutionResult responce = new technicExecutionResult();
+        NetworkDataBase.data[connection].katanaState = KatanaState.Earth;
+        NetworkBRManager.brSingleton.UnSetBodyState(connection, BodyState.ElectroShock);
         connection.identity.GetComponent<NetworkPlayerManager>().TargetUpdateProfileData(NetworkDataBase.data[connection]);
         return responce;
     }

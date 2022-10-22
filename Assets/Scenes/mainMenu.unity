@@ -153,6 +153,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   version: {fileID: 963509561}
+  ppProfile: {fileID: 11400000, guid: 0f1b522a2e539534dbb58c8f06a0bab5, type: 2}
 --- !u!4 &22984653
 Transform:
   m_ObjectHideFlags: 0

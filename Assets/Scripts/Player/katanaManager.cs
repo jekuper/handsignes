@@ -7,7 +7,7 @@ public class KatanaManager : NetworkBehaviour
 {
     public float damage = 15;
     public bool isOff = false;
-    public Texture noneTexture, waterTexture, fireTexture, electroTexture;
+    public Texture noneTexture, waterTexture, fireTexture, electroTexture, earthTexture;
 
     private bool isTriggerOff = false;
     [SerializeField] private Animator armAnim;
@@ -61,6 +61,8 @@ public class KatanaManager : NetworkBehaviour
             katanaRenderer.material.SetTexture("_MainTex", fireTexture);
         if (state == KatanaState.Electro)
             katanaRenderer.material.SetTexture("_MainTex", electroTexture);
+        if (state == KatanaState.Earth)
+            katanaRenderer.material.SetTexture("_MainTex", earthTexture);
         weaponHolder.SetActive(true);
     }
     [ClientRpc]
@@ -134,6 +136,10 @@ public class KatanaManager : NetworkBehaviour
             if (hit1Data.katanaState.HasFlag(KatanaState.Fire))
             {
                 NetworkBRManager.brSingleton.SetBodyState(nick2, BodyState.OnFire);
+            }
+            if (hit1Data.katanaState.HasFlag(KatanaState.Earth))
+            {
+                NetworkBRManager.brSingleton.SetBodyState(nick2, BodyState.Earth);
             }
             NetworkBRManager.brSingleton.ApplyDamage(nick2, damage * damageMultiplier);
         }

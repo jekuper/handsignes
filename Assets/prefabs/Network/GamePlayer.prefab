@@ -383,9 +383,6 @@ MonoBehaviour:
   spawnPoint: {fileID: 0}
   moveSpeed: 6
   airMultiplier: 0.4
-  walkSpeed: 6
-  sprintSpeed: 6
-  acceleration: 50
   jumpForce: 14
   jumpKey: 32
   sprintKey: 0
@@ -534,6 +531,7 @@ MonoBehaviour:
   waterTexture: {fileID: 2800000, guid: c86ba65967d1d4947b080ae38006038b, type: 3}
   fireTexture: {fileID: 2800000, guid: 900c56258abd6f44fa1efa3f5b0e0487, type: 3}
   electroTexture: {fileID: 2800000, guid: 19ac1cfbbe3d9cc4db7f5737496859b7, type: 3}
+  earthTexture: {fileID: 2800000, guid: ac89f14442c7a7e4eb4343e94a5c3c68, type: 3}
   armAnim: {fileID: 5376009461621501365}
   gamePlayerManagerLink: {fileID: 7447176837962784829}
   triggerManager: {fileID: 7104547400863012102}
@@ -599,6 +597,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: c66924df033dfe94b8c182a4525412c7, type: 3}
   - {fileID: 21300000, guid: 9c41ad6aef114704399c19535d685a59, type: 3}
   - {fileID: 21300000, guid: a64910fb6d750794cbbe1fcade9fc953, type: 3}
+  - {fileID: 21300000, guid: 716a94729722f1d498ed75a246ed34f8, type: 3}
   fireDamage: 2
   electroTimer: 5
 --- !u!114 &7364008950171888377

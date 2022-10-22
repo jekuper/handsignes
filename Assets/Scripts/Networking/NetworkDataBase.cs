@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
 using System;
+using UnityEngine.Rendering.PostProcessing;
 
 public enum throwableType {
     Kunai,
@@ -19,6 +20,7 @@ public enum BodyState
     Wet = 1,
     OnFire = 2,
     ElectroShock = 4,
+    Earth = 8,
 }
 public enum KatanaState
 {
@@ -26,6 +28,7 @@ public enum KatanaState
     Water = 1,
     Fire = 2,
     Electro = 4,
+    Earth = 8,
 }
 
 public class ProfileData {
@@ -72,10 +75,15 @@ public class TechnicDescription
     public string tag;
     public string name;
     public string description;
-    public TechnicDescription (string _tag, string _name, string _desc){
+    public int manaCost;
+    public bool isCalculatedManaCost;
+
+    public TechnicDescription (string _tag, string _name, string _desc, bool _isCalcMana, int _manaCost){
         tag = _tag;
         name = _name;
         description = _desc;
+        isCalculatedManaCost = _isCalcMana;
+        manaCost = _manaCost;
     }
 }
 
@@ -93,12 +101,14 @@ public static class NetworkDataBase
         int total = 0;
         foreach (var item in data) {
             total++;
+            Debug.Log(item.Value.nickname + " " + item.Value.isReady);
             if (!item.Value.isReady) {
                 temp = false;
                 continue;
             }
             readyAmount++;
         }
+        Debug.Log("is everybody ready = " + IsEverybodyReady);
         IsEverybodyReady = temp;
         if (NetworkServer.active) {
             if (LobbyGUI.singleton != null) {
@@ -167,4 +177,7 @@ public static class NetworkDataBase
     public static InternalProfileData LocalInternalUserData = new InternalProfileData();
 
     public static Dictionary<string, TechnicDescription> technicDescription = new Dictionary<string, TechnicDescription> ();
+
+
+    public static PostProcessProfile ppProfile;
 }

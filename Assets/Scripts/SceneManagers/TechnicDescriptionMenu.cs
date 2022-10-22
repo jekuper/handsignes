@@ -12,6 +12,7 @@ public class TechnicDescriptionMenu : MonoBehaviour
     [SerializeField] GameObject listElement;
     [SerializeField] TextMeshProUGUI descriptionText;
     [SerializeField] TextMeshProUGUI nameText;
+    [SerializeField] TextMeshProUGUI manaCostText;
     [SerializeField] Image[] mouseIcons;
     [SerializeField] Sprite[] signIcons;
     [SerializeField] Sprite blankSprite;
@@ -23,7 +24,15 @@ public class TechnicDescriptionMenu : MonoBehaviour
             LoadList ();
         descriptionText.text = NetworkDataBase.technicDescription[tag].description;
         nameText.text = NetworkDataBase.technicDescription[tag].name;
-        
+        if (NetworkDataBase.technicDescription[tag].isCalculatedManaCost)
+        {
+            manaCostText.text = "Mana Cost: Not fixed";
+        }
+        else
+        {
+            manaCostText.text = "Mana Cost: "+NetworkDataBase.technicDescription[tag].manaCost.ToString();
+        }
+
         LoadTag (tag);
     }
     public void LoadTag (string tag) {

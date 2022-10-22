@@ -43,7 +43,8 @@ public class DashMechanic : NetworkBehaviour
                 }
             }
         }
-        if (Input.GetKeyDown (actionCode) && controlsEnabled && chargedDashCount > 0 && Cursor.lockState == CursorLockMode.Locked) {
+        if (Input.GetKeyDown (actionCode) && controlsEnabled && !NetworkDataBase.LocalUserData.bodyState.HasFlag(BodyState.Earth) 
+            && chargedDashCount > 0 && Cursor.lockState == CursorLockMode.Locked) {
             StartCoroutine (Dash ());
             chargedDashCount--;
             reloadTimer = DashReloadTime;
