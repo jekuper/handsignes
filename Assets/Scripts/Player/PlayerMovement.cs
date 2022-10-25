@@ -30,7 +30,6 @@ public class PlayerMovement : NetworkBehaviour
 
     [Header("Keybinds")]
     [SerializeField] KeyCode jumpKey = KeyCode.Space;
-    [SerializeField] KeyCode sprintKey = KeyCode.LeftShift;
 
     [Header("Drag")]
     [SerializeField] float groundDrag = 6f;

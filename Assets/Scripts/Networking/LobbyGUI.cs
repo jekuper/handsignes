@@ -5,6 +5,8 @@ using Mirror;
 using TMPro;
 using System;
 using UnityEngine.SceneManagement;
+using System.Net;
+using System.Linq;
 
 enum LobbyMode {
     Host,
@@ -19,6 +21,7 @@ public class LobbyGUI : NetworkBehaviour
     public TextMeshProUGUI switchButtonText;
     public TextMeshProUGUI backButtonText;
     public GameObject switchButton;
+    public GameObject ipText;
 
     [Header ("Windows")]
     public GameObject clientWindow;
@@ -63,7 +66,8 @@ public class LobbyGUI : NetworkBehaviour
         UpdateGUI ();
     }
 
-    public void UpdateGUI () {
+    public void UpdateGUI ()
+    {
         if (mode == LobbyMode.Client) {
             switchButtonText.text = "Host";
             backButtonText.text = "Back";
@@ -72,6 +76,7 @@ public class LobbyGUI : NetworkBehaviour
             clientWindow?.SetActive (true);
             roomWindow?.SetActive (false);
             switchButton?.SetActive (true);
+            ipText?.SetActive(true);
         } else if (mode == LobbyMode.Host) {
             switchButtonText.text = "Client";
             backButtonText.text = "Back";
@@ -84,6 +89,8 @@ public class LobbyGUI : NetworkBehaviour
                 roomWindow?.SetActive (false);
             if (switchButton != null)
                 switchButton?.SetActive (true);
+            if (ipText != null)
+                ipText?.SetActive(true);
         } else if (mode == LobbyMode.Room) {
             backButtonText.text = "Stop";
 
@@ -91,6 +98,7 @@ public class LobbyGUI : NetworkBehaviour
             clientWindow?.SetActive (false);
             roomWindow?.SetActive (true);
             switchButton?.SetActive (false);
+            ipText?.SetActive (false);
         }
     }
     public void ShowLoading () {
