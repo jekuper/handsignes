@@ -18,7 +18,7 @@ public class LobbyPlayerGUI : MonoBehaviour
 
     private NetworkPlayerManager manager;
 
-    public void Initiate (NetworkPlayerManager _manager, ProfileData data) {
+    public void Initialize (NetworkPlayerManager _manager, ProfileData data) {
         nickname.text = data.nickname;
         manager = _manager;
         if (data.isReady) {

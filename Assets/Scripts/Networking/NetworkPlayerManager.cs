@@ -28,12 +28,12 @@ public class NetworkPlayerManager : NetworkBehaviour
         }
         if (LobbyGUI.singleton != null) {
             spawnedGUI = Instantiate (GUIprefab, LobbyGUI.singleton.room_ScrollViewContent).GetComponent<LobbyPlayerGUI>();
-            spawnedGUI.Initiate (this, _data);
+            spawnedGUI.Initialize (this, _data);
         }
     }
     public void UpdateGUI (ProfileData newData) {
         if (spawnedGUI != null)
-            spawnedGUI.Initiate (this, newData);
+            spawnedGUI.Initialize (this, newData);
     }
 
     [Server]

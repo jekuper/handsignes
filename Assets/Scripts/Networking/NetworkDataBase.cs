@@ -4,6 +4,8 @@ using UnityEngine;
 using Mirror;
 using System;
 using UnityEngine.Rendering.PostProcessing;
+using Photon.Pun;
+using Photon.Realtime;
 
 public enum throwableType {
     Kunai,
@@ -178,6 +180,34 @@ public static class NetworkDataBase
 
     public static Dictionary<string, TechnicDescription> technicDescription = new Dictionary<string, TechnicDescription> ();
 
-
+    public static Settings settings = new Settings();
     public static PostProcessProfile ppProfile;
+
+    public static void InitiatePlayerData()
+    {
+        PhotonNetwork.LocalPlayer.CustomProperties.Clear();
+        SetCustomProperties(PhotonNetwork.LocalPlayer, "isReady", false);
+    }
+    public static void SetCustomProperties(Player player, object key, object value)
+    {
+        var hash = player.CustomProperties;
+        if (!hash.ContainsKey(key))
+            hash.Add(key, value);
+        else
+            hash[key] = value;
+        player.SetCustomProperties(hash);
+    }
+    public static bool CheckReady()
+    {
+        if (!PhotonNetwork.IsMasterClient)
+            return false;
+        foreach (Player player in PhotonNetwork.PlayerList)
+        {
+            if ((bool)player.CustomProperties["isReady"] == false)
+            {
+                return false;
+            }
+        }
+        return true;
+    }
 }

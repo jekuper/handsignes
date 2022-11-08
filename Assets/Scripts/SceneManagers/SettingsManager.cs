@@ -5,10 +5,12 @@ using TMPro;
 using Newtonsoft.Json;
 using UnityEngine.Rendering.PostProcessing;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 public class Settings {
-    public string nickname = "";
+    public string nickname = "player";
     public bool effectsEnabled = true;
+    public bool isFullsreen = true;
     public Dictionary<string, KeyCode> inputSettings = new Dictionary<string, KeyCode>();
     public Resolution savedResolution = new Resolution();
 
@@ -16,6 +18,7 @@ public class Settings {
     {
         savedResolution.width = 1920;
         savedResolution.height = 1080;
+        savedResolution.refreshRate = 60;
     }
 }
 
@@ -24,11 +27,11 @@ public class SettingsManager : MonoBehaviour
     [SerializeField] TMP_InputField nicknameField;
     [SerializeField] TMP_Dropdown resolutionDropdown;
     [SerializeField] CustomToggle effects;
+    [SerializeField] CustomToggle fullscreenToogle;
 
-    Resolution[] resolutions;
+    List<string> dropdownOptions = new List<string>();
 
     private void Awake () {
-        resolutions = Screen.resolutions;
         LoadSettingsInternal ();
     }
 
@@ -40,7 +43,8 @@ public class SettingsManager : MonoBehaviour
 
         set.nickname = nicknameField.text;
         set.effectsEnabled = effects.isOn;
-        set.savedResolution = resolutions[resolutionDropdown.value];
+        set.isFullsreen = fullscreenToogle.isOn;
+        set.savedResolution = StringToResolution(dropdownOptions[resolutionDropdown.value]);
 
         string json = JsonConvert.SerializeObject (set);
         FileManager.SaveId ("setttings", json);
@@ -51,33 +55,49 @@ public class SettingsManager : MonoBehaviour
         Settings set = LoadSettings ();
         nicknameField.text = set.nickname;
         effects.isOn = set.effectsEnabled;
+        fullscreenToogle.isOn = set.isFullsreen;
 
         resolutionDropdown.ClearOptions();
 
-        List<string> options = new List<string>();
+        Resolution[] resolutions = Screen.resolutions;
 
         int currentResolutionIndex = 0;
         for (int i = 0; i < resolutions.Length; i++)
         {
+            if (i > 0 &&
+                resolutions[i].width == resolutions[i - 1].width &&
+                resolutions[i].height == resolutions[i - 1].height)
+                continue;
             string option = resolutions[i].width + " x " + resolutions[i].height;
-            options.Add(option);
+            dropdownOptions.Add(option);
 
             if (resolutions[i].width == set.savedResolution.width &&
                 resolutions[i].height == set.savedResolution.height)
             {
-                currentResolutionIndex = i;
+                currentResolutionIndex = dropdownOptions.Count - 1;
             }
         }
 
-        resolutionDropdown.AddOptions(options);
+        resolutionDropdown.AddOptions(dropdownOptions);
         resolutionDropdown.value = currentResolutionIndex;
         resolutionDropdown.RefreshShownValue();
     }
     public void SetResolution (int resolutionIndex)
     {
-        Resolution resolution = resolutions[resolutionIndex];
-        Screen.SetResolution(resolution.width, resolution.height, false);
-        
+        Resolution resolution = StringToResolution(dropdownOptions[resolutionIndex]);
+        Screen.SetResolution(resolution.width, resolution.height, fullscreenToogle.isOn);  
+    }
+    public void FullscreenToogleResponce(BaseEventData data)
+    {
+        SetResolution(resolutionDropdown.value);
+    }
+    public Resolution StringToResolution(string resolution)
+    {
+        Resolution result = new Resolution();
+        result.width = int.Parse(resolution.Split("x")[0]);
+        result.height = int.Parse(resolution.Split("x")[1]);
+        result.refreshRate = Screen.resolutions[0].refreshRate;
+        return result;
     }
     public static Settings LoadSettings () {
         string json = FileManager.ConnectLines (FileManager.LoadId ("setttings"), "");
@@ -92,15 +112,19 @@ public class SettingsManager : MonoBehaviour
         Resolution[] resolutions = Screen.resolutions;
         for (int i = 0; i < resolutions.Length; i++)
         {
-
+            if (i > 0 &&
+                resolutions[i].width == resolutions[i - 1].width &&
+                resolutions[i].height == resolutions[i - 1].height)
+                continue;
             if (resolutions[i].width == set.savedResolution.width &&
                 resolutions[i].height == set.savedResolution.height)
             {
                 currentResolutionIndex = i;
             }
         }
-        Screen.SetResolution(resolutions[currentResolutionIndex].width, resolutions[currentResolutionIndex].height, false);
+        Screen.SetResolution(resolutions[currentResolutionIndex].width, resolutions[currentResolutionIndex].height, set.isFullsreen);
 
+        NetworkDataBase.settings = set;
         return set;
     }
 }
