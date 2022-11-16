@@ -144,7 +144,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 8243557044154650185}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 7165466604433528322}
+        m_TargetAssemblyTypeName: PlayerListItem, Assembly-CSharp
+        m_MethodName: OnRemovePressed
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &2291696307752342174
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -162,8 +174,8 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 0}
-          m_TargetAssemblyTypeName: LobbyPlayerGUI, Assembly-CSharp
+        - m_Target: {fileID: 7165466604433528322}
+          m_TargetAssemblyTypeName: PlayerListItem, Assembly-CSharp
           m_MethodName: Hover
           m_Mode: 1
           m_Arguments:
@@ -178,8 +190,8 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 0}
-          m_TargetAssemblyTypeName: LobbyPlayerGUI, Assembly-CSharp
+        - m_Target: {fileID: 7165466604433528322}
+          m_TargetAssemblyTypeName: PlayerListItem, Assembly-CSharp
           m_MethodName: UnHover
           m_Mode: 1
           m_Arguments:

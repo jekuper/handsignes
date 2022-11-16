@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using Photon.Pun;
 
 public class GameGUIManager : MonoBehaviour
 {
@@ -29,6 +30,7 @@ public class GameGUIManager : MonoBehaviour
     private void Update () {
         UpdateHealthCounter ();
         UpdateManaCounter ();
+        UpdateThrowable ();
     }
 
     #region Throwable
@@ -37,16 +39,16 @@ public class GameGUIManager : MonoBehaviour
         UpdateThrowableCount ();
     }
     public void UpdateThrowableIcon () {
-        UpdateThrowableIcon(NetworkDataBase.LocalUserData.throwableInUse);
+        if (NetworkDataBase.localProfile == null)
+            return;
+        UpdateThrowableIcon(NetworkDataBase.localProfile.throwableInUse);
     }
     public void UpdateThrowableIcon(throwableType type) {
         ThrowableImage.sprite = ThrowableIcons[(int)type];
     }
     public void UpdateThrowableCount () {
-        if (NetworkDataBase.LocalUserData.throwableInUse == throwableType.Kunai) {
-            UpdateThrowableCount (NetworkDataBase.LocalUserData.kunaiCount);
-        } else if(NetworkDataBase.LocalUserData.throwableInUse == throwableType.Shuriken) {
-            UpdateThrowableCount (NetworkDataBase.LocalUserData.shurikenCount);
+        if (NetworkDataBase.localProfile != null && NetworkDataBase.localProfile.throwableInUse == throwableType.Kunai) {
+            UpdateThrowableCount (NetworkDataBase.localProfile.kunai);
         }
     }
     public void UpdateThrowableCount (int count) {
@@ -60,14 +62,18 @@ public class GameGUIManager : MonoBehaviour
     #endregion
     #region HealthGUI
     public void UpdateHealthCounter () {
-        HealthCounter.text = NetworkDataBase.LocalUserData.health.ToString("0.0");
-        healthBarForeground.sizeDelta = new Vector2 ((healthBarBackground.rect.width) * (NetworkDataBase.LocalUserData.health / NetworkDataBase.LocalUserData.healthMax), healthBarForeground.sizeDelta.y);
+        if (NetworkDataBase.localProfile == null)
+            return;
+        HealthCounter.text = NetworkDataBase.localProfile.health.ToString("0.0");
+        healthBarForeground.sizeDelta = new Vector2 ((healthBarBackground.rect.width) * (NetworkDataBase.localProfile.health / NetworkDataBase.localProfile.maxHealth), healthBarForeground.sizeDelta.y);
     }
     #endregion
     #region ManaGUI
     public void UpdateManaCounter () {
-        ManaCounter.text = NetworkDataBase.LocalUserData.mana.ToString ("0");
-        manaBarForeground.sizeDelta = new Vector2 ((manaBarBackground.rect.width) * (NetworkDataBase.LocalUserData.mana / NetworkDataBase.LocalUserData.manaMax), manaBarForeground.sizeDelta.y);
+        if (NetworkDataBase.localProfile == null)
+            return;
+        ManaCounter.text = NetworkDataBase.localProfile.mana.ToString("0.0");
+        manaBarForeground.sizeDelta = new Vector2 ((manaBarBackground.rect.width) * (NetworkDataBase.localProfile.mana / NetworkDataBase.localProfile.maxMana), manaBarForeground.sizeDelta.y);
     }
     #endregion
 }

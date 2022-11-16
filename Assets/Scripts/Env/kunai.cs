@@ -1,87 +1,90 @@
-using Mirror;
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class kunai : NetworkBehaviour
+public class kunai : MonoBehaviour, IPunObservable
 {
     public float kunaiForceValue = 30f;
     public float damage = 30f;
     [SerializeField] GameObject bloodParticle;
 
-    [SyncVar(hook =nameof(StuckUpdateReceived))]
-    public bool isStuck = false;
-    [SyncVar]
-    public string ownerNickname = "";
     
     private Rigidbody rb;
-
-    [SyncVar]
+    private PhotonView PV;
     private Vector3 startPosition;
-    [SyncVar]
-    private float initTime;
+
+    //to sync
+    public bool isStuck = false;
 
 
     private void Start () {
         rb = GetComponent<Rigidbody> ();
+        PV = GetComponent<PhotonView> ();
         startPosition = transform.position;
-        initTime = Time.time; 
-        rb.AddRelativeForce (Vector3.forward * kunaiForceValue, ForceMode.Impulse);
+        if (PV.AmOwner)
+        {
+            rb.AddRelativeForce (Vector3.forward * kunaiForceValue, ForceMode.Impulse);
+        }
+        else
+        {
+            Destroy(rb);
+        }
     }
-
-    [Server]
-    public void SetOwner (string nickname) {
-        ownerNickname = nickname;
-    }
-
+    
     private void Update () {
-        if (NetworkServer.active) {
+        if (PV.AmOwner) {
             if (Vector3.Distance(startPosition, transform.position) > 35) {
-                NetworkServer.Destroy (gameObject);
+                PhotonNetwork.Destroy(PV);
             }
         }
     }
 
     private void FixedUpdate () {
-        if (NetworkServer.active) {
+        if (PV.AmOwner) {
             RaycastHit hitData;
             if (!isStuck && Physics.Raycast (transform.position, transform.forward, out hitData, 0.65f)){
-                hitServer (hitData);
+                hit (hitData);
             }
         }
     }
-    
-    private void StuckUpdateReceived (bool oldVal, bool newVal) {
-        if (!oldVal && newVal) {
-            hitClient ();
-        }
-    }
 
-    private void hitClient () {
+    private void hit (RaycastHit hitData) {
+        if (!PV.AmOwner || hitData.collider.isTrigger)
+            return;
+        isStuck = true;
         rb.velocity = Vector3.zero;
         rb.isKinematic = true;
-        isStuck = true;
-    }
-
-    [Server]
-    private void hitServer (RaycastHit hitData) {
-        rb.velocity = Vector3.zero;
-        rb.isKinematic = true;
-        isStuck = true;
+        transform.parent = hitData.transform;
+        
 
         if (hitData.transform.gameObject.tag == "Player") {
-            NetworkConnectionToClient hitConnection = NetworkDataBase.GetConnectionByNickname (hitData.transform.gameObject.GetComponent<GamePlayerManager> ().localNickname);
-            if (NetworkDataBase.GetDataByNickname (ownerNickname).teamIndex != NetworkDataBase.data[hitConnection].teamIndex) {
-                NetworkBRManager.brSingleton.ApplyDamage (hitConnection, damage);
+            string hitNickname = hitData.transform.parent.parent.parent.GetComponent<PhotonView>().Owner.NickName;
+            PlayerProfile hitProfile = NetworkDataBase.GetPlayerProfile (hitNickname);
+            if (hitProfile == null)
+                return;
+            if (PV.Owner.NickName != hitNickname) {
+                NetworkDataBase.GetPlayerPV(hitNickname).RPC(nameof(hitProfile.Damage), NetworkDataBase.GetPlayerByNickname(hitNickname), damage);
+                PV.RPC(nameof(playerHitEffect), RpcTarget.All);
+                PhotonNetwork.Destroy (PV);
             }
-            playerHitEffect ();
-            NetworkServer.Destroy (gameObject);
         }
     }
 
-    [ClientRpc]
+    [PunRPC]
     public void playerHitEffect () {
-        Debug.Log ("enter");
         Instantiate (bloodParticle, transform.position, Quaternion.identity);
+    }
+
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        if (stream.IsWriting)
+        {
+            stream.SendNext(isStuck);
+        }
+        else
+        {
+            isStuck = (bool)stream.ReceiveNext();
+        }
     }
 }

@@ -7,7 +7,7 @@ public class manaRegen : NetworkBehaviour
 {
     [SerializeField] technicsManager techManager;
     [SerializeField] DashMechanic dashManager;
-    [SerializeField] GamePlayerManager manager;
+    [SerializeField] PlayerController manager;
     [SerializeField] PlayerMovement movement;
     [SerializeField] StunManager stun;
 

@@ -10,8 +10,8 @@ public class NetworkPlayerManager : NetworkBehaviour
     public GameObject GUIprefab;
     public string localNickname = "";
 
-    [SyncVar]
-    public GamePlayerManager gamePlayerManager;
+    //[SyncVar]
+    //public PlayerManager gamePlayerManager;
 
     public LobbyPlayerGUI spawnedGUI;
 
@@ -46,8 +46,8 @@ public class NetworkPlayerManager : NetworkBehaviour
         NetworkDataBase.LocalUserData = dataNew;
         if (GameGUIManager.singleton != null)
             GameGUIManager.singleton.UpdateThrowable ();
-        if (gamePlayerManager != null)
-            gamePlayerManager.CmdUpdateHealth ();
+        //if (gamePlayerManager != null)
+        //    gamePlayerManager.CmdUpdateHealth();
     }
     [ClientRpc]
     public void RpcDie () {

@@ -178,15 +178,44 @@ public static class NetworkDataBase
     public static ProfileData LocalUserData = new ProfileData();
     public static InternalProfileData LocalInternalUserData = new InternalProfileData();
 
+    public static Dictionary<string, GameObject> playersControllers = new Dictionary<string, GameObject>();
     public static Dictionary<string, TechnicDescription> technicDescription = new Dictionary<string, TechnicDescription> ();
 
     public static Settings settings = new Settings();
     public static PostProcessProfile ppProfile;
 
-    public static void InitiatePlayerData()
+    public static PlayerProfile localProfile {
+        get {
+            return GetPlayerProfile(PhotonNetwork.LocalPlayer.NickName);
+        }
+    }
+
+    public static void InitiateLocalPlayerData()
     {
         PhotonNetwork.LocalPlayer.CustomProperties.Clear();
         SetCustomProperties(PhotonNetwork.LocalPlayer, "isReady", false);
+    }
+    public static PlayerProfile GetPlayerProfile(string nickname)
+    {
+        if (!playersControllers.ContainsKey(nickname))
+            return null;
+        return playersControllers[nickname].GetComponent<PlayerProfile>();
+    }
+    public static PhotonView GetPlayerPV(string nickname)
+    {
+        if (!playersControllers.ContainsKey(nickname))
+            return null;
+        return playersControllers[nickname].GetComponent<PhotonView>();
+    }
+    public static Player GetPlayerByNickname(string nickname)
+    {
+        foreach (var player in PhotonNetwork.PlayerList)
+        {
+            if (player.NickName == nickname)
+                return player;
+        }
+        Debug.LogWarning("player \"" + nickname + "\" not found");
+        return null;
     }
     public static void SetCustomProperties(Player player, object key, object value)
     {

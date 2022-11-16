@@ -1,5 +1,4 @@
-﻿using Mirror;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -9,7 +8,7 @@ public enum AnimationBodyStates {
     Jumping,
 }
 
-public class PlayerMovement : NetworkBehaviour
+public class PlayerMovement : MonoBehaviour
 {
     public static float wallDirection = 1;
     public static bool isWallRunning = false;
@@ -17,7 +16,6 @@ public class PlayerMovement : NetworkBehaviour
     float playerHeight = 2f;
 
     [SerializeField] Transform orientation;
-    [SerializeField] Transform spawnPoint;
 
     [Header("Movement")]
     [SerializeField] float moveSpeed = 6f;
@@ -47,7 +45,6 @@ public class PlayerMovement : NetworkBehaviour
     [SerializeField] Animator bodyAnim;
 
     public bool isGrounded { get; private set; }
-    [SyncVar]
     public bool controlsEnabled = true;
 
     Vector3 moveDirection;
@@ -74,7 +71,6 @@ public class PlayerMovement : NetworkBehaviour
     }
     private void Start()
     {
-        spawnPoint = NetworkLevelData.singleton.SpawnPoint;
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true;
         initMoveSpeed = moveSpeed;

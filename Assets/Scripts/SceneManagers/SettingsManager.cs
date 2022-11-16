@@ -13,6 +13,8 @@ public class Settings {
     public bool isFullsreen = true;
     public Dictionary<string, KeyCode> inputSettings = new Dictionary<string, KeyCode>();
     public Resolution savedResolution = new Resolution();
+    public float sensX = 100f;
+    public float sensY = 100f;
 
     public Settings()
     {

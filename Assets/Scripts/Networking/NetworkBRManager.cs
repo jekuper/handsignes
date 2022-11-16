@@ -72,9 +72,9 @@ public class NetworkBRManager : NetworkManager
         foreach (var item in NetworkDataBase.data) {
             GameObject GamePlayerInst = Instantiate (GamePlayer, new Vector3 (-9 + index % 18, 2, index / 18), Quaternion.identity);
             NetworkServer.Spawn (GamePlayerInst, item.Key);
-            GamePlayerInst.GetComponent<GamePlayerManager> ().localNickname = item.Value.nickname;
-            GamePlayerInst.GetComponent<GamePlayerManager> ().mainNetworkPlayer = item.Key.identity.GetComponent<NetworkPlayerManager> ();
-            item.Key.identity.GetComponent<NetworkPlayerManager> ().gamePlayerManager = GamePlayerInst.GetComponent<GamePlayerManager> ();
+            GamePlayerInst.GetComponent<PlayerController> ().localNickname = item.Value.nickname;
+            //GamePlayerInst.GetComponent<PlayerManager> ().mainNetworkPlayer = item.Key.identity.GetComponent<NetworkPlayerManager> ();
+            //item.Key.identity.GetComponent<NetworkPlayerManager> ().gamePlayerManager = GamePlayerInst.GetComponent<PlayerManager> ();
             index++;
         }
         base.OnServerSceneChanged (sceneName);
@@ -141,11 +141,11 @@ public class NetworkBRManager : NetworkManager
 
     public void Die (NetworkConnectionToClient playerConn) {
         NetworkPlayerManager player = playerConn.identity.GetComponent<NetworkPlayerManager> ();
-        GameObject deathParticleInst = Instantiate (deathParticle, player.gamePlayerManager.transform.position, Quaternion.identity);
-        NetworkServer.Spawn (deathParticleInst);
+        //GameObject deathParticleInst = Instantiate (deathParticle, player.gamePlayerManager.transform.position, Quaternion.identity);
+        //NetworkServer.Spawn (deathParticleInst);
         player.RpcDie ();
-        if (player.gamePlayerManager.gameObject != null)
-            NetworkServer.Destroy (player.gamePlayerManager.gameObject);
+        //if (player.gamePlayerManager.gameObject != null)
+            //NetworkServer.Destroy (player.gamePlayerManager.gameObject);
         CheckForWinner ();
     }
     public void CheckForWinner () {

@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WallRun : NetworkBehaviour
+public class WallRun : MonoBehaviour
 {
     [Header("Movement")]
     [SerializeField] private Transform orientation;
@@ -25,7 +25,6 @@ public class WallRun : NetworkBehaviour
 
     public float tilt { get; private set; }
 
-    [SyncVar]
     public bool controlsEnabled = true;
     private bool wallLeft = false;
     private bool wallRight = false;

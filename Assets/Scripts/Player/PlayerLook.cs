@@ -8,14 +8,14 @@ public class PlayerLook : MonoBehaviour
     [Header("References")]
     [SerializeField] WallRun wallRun;
 
-    [SerializeField] private float sensX = 100f;
-    [SerializeField] private float sensY = 100f;
-
     [SerializeField] Transform orientation = null;
 
     [SerializeField] Texture cursorTexture;
     [SerializeField] Transform camPosition;
     [SerializeField] Transform headMeshBone;
+
+    [SerializeField] Transform shoulderR;
+    [SerializeField] Transform shoulderL;
 
     float mouseX;
     float mouseY;
@@ -49,13 +49,20 @@ public class PlayerLook : MonoBehaviour
         mouseX = Input.GetAxisRaw("Mouse X");
         mouseY = Input.GetAxisRaw("Mouse Y");
          
-        yRotation += mouseX * sensX * multiplier;
-        xRotation -= mouseY * sensY * multiplier;
+        yRotation += mouseX * NetworkDataBase.settings.sensX * multiplier;
+        xRotation -= mouseY * NetworkDataBase.settings.sensY * multiplier;
 
         xRotation = Mathf.Clamp(xRotation, -90, 90f);
 
         orientation.transform.rotation = Quaternion.Euler(0, yRotation, 0);
         camPosition.rotation = Quaternion.Euler(xRotation, yRotation, wallRun.tilt);
         headMeshBone.rotation = Quaternion.Euler(xRotation, yRotation, wallRun.tilt);
+        //camPosition.rotation = Quaternion.Euler(xRotation, yRotation, 0);
+        //headMeshBone.rotation = Quaternion.Euler(xRotation, yRotation, 0);
+    }
+    private void LateUpdate()
+    {
+        shoulderR.rotation = Quaternion.Euler(xRotation, shoulderR.eulerAngles.y, shoulderR.eulerAngles.z);
+        //shoulderL.rotation = Quaternion.Euler(xRotation, shoulderL.eulerAngles.y, shoulderL.eulerAngles.z);
     }
 }

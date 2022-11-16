@@ -12,7 +12,7 @@ public class NetworkParticles : NetworkBehaviour
     private void OnParticleCollision (GameObject other) {
         if (other.tag == "Player") {
             string nick1 = NetworkDataBase.data[connectionToClient].nickname;
-            string nick2 = other.GetComponent<GamePlayerManager> ().localNickname;
+            string nick2 = other.GetComponent<PlayerController> ().localNickname;
 
             ProfileData hit1Data = NetworkDataBase.GetDataByNickname (nick1);
             ProfileData hit2Data = NetworkDataBase.GetDataByNickname (nick2);

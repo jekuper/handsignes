@@ -9,6 +9,7 @@ using ExitGames.Client.Photon;
 
 public class RoomManager : MonoBehaviourPunCallbacks
 {
+
     [SerializeField] GameObject roomListItem;
     [SerializeField] GameObject playerListItem;
 
@@ -47,7 +48,7 @@ public class RoomManager : MonoBehaviourPunCallbacks
         PhotonNetwork.EnableCloseConnection = true;
         PhotonNetwork.AuthValues = new AuthenticationValues(PhotonNetwork.NickName);
 
-        NetworkDataBase.InitiatePlayerData();
+        NetworkDataBase.InitiateLocalPlayerData();
 
         PhotonNetwork.ConnectUsingSettings();
     }
@@ -139,7 +140,7 @@ public class RoomManager : MonoBehaviourPunCallbacks
             return;
         }
         RoomOptions options = new RoomOptions();
-        options.MaxPlayers = 16;
+        options.MaxPlayers = 10;
         loadingWindow.ShowLoading("roomCreation", "creating room...");
         PhotonNetwork.CreateRoom(roomName.text, options, TypedLobby.Default);
     }
@@ -159,6 +160,7 @@ public class RoomManager : MonoBehaviourPunCallbacks
     {
         if (!PhotonNetwork.IsMasterClient || !NetworkDataBase.CheckReady())
             return;
+        PhotonNetwork.CurrentRoom.IsOpen = false;
         PhotonNetwork.LoadLevel("Map1");
     }
     public void SwitchUI(string type)
@@ -220,7 +222,7 @@ public class RoomManager : MonoBehaviourPunCallbacks
         SceneManager.LoadScene("PlayModeSelect");
     }
     [PunRPC]
-    void Kick(string reason)
+    public void Kick(string reason)
     {
         PhotonNetwork.LeaveRoom();
         loadingWindow.ShowMessage("kickReason", reason, Color.red);

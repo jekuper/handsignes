@@ -188,13 +188,13 @@ public class technicsManager : NetworkBehaviour {
     }
 
     private GameObject GetHoverObject (NetworkConnectionToClient connection, int layerMask = ~0, float maxDistance = 10000) {
-        Transform cam = connection.identity.GetComponent<NetworkPlayerManager> ().gamePlayerManager.cameraPos;
-        Ray ray = new Ray(cam.position, cam.forward);
-        RaycastHit hit;
-        if (Physics.Raycast (ray, out hit, maxDistance)) {
-            if (((1 << hit.collider.gameObject.layer) & layerMask) != 0)
-                return hit.transform.gameObject;
-        }
+        //Transform cam = connection.identity.GetComponent<NetworkPlayerManager> ().gamePlayerManager.cameraPos;
+        //Ray ray = new Ray(cam.position, cam.forward);
+        //RaycastHit hit;
+        //if (Physics.Raycast (ray, out hit, maxDistance)) {
+        //    if (((1 << hit.collider.gameObject.layer) & layerMask) != 0)
+        //        return hit.transform.gameObject;
+        //}
         return null;
     }
 

@@ -10,7 +10,7 @@ public class DeathLaser : NetworkBehaviour
     [ServerCallback]
     private void OnTriggerEnter (Collider other) {
         if (other.tag == "Player") {
-            NetworkConnectionToClient conn = NetworkDataBase.GetConnectionByNickname (other.attachedRigidbody.GetComponent<GamePlayerManager> ().localNickname);
+            NetworkConnectionToClient conn = NetworkDataBase.GetConnectionByNickname (other.attachedRigidbody.GetComponent<PlayerController> ().localNickname);
             NetworkBRManager.brSingleton.ApplyDamage (conn, damage);
         }
     }

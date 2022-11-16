@@ -11,7 +11,7 @@ public class KatanaManager : NetworkBehaviour
 
     private bool isTriggerOff = false;
     [SerializeField] private Animator armAnim;
-    [SerializeField] private GamePlayerManager gamePlayerManagerLink;
+    [SerializeField] private PlayerController gamePlayerManagerLink;
     [SerializeField] private KatanaTrigger triggerManager;
     [SerializeField] private GameObject weaponHolder;
     [SerializeField] private Renderer katanaRenderer;
@@ -94,9 +94,9 @@ public class KatanaManager : NetworkBehaviour
         if (Cursor.lockState != CursorLockMode.Locked) {
             return;
         }
-        if (!gamePlayerManagerLink.hasAuthority) {
-            return;
-        }
+        //if (!gamePlayerManagerLink.hasAuthority) {
+        //    return;
+        //}
         if (!isOff && Input.GetKeyDown (KeyCode.Mouse0)) {
             armAnim.SetTrigger("strike");
             armAnim.SetFloat ("randFloat", (1f / 3f) * Random.Range (0, 3));
@@ -106,7 +106,7 @@ public class KatanaManager : NetworkBehaviour
 
     public void TriggerResponce (Collider other) {
         if (other.tag == "Player" && !isTriggerOff && hasAuthority) {
-            CmdTriggerResponce(other.attachedRigidbody.GetComponent<GamePlayerManager>().localNickname);
+            CmdTriggerResponce(other.attachedRigidbody.GetComponent<PlayerController>().localNickname);
         }
     }
     [Command]

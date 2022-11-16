@@ -37,10 +37,11 @@ public class PlayerListItem : MonoBehaviour
         {
             return;
         }
+        RoomManager.signleton.GetComponent<PhotonView>().RPC(nameof(RoomManager.signleton.Kick), NetworkDataBase.GetPlayerByNickname(nickname.text), "kicked by master client");
     }
     private bool isDeleteable()
     {
-        return PhotonNetwork.IsMasterClient;
+        return (PhotonNetwork.IsMasterClient && nickname.text != PhotonNetwork.LocalPlayer.NickName);
     }
 
     public void Hover()
