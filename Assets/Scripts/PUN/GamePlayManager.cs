@@ -24,6 +24,7 @@ public class GamePlayManager : MonoBehaviour
     [PunRPC]
     public void InstantiatePlayer(Player player, int index)
     {
+        NetworkDataBase.localProfile.teamIndex = index;
         GameObject playerInst = PhotonNetwork.Instantiate ("PlayerPrefab", spawnPoints[index % spawnPoints.Length].position, Quaternion.identity);
     }
 }

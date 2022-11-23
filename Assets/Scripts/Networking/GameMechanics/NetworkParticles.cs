@@ -11,16 +11,16 @@ public class NetworkParticles : NetworkBehaviour
     [ServerCallback]
     private void OnParticleCollision (GameObject other) {
         if (other.tag == "Player") {
-            string nick1 = NetworkDataBase.data[connectionToClient].nickname;
-            string nick2 = other.GetComponent<PlayerController> ().localNickname;
+            //string nick1 = NetworkDataBase.data[connectionToClient].nickname;
+            ////string nick2 = other.GetComponent<PlayerController> ().localNickname;
 
-            ProfileData hit1Data = NetworkDataBase.GetDataByNickname (nick1);
-            ProfileData hit2Data = NetworkDataBase.GetDataByNickname (nick2);
+            //ProfileData hit1Data = NetworkDataBase.GetDataByNickname (nick1);
+            //ProfileData hit2Data = NetworkDataBase.GetDataByNickname (nick2);
 
-            if (hit1Data.teamIndex != hit2Data.teamIndex) {
-                NetworkBRManager.brSingleton.ApplyDamage (nick2, damage);
-                other.GetComponent<ParticlesHitResponser>().Hit(type);
-            }
+            //if (hit1Data.teamIndex != hit2Data.teamIndex) {
+            //    NetworkBRManager.brSingleton.ApplyDamage (nick2, damage);
+            //    other.GetComponent<ParticlesHitResponser>().Hit(type);
+            //}
         }
     }
 }

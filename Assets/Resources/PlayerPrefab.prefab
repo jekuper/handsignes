@@ -115,7 +115,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5ce7a6a8534626947a563ac12a184998, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  data: {fileID: 4051511504134789849}
+  controller: {fileID: 661458027310778674}
   healthBarForeground: {fileID: 6661691004710122602}
   healthBarBackground: {fileID: 5835243026914316838}
 --- !u!1 &296034700109659582
@@ -315,13 +315,13 @@ GameObject:
   m_Component:
   - component: {fileID: 2013665070833911369}
   - component: {fileID: 2013665070833911366}
-  - component: {fileID: 4051511504134789849}
   - component: {fileID: 661458027310778674}
   - component: {fileID: 2424476327443450065}
   - component: {fileID: 2045225455375412009}
   - component: {fileID: 3811933458035302598}
   - component: {fileID: 4813345877223868642}
   - component: {fileID: 5189357700204217543}
+  - component: {fileID: 8919462282907054141}
   - component: {fileID: 4908563724598655619}
   - component: {fileID: 8370210177864637262}
   m_Layer: 0
@@ -365,27 +365,6 @@ Rigidbody:
   m_Interpolate: 2
   m_Constraints: 80
   m_CollisionDetection: 1
---- !u!114 &4051511504134789849
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2013665070833911389}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5feed89436e82d946b4070206891fcc9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  health: 100
-  maxHealth: 100
-  mana: 500
-  maxMana: 500
-  bodyState: 0
-  kunai: 10
-  kunaiMax: 10
-  throwableInUse: 0
-  katanaState: 0
 --- !u!114 &661458027310778674
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -398,8 +377,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f716086901b60944393bdda9248bee8f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  localNickname: 
-  isLocalPlayer: 0
+  manager: {fileID: 0}
   cameraPosition: {fileID: 8688108096862112071}
   canvas: {fileID: 207053341048858841}
   renderers:
@@ -509,6 +487,30 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ActionCode: 102
+--- !u!114 &8919462282907054141
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2013665070833911389}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b00439f62e1f2642aab32f46612ca7f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damage: 15
+  isOff: 0
+  noneTexture: {fileID: 2800000, guid: d18afd83f6b72464185c9ea7faddc178, type: 3}
+  waterTexture: {fileID: 2800000, guid: c86ba65967d1d4947b080ae38006038b, type: 3}
+  fireTexture: {fileID: 2800000, guid: 900c56258abd6f44fa1efa3f5b0e0487, type: 3}
+  electroTexture: {fileID: 2800000, guid: 19ac1cfbbe3d9cc4db7f5737496859b7, type: 3}
+  earthTexture: {fileID: 2800000, guid: ac89f14442c7a7e4eb4343e94a5c3c68, type: 3}
+  armAnim: {fileID: 5376009461621501365}
+  triggerManager: {fileID: 7104547400863012102}
+  weaponHolder: {fileID: 6252616236449768247}
+  katanaRenderer: {fileID: 5988465405858935775}
+  PV: {fileID: 4908563724598655619}
 --- !u!114 &4908563724598655619
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -529,7 +531,6 @@ MonoBehaviour:
   observableSearch: 0
   ObservedComponents:
   - {fileID: 8370210177864637262}
-  - {fileID: 4051511504134789849}
   - {fileID: 3078848472503643824}
   - {fileID: 8590134619465992603}
   - {fileID: 5152869752168198319}
@@ -1010,7 +1011,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7547473324e2f1249b01bf4dfb19be43, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  link: {fileID: 0}
+  link: {fileID: 8919462282907054141}
   bloodParticle: {fileID: 2506552692286011621, guid: b2afc00d682420c42b998a9444be9920, type: 3}
   bloodSpawnPoint: {fileID: 7791530715082950050}
 --- !u!1 &8791205046075693002
@@ -1601,7 +1602,7 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: a73ef05492ada5d4d947e0ba73342aaa, type: 3}
   m_PrefabInstance: {fileID: 2013665071826604068}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &8590134619465992603
+--- !u!114 &689524687456446236
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1609,6 +1610,32 @@ MonoBehaviour:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1670994234395274613}
   m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5430401044db35e4abe9826785a28e99, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PV: {fileID: 4908563724598655619}
+--- !u!114 &8444281586190739299
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1670994234395274613}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a82e4bb17359ac48863f08078fe80ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PV: {fileID: 4908563724598655619}
+--- !u!114 &8590134619465992603
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1670994234395274613}
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9b8c4a61274f60b4ea5fb4299cfdbf14, type: 3}
   m_Name: 

@@ -75,6 +75,7 @@ public class RoomManager : MonoBehaviourPunCallbacks
     }
     public override void OnJoinedRoom()
     {
+        PhotonNetwork.Instantiate("playerManager", Vector3.zero, Quaternion.identity);
         loadingWindow.HideLoading("joiningRoom");
         SwitchUI("room");
     }
@@ -161,6 +162,7 @@ public class RoomManager : MonoBehaviourPunCallbacks
         if (!PhotonNetwork.IsMasterClient || !NetworkDataBase.CheckReady())
             return;
         PhotonNetwork.CurrentRoom.IsOpen = false;
+        PhotonNetwork.CurrentRoom.IsVisible = false;
         PhotonNetwork.LoadLevel("Map1");
     }
     public void SwitchUI(string type)

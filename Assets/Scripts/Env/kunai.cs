@@ -63,8 +63,8 @@ public class kunai : MonoBehaviour, IPunObservable
             PlayerProfile hitProfile = NetworkDataBase.GetPlayerProfile (hitNickname);
             if (hitProfile == null)
                 return;
-            if (PV.Owner.NickName != hitNickname) {
-                NetworkDataBase.GetPlayerPV(hitNickname).RPC(nameof(hitProfile.Damage), NetworkDataBase.GetPlayerByNickname(hitNickname), damage);
+            if (NetworkDataBase.localProfile.teamIndex != NetworkDataBase.GetPlayerProfile(hitNickname).teamIndex) {
+                NetworkDataBase.GetPlayerManagerPV(hitNickname).RPC(nameof(hitProfile.Damage), NetworkDataBase.GetPlayerByNickname(hitNickname), damage);
                 PV.RPC(nameof(playerHitEffect), RpcTarget.All);
                 PhotonNetwork.Destroy (PV);
             }

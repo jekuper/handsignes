@@ -22,7 +22,7 @@ public class manaRegen : NetworkBehaviour
         if (techManager.isRegeningMana && !lastRegenState)
         {
             stun.Stun(1000000, true, false);
-            regenCoroutine = StartCoroutine (Regen(0.1f));
+            //regenCoroutine = StartCoroutine (Regen(0.1f));
         }
         else if (!techManager.isRegeningMana && lastRegenState)
         {
@@ -31,20 +31,20 @@ public class manaRegen : NetworkBehaviour
         }
         lastRegenState = techManager.isRegeningMana;
     }
-    private IEnumerator Regen(float syncFrequency)
-    {
-        float timer = syncFrequency;
+    //private IEnumerator Regen(float syncFrequency)
+    //{
+    //    //float timer = syncFrequency;
 
-        while (true)
-        {
-            timer -= Time.deltaTime;
-            ProfileData dt = NetworkDataBase.GetDataByNickname(manager.localNickname);
-            NetworkDataBase.GetDataByNickname(manager.localNickname).mana = Mathf.Clamp((Time.deltaTime * manaIncreaseSpeed) + dt.mana, 0, dt.manaMax);
-            if (timer <= 0)
-            {
-                NetworkDataBase.GetConnectionByNickname(manager.localNickname).identity.GetComponent<NetworkPlayerManager>().TargetUpdateProfileData(NetworkDataBase.GetDataByNickname(manager.localNickname));
-            }
-            yield return new WaitForEndOfFrame();
-        }
-    }
+    //    //while (true)
+    //    //{
+    //    //    timer -= Time.deltaTime;
+    //    //    ProfileData dt = NetworkDataBase.GetDataByNickname(manager.localNickname);
+    //    //    NetworkDataBase.GetDataByNickname(manager.localNickname).mana = Mathf.Clamp((Time.deltaTime * manaIncreaseSpeed) + dt.mana, 0, dt.manaMax);
+    //    //    if (timer <= 0)
+    //    //    {
+    //    //        NetworkDataBase.GetConnectionByNickname(manager.localNickname).identity.GetComponent<NetworkPlayerManager>().TargetUpdateProfileData(NetworkDataBase.GetDataByNickname(manager.localNickname));
+    //    //    }
+    //    //    yield return new WaitForEndOfFrame();
+    //    //}
+    //}
 }

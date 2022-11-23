@@ -6,8 +6,7 @@ using Photon.Pun;
 
 public class PlayerController : MonoBehaviour
 {
-    public string localNickname;
-    public bool isLocalPlayer = false;
+    public PlayerManager manager;
 
     [SerializeField] Transform cameraPosition;
     [SerializeField] GameObject canvas;
@@ -22,27 +21,35 @@ public class PlayerController : MonoBehaviour
         if (PV.AmOwner)
             PV.RPC(nameof(Initialize), RpcTarget.All, PhotonNetwork.LocalPlayer.NickName);
     }
+    public void UnFreeze()
+    {
+        if (!PV.AmOwner)
+        {
+            return;
+        }
+        GetComponent<PlayerMovement>().enabled = true;
+        GetComponent<WallRun>().enabled = true;
+        GetComponent<DashMechanic>().enabled = true;
+        GetComponent<ThrowMechanic>().enabled = true;
+        GetComponent<KatanaManager>().enabled = true;
+    }
 
     [PunRPC]
     public void Initialize(string nickname)
     {
         //Debug.Log("initializing with nickname: " + nickname + "; Local nickname: " + PhotonNetwork.LocalPlayer.NickName);
 
-        NetworkDataBase.playersControllers.Add(nickname, gameObject);
-        localNickname = nickname;
+        manager = NetworkDataBase.playersManagers[nickname];
+        manager.controller = this;
+
         if (PV == null)
             PV = GetComponent<PhotonView>();
         if (PV.AmOwner)
         {
-            isLocalPlayer = true;
             NetworkLevelData.singleton.CameraMovement.cameraPosition = cameraPosition;
 
             head.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.ShadowsOnly;
             GetComponent<PlayerLook>().enabled = true;
-            GetComponent<PlayerMovement>().enabled = true;
-            GetComponent<WallRun>().enabled = true;
-            GetComponent<DashMechanic>().enabled = true;
-            GetComponent<ThrowMechanic>().enabled = true;
             canvas.SetActive(false);
         }
         else

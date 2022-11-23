@@ -178,7 +178,7 @@ public static class NetworkDataBase
     public static ProfileData LocalUserData = new ProfileData();
     public static InternalProfileData LocalInternalUserData = new InternalProfileData();
 
-    public static Dictionary<string, GameObject> playersControllers = new Dictionary<string, GameObject>();
+    public static Dictionary<string, PlayerManager> playersManagers = new Dictionary<string, PlayerManager>();
     public static Dictionary<string, TechnicDescription> technicDescription = new Dictionary<string, TechnicDescription> ();
 
     public static Settings settings = new Settings();
@@ -189,23 +189,31 @@ public static class NetworkDataBase
             return GetPlayerProfile(PhotonNetwork.LocalPlayer.NickName);
         }
     }
+    public static PlayerManager localPlayerManager
+    {
+        get
+        {
+            return playersManagers[PhotonNetwork.LocalPlayer.NickName];
+        }
+    }
 
     public static void InitiateLocalPlayerData()
     {
+        playersManagers.Clear();
         PhotonNetwork.LocalPlayer.CustomProperties.Clear();
         SetCustomProperties(PhotonNetwork.LocalPlayer, "isReady", false);
     }
     public static PlayerProfile GetPlayerProfile(string nickname)
     {
-        if (!playersControllers.ContainsKey(nickname))
+        if (!playersManagers.ContainsKey(nickname))
             return null;
-        return playersControllers[nickname].GetComponent<PlayerProfile>();
+        return playersManagers[nickname].GetComponent<PlayerManager>().playerProfile;
     }
-    public static PhotonView GetPlayerPV(string nickname)
+    public static PhotonView GetPlayerManagerPV(string nickname)
     {
-        if (!playersControllers.ContainsKey(nickname))
+        if (!playersManagers.ContainsKey(nickname))
             return null;
-        return playersControllers[nickname].GetComponent<PhotonView>();
+        return playersManagers[nickname].GetComponent<PhotonView>();
     }
     public static Player GetPlayerByNickname(string nickname)
     {

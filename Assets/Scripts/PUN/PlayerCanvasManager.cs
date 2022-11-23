@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerCanvasManager : MonoBehaviour
 {
-    [SerializeField] PlayerProfile data;
+    [SerializeField] PlayerController controller;
     [SerializeField] RectTransform healthBarForeground;
     [SerializeField] RectTransform healthBarBackground;
 
@@ -14,6 +14,9 @@ public class PlayerCanvasManager : MonoBehaviour
     }
     public void UpdateHealthBar()
     {
-        healthBarForeground.sizeDelta = new Vector2((healthBarBackground.rect.width) * (data.health / data.maxHealth), healthBarForeground.sizeDelta.y);
+        if (controller.manager == null ||
+            controller.manager.playerProfile == null)
+            return;
+        healthBarForeground.sizeDelta = new Vector2((healthBarBackground.rect.width) * (controller.manager.playerProfile.health / controller.manager.playerProfile.maxHealth), healthBarForeground.sizeDelta.y);
     }
 }

@@ -43,6 +43,27 @@ public class LivingCreature : MonoBehaviour
         mana += recoverValue;
         mana = Mathf.Clamp(mana, 0, recoverValue);
     }
+    public void SetBodyState(BodyState state)
+    {
+        bodyState |= state;
+        ApplyBodyState();
+    }
+    public void UnSetBodyState(BodyState state)
+    {
+        bodyState &= ~state;
+        ApplyBodyState();
+    }
+    private void ApplyBodyState() //reactions go here
+    {
+        if (bodyState.HasFlag(BodyState.Wet) && bodyState.HasFlag(BodyState.OnFire))
+        {
+            bodyState &= ~(BodyState.Wet | BodyState.OnFire);
+        }
+        if (bodyState.HasFlag(BodyState.ElectroShock) && bodyState.HasFlag(BodyState.OnFire))
+        {
+            bodyState &= ~(BodyState.ElectroShock | BodyState.OnFire);
+        }
+    }
 }
 public class PlayerProfile : LivingCreature, IPunObservable
 {
@@ -51,6 +72,8 @@ public class PlayerProfile : LivingCreature, IPunObservable
 
     public throwableType throwableInUse = throwableType.Kunai;
     public KatanaState katanaState = KatanaState.None;
+
+    public int teamIndex = -1;
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
@@ -66,6 +89,8 @@ public class PlayerProfile : LivingCreature, IPunObservable
             stream.SendNext(kunaiMax);
             stream.SendNext(throwableInUse);
             stream.SendNext(katanaState);
+
+            stream.SendNext(teamIndex);
         }
         else
         {
@@ -79,6 +104,8 @@ public class PlayerProfile : LivingCreature, IPunObservable
             kunaiMax = (int)stream.ReceiveNext();
             throwableInUse = (throwableType)stream.ReceiveNext();
             katanaState = (KatanaState)stream.ReceiveNext();
+
+            teamIndex = (int)stream.ReceiveNext();
         }
     }
 }

@@ -72,7 +72,7 @@ public class NetworkBRManager : NetworkManager
         foreach (var item in NetworkDataBase.data) {
             GameObject GamePlayerInst = Instantiate (GamePlayer, new Vector3 (-9 + index % 18, 2, index / 18), Quaternion.identity);
             NetworkServer.Spawn (GamePlayerInst, item.Key);
-            GamePlayerInst.GetComponent<PlayerController> ().localNickname = item.Value.nickname;
+            //GamePlayerInst.GetComponent<PlayerController> ().localNickname = item.Value.nickname;
             //GamePlayerInst.GetComponent<PlayerManager> ().mainNetworkPlayer = item.Key.identity.GetComponent<NetworkPlayerManager> ();
             //item.Key.identity.GetComponent<NetworkPlayerManager> ().gamePlayerManager = GamePlayerInst.GetComponent<PlayerManager> ();
             index++;
