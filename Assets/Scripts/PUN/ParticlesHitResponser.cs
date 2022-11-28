@@ -1,4 +1,4 @@
-using Mirror;
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,33 +10,38 @@ public enum ParticleType
     Ice,
 }
 
-public class ParticlesHitResponser : NetworkBehaviour
+public class ParticlesHitResponser : MonoBehaviour
 {
-    private readonly SyncList<int> hits = new SyncList<int>(){0, 0, 0};
     private readonly int[] maxHits = { 3, 3, 5 };
+    private readonly int[] hits = { 0, 0, 0 };
+    private PhotonView PV;
 
-    [Server]
+    private void Start () {
+        PV = GetComponent<PhotonView> ();
+    }
+
+    [PunRPC]
     public void Hit(ParticleType type)
     {
         hits[(int)type]++;
         CheckLimit();
     }
-    [Server]
     public void Response(ParticleType type)
     {
+        if (!PV.AmOwner)
+            return;
         if (type == ParticleType.Fire)
         {
-            NetworkBRManager.brSingleton.SetBodyState(connectionToClient, BodyState.OnFire);
+            NetworkDataBase.localProfile.SetBodyState(BodyState.OnFire);
         }
-        if (type == ParticleType.Water)
-        {
-            NetworkBRManager.brSingleton.SetBodyState(connectionToClient, BodyState.Wet);
+        if (type == ParticleType.Water) {
+            NetworkDataBase.localProfile.SetBodyState (BodyState.Wet);
         }
     }
-    [Server]
+
     private void CheckLimit()
     {
-        for (int i = 0; i < hits.Count; i++)
+        for (int i = 0; i < hits.Length; i++)
         {
             if (hits[i] >= maxHits[i])
             {

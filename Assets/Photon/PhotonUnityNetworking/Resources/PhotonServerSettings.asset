@@ -20,7 +20,7 @@ MonoBehaviour:
     AppVersion: 
     UseNameServer: 1
     FixedRegion: 
-    Server: 192.168.0.69
+    Server: 
     Port: 0
     ProxyServer: 
     Protocol: 0
@@ -51,6 +51,12 @@ MonoBehaviour:
   - RpcShow
   - RpcTriggerOff
   - RpcTriggerOn
+  - Stun
+  - StunOff
+  - StunOn
+  - Hit
+  - SetBodyState
+  - UnSetBodyState
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

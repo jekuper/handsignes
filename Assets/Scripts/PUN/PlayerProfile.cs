@@ -43,11 +43,13 @@ public class LivingCreature : MonoBehaviour
         mana += recoverValue;
         mana = Mathf.Clamp(mana, 0, recoverValue);
     }
+    [PunRPC]
     public void SetBodyState(BodyState state)
     {
         bodyState |= state;
         ApplyBodyState();
     }
+    [PunRPC]
     public void UnSetBodyState(BodyState state)
     {
         bodyState &= ~state;

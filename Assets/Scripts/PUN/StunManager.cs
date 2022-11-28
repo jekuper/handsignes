@@ -1,23 +1,27 @@
-using Mirror;
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class StunManager : NetworkBehaviour
+public class StunManager : MonoBehaviour, IPunObservable
 {
     [SerializeField] PlayerMovement movement;
     [SerializeField] WallRun wallrun;
     [SerializeField] DashMechanic dashManager;
     [SerializeField] technicsManager technicManager;
-    [SyncVar]
+    [SerializeField] PhotonView PV;
+    
     public bool IsTechnicStunned = false;
 
     private float timerMovement = -1;
     private float timerTechnic = -1;
 
-    [Server]
+
+    [PunRPC]
     public void Stun(float duration, bool includeMovements = false, bool includeTechnics = false)
     {
+        if (!PV.AmOwner)
+            return;
         StunOn(includeMovements, includeTechnics);
         if (includeMovements)
         {
@@ -28,9 +32,12 @@ public class StunManager : NetworkBehaviour
             timerTechnic = Mathf.Max(timerTechnic, duration);
         }
     }
-    [ServerCallback]
+
     private void Update()
     {
+        if (!PV.AmOwner)
+            return;
+
         if (timerMovement > 0)
         {
             timerMovement -= Time.deltaTime;
@@ -48,9 +55,12 @@ public class StunManager : NetworkBehaviour
             }
         }
     }
-    [Server]
+
+    [PunRPC]
     public void StunOn(bool includeMovements, bool includeTechnics)
     {
+        if (!PV.AmOwner)
+            return;
         if (includeMovements)
         {
             movement.controlsEnabled = false;
@@ -63,9 +73,12 @@ public class StunManager : NetworkBehaviour
             technicManager.TurnOff();
         }
     }
-    [Server]
+
+    [PunRPC]
     public void StunOff(bool includeMovements, bool includeTechnics)
     {
+        if (!PV.AmOwner)
+            return;
         if (includeMovements)
         {
             timerMovement = -1;
@@ -78,6 +91,18 @@ public class StunManager : NetworkBehaviour
             timerTechnic = -1;
             IsTechnicStunned = false;
             technicManager.TurnOn();
+        }
+    }
+
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        if (stream.IsWriting)
+        {
+            stream.SendNext (IsTechnicStunned);
+        }
+        else
+        {
+            IsTechnicStunned = (bool)stream.ReceiveNext();
         }
     }
 }

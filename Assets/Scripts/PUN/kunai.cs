@@ -59,7 +59,7 @@ public class kunai : MonoBehaviour, IPunObservable
         
 
         if (hitData.transform.gameObject.tag == "Player") {
-            string hitNickname = hitData.transform.parent.parent.parent.GetComponent<PhotonView>().Owner.NickName;
+            string hitNickname = hitData.rigidbody.GetComponent<PlayerController>().manager.localNickname;
             PlayerProfile hitProfile = NetworkDataBase.GetPlayerProfile (hitNickname);
             if (hitProfile == null)
                 return;

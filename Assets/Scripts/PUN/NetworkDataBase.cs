@@ -215,6 +215,9 @@ public static class NetworkDataBase
             return null;
         return playersManagers[nickname].GetComponent<PhotonView>();
     }
+    public static PhotonView GetPlayerControllerPV (string nickname) {
+        return playersManagers[nickname].GetComponent<PlayerManager> ().controller.GetComponent<PhotonView>();
+    }
     public static Player GetPlayerByNickname(string nickname)
     {
         foreach (var player in PhotonNetwork.PlayerList)

@@ -7,8 +7,8 @@ using Photon.Pun;
 public class PlayerController : MonoBehaviour
 {
     public PlayerManager manager;
+    public Transform cameraPosition;
 
-    [SerializeField] Transform cameraPosition;
     [SerializeField] GameObject canvas;
     [SerializeField] SkinnedMeshRenderer[] renderers;
     PhotonView PV;
@@ -32,6 +32,12 @@ public class PlayerController : MonoBehaviour
         GetComponent<DashMechanic>().enabled = true;
         GetComponent<ThrowMechanic>().enabled = true;
         GetComponent<KatanaManager>().enabled = true;
+        GetComponent<StunManager>().enabled = true;
+        GetComponent<mouseStateSwitcher>().enabled = true;
+        GetComponent<technicsManager>().enabled = true;
+        GetComponent<ParticlesHitResponser>().enabled = true;
+        GetComponent<ManaRegenManager>().enabled = true;
+        GetComponent<BodyStateManager>().enabled = true;
     }
 
     [PunRPC]
@@ -54,7 +60,7 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            Destroy(GetComponent<Rigidbody>());
+            GetComponent<Rigidbody> ().isKinematic = true;
             foreach (SkinnedMeshRenderer renderer in renderers)
             {
                 renderer.gameObject.layer = 0;

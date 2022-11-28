@@ -1,4 +1,5 @@
 using Mirror;
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -20,8 +21,7 @@ public class DestroyAtEnd : StateMachineBehaviour
      //OnStateExit is called when a transition ends and the state machine finishes evaluating this state
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        if (NetworkServer.active)
-            NetworkServer.Destroy (animator.gameObject);
+        PhotonNetwork.Destroy(animator.gameObject);
     }
 
     // OnStateMove is called right after Animator.OnAnimatorMove()

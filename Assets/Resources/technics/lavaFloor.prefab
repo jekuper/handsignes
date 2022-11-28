@@ -14,9 +14,9 @@ GameObject:
   - component: {fileID: 8712520313619906581}
   - component: {fileID: 5162667025871853546}
   - component: {fileID: 209217917554920597}
-  - component: {fileID: 4554257116487580238}
   - component: {fileID: 828925583405741215}
-  - component: {fileID: 4168277658665052889}
+  - component: {fileID: 8700981546287761913}
+  - component: {fileID: 1244550839080024862}
   m_Layer: 0
   m_Name: lavaFloor
   m_TagString: Untagged
@@ -115,8 +115,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d1599144bb203d4ca5cde88cf8caf0f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  syncMode: 0
-  syncInterval: 0.1
   damageTimeSpan: 0.5
   damage: 10
   teamIndex: 0
@@ -132,27 +130,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e52259052e0a364094344c3db5272d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  syncMode: 0
-  syncInterval: 0.1
   anim: {fileID: 828925583405741215}
   lifeTimer: 15
---- !u!114 &4554257116487580238
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3350403446533114857}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9b91ecbcc199f4492b9a91e820070131, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sceneId: 0
-  serverOnly: 0
-  visible: 0
-  m_AssetId: 58d4e515e1e75d44cbd87df82289891c
-  hasSpawned: 0
 --- !u!95 &828925583405741215
 Animator:
   serializedVersion: 4
@@ -173,7 +152,7 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &4168277658665052889
+--- !u!114 &8700981546287761913
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -182,28 +161,39 @@ MonoBehaviour:
   m_GameObject: {fileID: 3350403446533114857}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2f74aedd71d9a4f55b3ce499326d45fb, type: 3}
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  syncMode: 0
-  syncInterval: 0.1
-  clientAuthority: 0
-  sendInterval: 0.05
-  syncPosition: 1
-  syncRotation: 0
-  syncScale: 1
-  interpolatePosition: 1
-  interpolateRotation: 0
-  interpolateScale: 1
-  bufferTimeMultiplier: 1
-  bufferSizeLimit: 64
-  catchupThreshold: 4
-  catchupMultiplier: 0.1
-  onlySyncOnChange: 0
-  bufferResetMultiplier: 5
-  positionSensitivity: 0.01
-  rotationSensitivity: 0.01
-  scaleSensitivity: 0.01
-  showGizmos: 0
-  showOverlay: 0
-  overlayColor: {r: 0, g: 0, b: 0, a: 0.5}
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents:
+  - {fileID: 5162667025871853546}
+  - {fileID: 1244550839080024862}
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
+--- !u!114 &1244550839080024862
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3350403446533114857}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b8c4a61274f60b4ea5fb4299cfdbf14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowLayerWeightsInspector: 1
+  ShowParameterInspector: 1
+  m_SynchronizeParameters:
+  - Type: 9
+    SynchronizeType: 2
+    Name: dead
+  m_SynchronizeLayers:
+  - SynchronizeType: 2
+    LayerIndex: 0

@@ -1,4 +1,4 @@
-using Mirror;
+using Photon.Pun;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -6,31 +6,35 @@ using UnityEngine;
 using UnityEngine.Rendering.PostProcessing;
 using UnityEngine.UI;
 
-public class BodyStateManager : NetworkBehaviour
+public class BodyStateManager : MonoBehaviour
 {
     [SerializeField] StunManager stun;
-    [SerializeField] PostProcessVolume pp;
-    [SerializeField] UIPositionEffector[] bodyStatesEffectors;
-    [SerializeField] Image[] bodyStatesImages;
     [SerializeField] Sprite[] bodyStatesSprites;
     public float fireDamage = 0.5f;
     public float electroTimer = 10f;
+
+    PostProcessVolume pp;
+    UIPositionEffector[] bodyStatesEffectors;
+    Image[] bodyStatesImages;
 
     private BodyState lastState = BodyState.None;
 
     private Coroutine electroCoroutine;
     private Dictionary<int, BodyState> cellsData = new Dictionary<int, BodyState>();
 
+    private PhotonView PV;
+
     private void Start()
     {
         pp = NetworkLevelData.singleton.pp;
         bodyStatesEffectors = NetworkLevelData.singleton.bodyStatesEffectors;
         bodyStatesImages = NetworkLevelData.singleton.bodyStatesImages;
+        PV = GetComponent<PhotonView> ();
     }
 
     private void Update()
     {
-        if (!NetworkServer.active)
+        if (!PV.AmOwner)
         {
             return;
         }
@@ -39,17 +43,17 @@ public class BodyStateManager : NetworkBehaviour
         HandleElectro();
         HandleEarth();
 
-        lastState = NetworkDataBase.data[connectionToClient].bodyState;
+        lastState = NetworkDataBase.localProfile.bodyState;
     }
     private void HandleWater()
     {
-        if (NetworkDataBase.data[connectionToClient].bodyState.HasFlag(BodyState.Wet) &&
+        if (NetworkDataBase.localProfile.bodyState.HasFlag(BodyState.Wet) &&
            !lastState.HasFlag(BodyState.Wet))
         {
             BlurCamera();
             AddCell (BodyState.Wet);
         }
-        else if (!NetworkDataBase.data[connectionToClient].bodyState.HasFlag(BodyState.Wet) &&
+        else if (!NetworkDataBase.localProfile.bodyState.HasFlag(BodyState.Wet) &&
           lastState.HasFlag(BodyState.Wet))
         {
             UnBlurCamera();
@@ -58,12 +62,12 @@ public class BodyStateManager : NetworkBehaviour
     }
     private void HandleFire()
     {
-        if (NetworkDataBase.data[connectionToClient].bodyState.HasFlag(BodyState.OnFire) &&
+        if (NetworkDataBase.localProfile.bodyState.HasFlag(BodyState.OnFire) &&
             !lastState.HasFlag(BodyState.OnFire))
         {
             StartCoroutine(OnFireResponce());
             AddCell(BodyState.OnFire);
-        } else if (!NetworkDataBase.data[connectionToClient].bodyState.HasFlag(BodyState.OnFire) &&
+        } else if (!NetworkDataBase.localProfile.bodyState.HasFlag(BodyState.OnFire) &&
             lastState.HasFlag(BodyState.OnFire))
         {
             DeleteCell(BodyState.OnFire);
@@ -71,13 +75,13 @@ public class BodyStateManager : NetworkBehaviour
     }
     private void HandleElectro()
     {
-        if (NetworkDataBase.data[connectionToClient].bodyState.HasFlag(BodyState.ElectroShock) &&
+        if (NetworkDataBase.localProfile.bodyState.HasFlag(BodyState.ElectroShock) &&
             !lastState.HasFlag(BodyState.ElectroShock))
         {
             electroCoroutine = StartCoroutine(ElectroResponce());
             AddCell(BodyState.ElectroShock);
         }
-        else if (!NetworkDataBase.data[connectionToClient].bodyState.HasFlag(BodyState.ElectroShock) &&
+        else if (!NetworkDataBase.localProfile.bodyState.HasFlag(BodyState.ElectroShock) &&
             lastState.HasFlag(BodyState.ElectroShock))
         {
             DeleteCell(BodyState.ElectroShock);
@@ -85,18 +89,17 @@ public class BodyStateManager : NetworkBehaviour
     }
     private void HandleEarth()
     {
-        if (NetworkDataBase.data[connectionToClient].bodyState.HasFlag(BodyState.Earth) &&
+        if (NetworkDataBase.localProfile.bodyState.HasFlag(BodyState.Earth) &&
             !lastState.HasFlag(BodyState.Earth))
         {
             AddCell(BodyState.Earth);
         }
-        else if (!NetworkDataBase.data[connectionToClient].bodyState.HasFlag(BodyState.Earth) &&
+        else if (!NetworkDataBase.localProfile.bodyState.HasFlag(BodyState.Earth) &&
           lastState.HasFlag(BodyState.Earth))
         {
             DeleteCell(BodyState.Earth);
         }
     }
-    [TargetRpc]
     private void AddCell(BodyState state)
     {
         int index = GetFirstFreeUI();
@@ -111,7 +114,6 @@ public class BodyStateManager : NetworkBehaviour
         if (state == BodyState.Earth)
             bodyStatesImages[index].sprite = bodyStatesSprites[3];
     }
-    [TargetRpc]
     private void DeleteCell(BodyState state)
     {
         int index = GetCellIndex(state);
@@ -142,47 +144,43 @@ public class BodyStateManager : NetworkBehaviour
         return -1;
     }
 
-    [TargetRpc]
     private void BlurCamera()
     {
         DepthOfField blur = pp.profile.GetSetting<DepthOfField> ();
         blur.enabled.value = true;
     }
-    [TargetRpc]
     private void UnBlurCamera()
     {
         DepthOfField blur = pp.profile.GetSetting<DepthOfField>();
         blur.enabled.value = false;
     }
-    [Server]
     private IEnumerator OnFireResponce()
     {
-        while (NetworkDataBase.data[connectionToClient].bodyState.HasFlag(BodyState.OnFire))
+        while (NetworkDataBase.localProfile.bodyState.HasFlag(BodyState.OnFire))
         {
-            NetworkBRManager.brSingleton.ApplyDamage(connectionToClient, fireDamage * Time.deltaTime);
+            NetworkDataBase.localProfile.Damage(fireDamage * Time.deltaTime);
             yield return new WaitForEndOfFrame();
         }
     }
-    [Server]
     private IEnumerator ElectroResponce()
     {
         float timer = electroTimer;
         while (timer > 0)
         {
             timer -= Time.deltaTime;
-            if (!NetworkDataBase.data[connectionToClient].bodyState.HasFlag(BodyState.ElectroShock))
+            if (!NetworkDataBase.localProfile.bodyState.HasFlag(BodyState.ElectroShock))
             {
                 yield break;
             }
             yield return new WaitForEndOfFrame();
         }
-        if (!NetworkDataBase.data[connectionToClient].bodyState.HasFlag(BodyState.ElectroShock))
+        if (!NetworkDataBase.localProfile.bodyState.HasFlag(BodyState.ElectroShock))
         {
             yield break;
         }
         stun.Stun (3, true, true);
         yield return new WaitForSeconds(3);
         stun.StunOff(true, true);
-        NetworkBRManager.brSingleton.UnSetBodyState(connectionToClient, BodyState.ElectroShock);
+        NetworkDataBase.localProfile.UnSetBodyState(BodyState.ElectroShock);
     }
 }

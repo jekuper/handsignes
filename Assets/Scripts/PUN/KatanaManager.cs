@@ -105,11 +105,11 @@ public class KatanaManager : MonoBehaviour
             float damageMultiplier = 1f;
             if (hit1Profile.katanaState.HasFlag(KatanaState.Water))
             {
-                hit2Profile.SetBodyState(BodyState.Wet);
+                NetworkDataBase.GetPlayerManagerPV (nick2).RPC (nameof (PlayerProfile.SetBodyState), NetworkDataBase.GetPlayerByNickname (nick2), BodyState.Wet);
             }
             if (hit1Profile.katanaState.HasFlag(KatanaState.Electro))
             {
-                hit2Profile.SetBodyState(BodyState.ElectroShock);
+                NetworkDataBase.GetPlayerManagerPV (nick2).RPC (nameof (PlayerProfile.SetBodyState), NetworkDataBase.GetPlayerByNickname (nick2), BodyState.ElectroShock);
                 if (hit2Profile.bodyState.HasFlag(BodyState.Wet))
                 {
                     damageMultiplier = 2f;
@@ -117,13 +117,12 @@ public class KatanaManager : MonoBehaviour
             }
             if (hit1Profile.katanaState.HasFlag(KatanaState.Fire))
             {
-                hit2Profile.SetBodyState(BodyState.OnFire);
+                NetworkDataBase.GetPlayerManagerPV (nick2).RPC (nameof (PlayerProfile.SetBodyState), NetworkDataBase.GetPlayerByNickname (nick2), BodyState.OnFire);
             }
-            if (hit1Profile.katanaState.HasFlag(KatanaState.Earth))
-            {
-                hit2Profile.SetBodyState(BodyState.Earth);
+            if (hit1Profile.katanaState.HasFlag(KatanaState.Earth)) {
+                NetworkDataBase.GetPlayerManagerPV (nick2).RPC (nameof (PlayerProfile.SetBodyState), NetworkDataBase.GetPlayerByNickname (nick2), BodyState.Earth);
             }
-            NetworkDataBase.GetPlayerManagerPV(nick2).RPC(nameof(PlayerProfile.Damage), NetworkDataBase.GetPlayerByNickname(nick2), damage * damageMultiplier);
+            NetworkDataBase.GetPlayerManagerPV (nick2).RPC(nameof(PlayerProfile.Damage), NetworkDataBase.GetPlayerByNickname(nick2), damage * damageMultiplier);
         }
     }
 }

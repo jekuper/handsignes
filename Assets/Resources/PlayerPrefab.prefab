@@ -322,6 +322,12 @@ GameObject:
   - component: {fileID: 4813345877223868642}
   - component: {fileID: 5189357700204217543}
   - component: {fileID: 8919462282907054141}
+  - component: {fileID: 5427918324023189843}
+  - component: {fileID: 5506271771332357814}
+  - component: {fileID: 222578939404565812}
+  - component: {fileID: 4270864044340579352}
+  - component: {fileID: 8178623834362825597}
+  - component: {fileID: 6324852174657169738}
   - component: {fileID: 4908563724598655619}
   - component: {fileID: 8370210177864637262}
   m_Layer: 0
@@ -419,6 +425,7 @@ MonoBehaviour:
   orientation: {fileID: 2013665070654484877}
   moveSpeed: 6
   airMultiplier: 0.4
+  wallRunAcceleration: 0.2
   jumpForce: 14
   jumpKey: 32
   groundDrag: 6
@@ -511,6 +518,110 @@ MonoBehaviour:
   weaponHolder: {fileID: 6252616236449768247}
   katanaRenderer: {fileID: 5988465405858935775}
   PV: {fileID: 4908563724598655619}
+--- !u!114 &5427918324023189843
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2013665070833911389}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a56308262726d6445b6a9fc5f5cf76fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  switchKey: 113
+  armAnim: {fileID: 5376009461621501365}
+  tm: {fileID: 222578939404565812}
+  wm: {fileID: 8919462282907054141}
+  stun: {fileID: 5506271771332357814}
+--- !u!114 &5506271771332357814
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2013665070833911389}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 705bbb8ba6a3c3a41b71ce22272e75b2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  movement: {fileID: 2045225455375412009}
+  wallrun: {fileID: 3811933458035302598}
+  dashManager: {fileID: 4813345877223868642}
+  technicManager: {fileID: 222578939404565812}
+  PV: {fileID: 4908563724598655619}
+  IsTechnicStunned: 0
+--- !u!114 &222578939404565812
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2013665070833911389}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6ac81db38766b06438080310dc0c5a1b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  timerInitValue: 1
+  iconSprites:
+  - {fileID: 21300000, guid: 301a8ba250e35a741a3f7220aff69d90, type: 3}
+  - {fileID: 21300000, guid: 7c1bc725b30e2a845b6ffb8cafd25334, type: 3}
+  - {fileID: 21300000, guid: c6882b520c2ae3c48a25f85d6249216c, type: 3}
+  orientation: {fileID: 2013665070654484877}
+  armAnim: {fileID: 5376009461621501365}
+  isRegeningMana: 0
+  PV: {fileID: 4908563724598655619}
+--- !u!114 &4270864044340579352
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2013665070833911389}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b29f71269540c3644b6ad8330281acaf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &8178623834362825597
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2013665070833911389}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f67d3eebdc8661145a2959b12240f997, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  techManager: {fileID: 222578939404565812}
+  controller: {fileID: 661458027310778674}
+  stun: {fileID: 5506271771332357814}
+  manaIncreaseSpeed: 25
+--- !u!114 &6324852174657169738
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2013665070833911389}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 14bec9a06c9b2e5459c2de865bc04b90, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  stun: {fileID: 5506271771332357814}
+  bodyStatesSprites:
+  - {fileID: 21300000, guid: c66924df033dfe94b8c182a4525412c7, type: 3}
+  - {fileID: 21300000, guid: 9c41ad6aef114704399c19535d685a59, type: 3}
+  - {fileID: 21300000, guid: a64910fb6d750794cbbe1fcade9fc953, type: 3}
+  - {fileID: 21300000, guid: 716a94729722f1d498ed75a246ed34f8, type: 3}
+  fireDamage: 2
+  electroTimer: 5
 --- !u!114 &4908563724598655619
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -528,8 +639,9 @@ MonoBehaviour:
   prefixField: -1
   Synchronization: 3
   OwnershipTransfer: 0
-  observableSearch: 0
+  observableSearch: 2
   ObservedComponents:
+  - {fileID: 5506271771332357814}
   - {fileID: 8370210177864637262}
   - {fileID: 3078848472503643824}
   - {fileID: 8590134619465992603}
@@ -1635,7 +1747,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1670994234395274613}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9b8c4a61274f60b4ea5fb4299cfdbf14, type: 3}
   m_Name: 

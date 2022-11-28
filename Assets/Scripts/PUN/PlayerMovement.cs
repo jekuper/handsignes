@@ -20,6 +20,7 @@ public class PlayerMovement : MonoBehaviour
     [Header("Movement")]
     [SerializeField] float moveSpeed = 6f;
     [SerializeField] float airMultiplier = 0.4f;
+    [SerializeField] [Range(0f, 1f)] float wallRunAcceleration = 0.2f;
     float movementMultiplier = 10f;
     float initMoveSpeed;
 
@@ -135,6 +136,11 @@ public class PlayerMovement : MonoBehaviour
         else
         {
             moveSpeed = initMoveSpeed;
+        }
+
+        if (isWallRunning)
+        {
+            moveSpeed *= (1f + wallRunAcceleration);
         }
     }
 
