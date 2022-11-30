@@ -203,6 +203,9 @@ public static class NetworkDataBase
         PhotonNetwork.LocalPlayer.CustomProperties.Clear();
         SetCustomProperties(PhotonNetwork.LocalPlayer, "isReady", false);
     }
+    public static void ResetLocalProfile () {
+        localProfile.Reset ();
+    }
     public static PlayerProfile GetPlayerProfile(string nickname)
     {
         if (!playersManagers.ContainsKey(nickname))
@@ -268,7 +271,6 @@ public static class NetworkDataBase
         int winTeamIndex = -1;
         foreach (Player player in PhotonNetwork.PlayerList) {
             PlayerProfile profile = GetPlayerProfile (player.NickName);
-            Debug.Log (player.NickName + ": " + profile.health.ToString() + ", " + profile.IsAlive.ToString());
             if (profile.IsAlive) {
                 if (winTeamIndex != -1)
                     return -1;

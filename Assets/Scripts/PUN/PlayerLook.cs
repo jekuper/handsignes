@@ -1,9 +1,10 @@
-﻿using System.Collections;
+﻿using Photon.Pun;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Animations.Rigging;
 
-public class PlayerLook : MonoBehaviour
+public class PlayerLook : MonoBehaviour, IPunObservable
 {
     [Header("References")]
     [SerializeField] WallRun wallRun;
@@ -25,8 +26,11 @@ public class PlayerLook : MonoBehaviour
     float xRotation;
     float yRotation;
 
+    Quaternion shoulderRRotation;
+    PhotonView PV;
+
     private void OnGUI () {
-        if (Cursor.lockState != CursorLockMode.Locked) {
+        if (Cursor.lockState != CursorLockMode.Locked || !PV.AmOwner) {
             return;
         }
         GUI.DrawTexture (new Rect (Screen.width / 2, Screen.height / 2, 10, 10), cursorTexture);
@@ -34,15 +38,18 @@ public class PlayerLook : MonoBehaviour
 
     private void Start()
     {
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
+        PV = GetComponent<PhotonView> ();
+        if (PV.AmOwner) {
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+        }
     }
 
 
 
     private void Update()
     {
-        if (Cursor.lockState != CursorLockMode.Locked) {
+        if (Cursor.lockState != CursorLockMode.Locked || !PV.AmOwner) {
             return;
         }
 
@@ -57,12 +64,21 @@ public class PlayerLook : MonoBehaviour
         orientation.transform.rotation = Quaternion.Euler(0, yRotation, 0);
         camPosition.rotation = Quaternion.Euler(xRotation, yRotation, wallRun.tilt);
         headMeshBone.rotation = Quaternion.Euler(xRotation, yRotation, wallRun.tilt);
+        shoulderRRotation = Quaternion.Euler (xRotation, shoulderR.eulerAngles.y, shoulderR.eulerAngles.z);
         //camPosition.rotation = Quaternion.Euler(xRotation, yRotation, 0);
         //headMeshBone.rotation = Quaternion.Euler(xRotation, yRotation, 0);
     }
     private void LateUpdate()
     {
-        shoulderR.rotation = Quaternion.Euler(xRotation, shoulderR.eulerAngles.y, shoulderR.eulerAngles.z);
+        shoulderR.rotation = shoulderRRotation;
         //shoulderL.rotation = Quaternion.Euler(xRotation, shoulderL.eulerAngles.y, shoulderL.eulerAngles.z);
+    }
+
+    public void OnPhotonSerializeView (PhotonStream stream, PhotonMessageInfo info) {
+        if (stream.IsWriting) {
+            stream.SendNext (shoulderRRotation);
+        } else {
+            shoulderRRotation = (Quaternion)stream.ReceiveNext ();
+        }
     }
 }

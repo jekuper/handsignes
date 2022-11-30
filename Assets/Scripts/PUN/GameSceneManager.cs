@@ -26,6 +26,8 @@ public class GameSceneManager : MonoBehaviourPunCallbacks, IPunObservable
 
     public static GameSceneManager singleton;
 
+    private bool isLeaving = false;
+
     private void Start()
     {
         PV = GetComponent<PhotonView>();
@@ -45,8 +47,9 @@ public class GameSceneManager : MonoBehaviourPunCallbacks, IPunObservable
         HandleWinScreen ();
     }
     private void HandleSoloKick () {
-        if (PhotonNetwork.PlayerList.Length == 1) {
+        if (PhotonNetwork.PlayerList.Length == 1 && !isLeaving) {
             PhotonNetwork.LeaveRoom ();
+            isLeaving = true;
         }
     }
     private void HandleTimer()
@@ -158,6 +161,10 @@ public class GameSceneManager : MonoBehaviourPunCallbacks, IPunObservable
     public void OnRematchPressed () {
         if (!PhotonNetwork.IsMasterClient)
             return;
+        PV.RPC (nameof (ReloadScene), RpcTarget.All);
+    }
+    [PunRPC]
+    private void ReloadScene () {
         PhotonNetwork.LoadLevel ("Map1");
     }
     public void OnReadyPressed () {
@@ -169,6 +176,7 @@ public class GameSceneManager : MonoBehaviourPunCallbacks, IPunObservable
         HidePauseMenu ();
         if (NetworkDataBase.localProfile.IsAlive)
             NetworkDataBase.localProfile.Die ();
+        NetworkDataBase.ResetLocalProfile ();
 
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;

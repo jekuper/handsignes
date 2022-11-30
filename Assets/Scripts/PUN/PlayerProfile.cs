@@ -110,6 +110,13 @@ public class PlayerProfile : LivingCreature, IPunObservable
             teamIndex = (int)stream.ReceiveNext();
         }
     }
+    public void Reset () {
+        health = maxHealth;
+        mana = maxMana;
+        bodyState = BodyState.None;
+        kunai = kunaiMax;
+        katanaState = KatanaState.None;
+    }
     public override void Die () {
         if (!GetComponent<PhotonView> ().AmOwner)
             return;

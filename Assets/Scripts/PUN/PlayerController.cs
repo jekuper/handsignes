@@ -54,7 +54,6 @@ public class PlayerController : MonoBehaviour
             NetworkLevelData.singleton.CameraMovement.cameraPosition = cameraPosition;
 
             head.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.ShadowsOnly;
-            GetComponent<PlayerLook>().enabled = true;
             canvas.SetActive(false);
             GetComponent<technicsManager> ().enabled = true;
         }
