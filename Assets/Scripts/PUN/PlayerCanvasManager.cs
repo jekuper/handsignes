@@ -1,16 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class PlayerCanvasManager : MonoBehaviour
 {
     [SerializeField] PlayerController controller;
+    [SerializeField] TextMeshProUGUI nicknameText;
     [SerializeField] RectTransform healthBarForeground;
     [SerializeField] RectTransform healthBarBackground;
-
-    private void Update()
-    {
-        UpdateHealthBar();
+    private void Update() {
+        if (controller.manager != null)
+            nicknameText.text = controller.manager.localNickname;
+        UpdateHealthBar ();
     }
     public void UpdateHealthBar()
     {

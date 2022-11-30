@@ -239,8 +239,6 @@ public static class NetworkDataBase
     }
     public static bool CheckReady()
     {
-        if (!PhotonNetwork.IsMasterClient)
-            return false;
         foreach (Player player in PhotonNetwork.PlayerList)
         {
             if ((bool)player.CustomProperties["isReady"] == false)
@@ -249,5 +247,36 @@ public static class NetworkDataBase
             }
         }
         return true;
+    }
+    public static int CountReady () {
+        int result = 0;
+        foreach (Player player in PhotonNetwork.PlayerList) {
+            if ((bool)player.CustomProperties["isReady"]) {
+                result++;
+            }
+        }
+        return result;
+    }
+    public static void SetAllNotReady () {
+        foreach (Player player in PhotonNetwork.PlayerList) {
+            SetCustomProperties (player, "isReady", false);
+        }
+    }
+    public static int SearchWinnerTeam () {
+        if (!PhotonNetwork.IsMasterClient)
+            return -1;
+        int winTeamIndex = -1;
+        foreach (Player player in PhotonNetwork.PlayerList) {
+            PlayerProfile profile = GetPlayerProfile (player.NickName);
+            Debug.Log (player.NickName + ": " + profile.health.ToString() + ", " + profile.IsAlive.ToString());
+            if (profile.IsAlive) {
+                if (winTeamIndex != -1)
+                    return -1;
+                winTeamIndex = profile.teamIndex;
+            }
+        }
+        if (winTeamIndex == -1)
+            return 0;
+        return winTeamIndex;
     }
 }

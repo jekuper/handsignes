@@ -116,6 +116,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   controller: {fileID: 661458027310778674}
+  nicknameText: {fileID: 772865980121356332}
   healthBarForeground: {fileID: 6661691004710122602}
   healthBarBackground: {fileID: 5835243026914316838}
 --- !u!1 &296034700109659582

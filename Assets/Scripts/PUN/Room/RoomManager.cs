@@ -82,6 +82,7 @@ public class RoomManager : MonoBehaviourPunCallbacks
     public override void OnLeftRoom()
     {
         loadingWindow.ShowLoading("serverConnect", "connecting to server...");
+        NetworkDataBase.playersManagers.Clear ();
         SwitchUI("list");
     }
     public override void OnCreateRoomFailed(short returnCode, string message)
@@ -121,6 +122,7 @@ public class RoomManager : MonoBehaviourPunCallbacks
     }
     public override void OnPlayerLeftRoom(Player newPlayer)
     {
+        NetworkDataBase.playersManagers.Remove (newPlayer.NickName);
         UpdatePlayerList();
         UpdateStartButton();
     }
@@ -199,7 +201,7 @@ public class RoomManager : MonoBehaviourPunCallbacks
             HideStartButton();
             return;
         }
-        if (NetworkDataBase.CheckReady())
+        if (NetworkDataBase.CheckReady() && PhotonNetwork.PlayerList.Length > 1)
         {
             ShowStartButton();
         }

@@ -12,23 +12,42 @@ public class GameSceneManager : MonoBehaviourPunCallbacks, IPunObservable
     public float currentTimerValue = -1f;
     [SerializeField] TextMeshProUGUI timerText;
     [SerializeField] UIPositionEffector pauseMenuEffector;
+    [SerializeField] GameObject GameUI;
     [SerializeField] GameObject descMenu;
+    [SerializeField] GameObject winScreen;
+    [SerializeField] GameObject rematchButton;
+    [SerializeField] TextMeshProUGUI readyCount;
+    [SerializeField] TextMeshProUGUI winMenu_ResultText;
+    [SerializeField] UIPositionEffector observeB1, observeB2;
 
     private PhotonView PV;
     private bool isPauseMenuVisible;
+    private bool isWinMenuVisible = false;
+
+    public static GameSceneManager singleton;
 
     private void Start()
     {
         PV = GetComponent<PhotonView>();
+        singleton = this;
         if (PhotonNetwork.IsMasterClient)
         {
             StartCoroutine (InitTimer());
+            NetworkDataBase.SetAllNotReady ();
         }
     }
     private void Update()
     {
+        HandleSoloKick ();
         HandleTimer();
-        HandlePause();        
+        HandlePause();
+        CheckWinner ();
+        HandleWinScreen ();
+    }
+    private void HandleSoloKick () {
+        if (PhotonNetwork.PlayerList.Length == 1) {
+            PhotonNetwork.LeaveRoom ();
+        }
     }
     private void HandleTimer()
     {
@@ -43,6 +62,8 @@ public class GameSceneManager : MonoBehaviourPunCallbacks, IPunObservable
     }
     private void HandlePause()
     {
+        if (isWinMenuVisible)
+            return;
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             if (isPauseMenuVisible)
@@ -89,7 +110,79 @@ public class GameSceneManager : MonoBehaviourPunCallbacks, IPunObservable
         Cursor.visible = false;
 
         pauseMenuEffector.SetFromIndex(0);
+        descMenu.SetActive (false);
         isPauseMenuVisible = false;
+    }
+    #endregion
+    #region Observe Mode
+    public void ShowObserveMenu () {
+        if (isWinMenuVisible)
+            return;
+        GameUI.SetActive (false);
+        observeB1.SetFromIndex (1);
+        observeB2.SetFromIndex (1);
+    }
+    public void HideObserveMenu () {
+        observeB1.SetFromIndex (0);
+        observeB2.SetFromIndex (0);
+    }
+    #endregion
+    #region Technics Description
+    public void ToggleTechnicsDescMenu () {
+        descMenu.SetActive (!descMenu.activeSelf);
+    }
+    #endregion
+    #region Victory screen
+    public void CheckWinner () {
+        if (!PhotonNetwork.IsMasterClient || isWinMenuVisible)
+            return;
+        int winnerTeam = NetworkDataBase.SearchWinnerTeam ();
+        if (winnerTeam != -1) {
+            PV.RPC (nameof (GameSceneManager.ShowWinMenu), RpcTarget.All, winnerTeam);
+        }
+    }
+    public void HandleWinScreen () {
+        if (!isWinMenuVisible)
+            return;
+        readyCount.text = NetworkDataBase.CountReady() + "/" + PhotonNetwork.PlayerList.Length;
+        if (PhotonNetwork.IsMasterClient && !rematchButton.activeSelf) {
+            bool ready = NetworkDataBase.CheckReady ();
+            if (ready) {
+                rematchButton.SetActive (true);
+            }
+        }
+        if (!PhotonNetwork.IsMasterClient) {
+            rematchButton.SetActive (false);
+        }
+    }
+    public void OnRematchPressed () {
+        if (!PhotonNetwork.IsMasterClient)
+            return;
+        PhotonNetwork.LoadLevel ("Map1");
+    }
+    public void OnReadyPressed () {
+        NetworkDataBase.SetCustomProperties (PhotonNetwork.LocalPlayer, "isReady", true);
+    }
+    [PunRPC]
+    public void ShowWinMenu (int winnerTeam) {
+        isWinMenuVisible = true;
+        HidePauseMenu ();
+        if (NetworkDataBase.localProfile.IsAlive)
+            NetworkDataBase.localProfile.Die ();
+
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+        if (winnerTeam == NetworkDataBase.localProfile.teamIndex) {
+            winMenu_ResultText.text = "VICTORY";
+            winMenu_ResultText.color = new Color (0.02745098f, 0.8862745f, 0.3294118f);
+        } else {
+            winMenu_ResultText.text = "DEFEAT";
+            winMenu_ResultText.color = new Color (0.8313726f, 0.1333333f, 0f);
+        }
+        observeB1.SetFromIndex (2);
+        observeB2.SetFromIndex (2);
+
+        winScreen.SetActive (true);
     }
     #endregion
 

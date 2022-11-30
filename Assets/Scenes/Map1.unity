@@ -3073,7 +3073,7 @@ PrefabInstance:
     - target: {fileID: 8760299894222686403, guid: 231c1ebcf51edaf49adfdac6f22ef386, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 578261042}
+      objectReference: {fileID: 443105880}
     - target: {fileID: 8760299894222686403, guid: 231c1ebcf51edaf49adfdac6f22ef386, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
       value: 2
@@ -3084,7 +3084,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8760299894222686403, guid: 231c1ebcf51edaf49adfdac6f22ef386, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: BRGUI, Assembly-CSharp
+      value: GameSceneManager, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 8760299894222686403, guid: 231c1ebcf51edaf49adfdac6f22ef386, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
@@ -3092,7 +3092,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8760299894222686429, guid: 231c1ebcf51edaf49adfdac6f22ef386, type: 3}
       propertyPath: m_Name
-      value: start
+      value: rematch
       objectReference: {fileID: 0}
     - target: {fileID: 8760299894222686429, guid: 231c1ebcf51edaf49adfdac6f22ef386, type: 3}
       propertyPath: m_IsActive
@@ -4446,7 +4446,14 @@ MonoBehaviour:
   currentTimerValue: -1
   timerText: {fileID: 1281849597}
   pauseMenuEffector: {fileID: 1717184678}
-  descMenu: {fileID: 0}
+  GameUI: {fileID: 110531097}
+  descMenu: {fileID: 967374708}
+  winScreen: {fileID: 965170560}
+  rematchButton: {fileID: 316570206}
+  readyCount: {fileID: 1903819987}
+  winMenu_ResultText: {fileID: 214152963}
+  observeB1: {fileID: 1052801939}
+  observeB2: {fileID: 318742314}
 --- !u!4 &443105881
 Transform:
   m_ObjectHideFlags: 0
@@ -6853,7 +6860,7 @@ RectTransform:
   - {fileID: 1052801936}
   - {fileID: 318742311}
   m_Father: {fileID: 1020159212}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -7482,18 +7489,18 @@ PrefabInstance:
     - target: {fileID: 8760299894222686403, guid: 231c1ebcf51edaf49adfdac6f22ef386, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 578261042}
+      objectReference: {fileID: 443105880}
     - target: {fileID: 8760299894222686403, guid: 231c1ebcf51edaf49adfdac6f22ef386, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8760299894222686403, guid: 231c1ebcf51edaf49adfdac6f22ef386, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: OnDisconnectPressed
+      value: OnLeavePressed
       objectReference: {fileID: 0}
     - target: {fileID: 8760299894222686403, guid: 231c1ebcf51edaf49adfdac6f22ef386, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: BRGUI, Assembly-CSharp
+      value: GameSceneManager, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 8760299894222686403, guid: 231c1ebcf51edaf49adfdac6f22ef386, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
@@ -9286,8 +9293,8 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 110531098}
-  - {fileID: 726108621}
   - {fileID: 1281849596}
+  - {fileID: 726108621}
   - {fileID: 1717184674}
   - {fileID: 965170561}
   m_Father: {fileID: 0}
@@ -12010,7 +12017,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1020159212}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -14173,7 +14180,7 @@ PrefabInstance:
     - target: {fileID: 8760299894222686403, guid: 231c1ebcf51edaf49adfdac6f22ef386, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 578261042}
+      objectReference: {fileID: 443105880}
     - target: {fileID: 8760299894222686403, guid: 231c1ebcf51edaf49adfdac6f22ef386, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
@@ -14188,7 +14195,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8760299894222686403, guid: 231c1ebcf51edaf49adfdac6f22ef386, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: OnRematchRequestPressed
+      value: OnReadyPressed
       objectReference: {fileID: 0}
     - target: {fileID: 8760299894222686403, guid: 231c1ebcf51edaf49adfdac6f22ef386, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
@@ -14196,7 +14203,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8760299894222686403, guid: 231c1ebcf51edaf49adfdac6f22ef386, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: BRGUI, Assembly-CSharp
+      value: GameSceneManager, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 8760299894222686403, guid: 231c1ebcf51edaf49adfdac6f22ef386, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
@@ -14212,7 +14219,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8760299894222686429, guid: 231c1ebcf51edaf49adfdac6f22ef386, type: 3}
       propertyPath: m_Name
-      value: rematch
+      value: ready
       objectReference: {fileID: 0}
     - target: {fileID: 8760299894222686429, guid: 231c1ebcf51edaf49adfdac6f22ef386, type: 3}
       propertyPath: m_IsActive

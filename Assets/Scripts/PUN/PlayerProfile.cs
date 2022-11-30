@@ -15,7 +15,7 @@ public class LivingCreature : MonoBehaviour
     {
         get { return health > 0; }
     }
-    public void Die() { }
+    public virtual void Die() { }
     [PunRPC]
     public void Damage(float damage)
     {
@@ -109,5 +109,13 @@ public class PlayerProfile : LivingCreature, IPunObservable
 
             teamIndex = (int)stream.ReceiveNext();
         }
+    }
+    public override void Die () {
+        if (!GetComponent<PhotonView> ().AmOwner)
+            return;
+        if (GetComponent<PlayerManager> ().controller != null)
+            PhotonNetwork.Destroy(GetComponent<PlayerManager> ().controller.gameObject);
+        NetworkLevelData.singleton.CamHolder.GetComponent<CameraController> ().enabled = true;
+        GameSceneManager.singleton.ShowObserveMenu ();
     }
 }

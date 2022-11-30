@@ -34,7 +34,6 @@ public class PlayerController : MonoBehaviour
         GetComponent<KatanaManager>().enabled = true;
         GetComponent<StunManager>().enabled = true;
         GetComponent<mouseStateSwitcher>().enabled = true;
-        GetComponent<technicsManager>().enabled = true;
         GetComponent<ParticlesHitResponser>().enabled = true;
         GetComponent<ManaRegenManager>().enabled = true;
         GetComponent<BodyStateManager>().enabled = true;
@@ -57,6 +56,7 @@ public class PlayerController : MonoBehaviour
             head.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.ShadowsOnly;
             GetComponent<PlayerLook>().enabled = true;
             canvas.SetActive(false);
+            GetComponent<technicsManager> ().enabled = true;
         }
         else
         {

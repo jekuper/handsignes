@@ -27,7 +27,7 @@ public class technicsManager : MonoBehaviour {
     public bool isRegeningMana = false;
 
     private string buffer = "";
-    private bool isOff = false;
+    private bool isOff = true;
 
     public PhotonView PV;
 
@@ -226,8 +226,7 @@ public class technicsManager : MonoBehaviour {
 
         GameObject lavaFloorInst = PhotonNetwork.Instantiate ("technics/lavaFloor", pos, Quaternion.identity);
 
-        //TODO: change lava floor logic
-        //lavaFloorInst.GetComponent<LavaFloor> ().teamIndex = NetworkDataBase.data[connection].teamIndex;
+        lavaFloorInst.GetComponent<LavaFloor> ().teamIndex = NetworkDataBase.localProfile.teamIndex;
         return responce;
     }
     public technicExecutionResult EarthPrison () {
