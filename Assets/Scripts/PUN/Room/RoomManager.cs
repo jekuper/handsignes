@@ -50,7 +50,7 @@ public class RoomManager : MonoBehaviourPunCallbacks
 
         NetworkDataBase.InitiateLocalPlayerData();
 
-        PhotonNetwork.ConnectUsingSettings();
+        PhotonNetwork.ConnectUsingSettings ();
     }
     private void Update()
     {

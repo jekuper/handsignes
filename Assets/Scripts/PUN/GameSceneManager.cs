@@ -165,6 +165,7 @@ public class GameSceneManager : MonoBehaviourPunCallbacks, IPunObservable
     }
     [PunRPC]
     private void ReloadScene () {
+        NetworkDataBase.ResetLocalProfile ();
         PhotonNetwork.LoadLevel ("Map1");
     }
     public void OnReadyPressed () {
@@ -176,7 +177,6 @@ public class GameSceneManager : MonoBehaviourPunCallbacks, IPunObservable
         HidePauseMenu ();
         if (NetworkDataBase.localProfile.IsAlive)
             NetworkDataBase.localProfile.Die ();
-        NetworkDataBase.ResetLocalProfile ();
 
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;

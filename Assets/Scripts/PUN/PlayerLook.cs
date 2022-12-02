@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Animations.Rigging;
 
 public class PlayerLook : MonoBehaviour, IPunObservable
 {
@@ -29,6 +28,8 @@ public class PlayerLook : MonoBehaviour, IPunObservable
     Quaternion shoulderRRotation;
     PhotonView PV;
 
+    Vector3 shoulderRDefault;
+
     private void OnGUI () {
         if (Cursor.lockState != CursorLockMode.Locked || !PV.AmOwner) {
             return;
@@ -39,6 +40,7 @@ public class PlayerLook : MonoBehaviour, IPunObservable
     private void Start()
     {
         PV = GetComponent<PhotonView> ();
+        shoulderRDefault = shoulderR.localEulerAngles;
         if (PV.AmOwner) {
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
@@ -64,13 +66,13 @@ public class PlayerLook : MonoBehaviour, IPunObservable
         orientation.transform.rotation = Quaternion.Euler(0, yRotation, 0);
         camPosition.rotation = Quaternion.Euler(xRotation, yRotation, wallRun.tilt);
         headMeshBone.rotation = Quaternion.Euler(xRotation, yRotation, wallRun.tilt);
-        shoulderRRotation = Quaternion.Euler (xRotation, shoulderR.eulerAngles.y, shoulderR.eulerAngles.z);
+        shoulderRRotation = Quaternion.Euler (xRotation, shoulderRDefault.y, shoulderRDefault.z);
         //camPosition.rotation = Quaternion.Euler(xRotation, yRotation, 0);
         //headMeshBone.rotation = Quaternion.Euler(xRotation, yRotation, 0);
     }
     private void LateUpdate()
     {
-        shoulderR.rotation = shoulderRRotation;
+        shoulderR.localRotation = shoulderRRotation;
         //shoulderL.rotation = Quaternion.Euler(xRotation, shoulderL.eulerAngles.y, shoulderL.eulerAngles.z);
     }
 
