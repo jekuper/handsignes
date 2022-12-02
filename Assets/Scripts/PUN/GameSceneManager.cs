@@ -48,7 +48,7 @@ public class GameSceneManager : MonoBehaviourPunCallbacks, IPunObservable
     }
     private void HandleSoloKick () {
         if (PhotonNetwork.PlayerList.Length == 1 && !isLeaving) {
-            PhotonNetwork.LeaveRoom ();
+            PhotonNetwork.Disconnect ();
             isLeaving = true;
         }
     }
@@ -203,6 +203,8 @@ public class GameSceneManager : MonoBehaviourPunCallbacks, IPunObservable
     public override void OnLeftRoom()
     {
         NetworkDataBase.playersManagers.Clear();
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
         SceneManager.LoadScene("BRLobby");
     }
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)

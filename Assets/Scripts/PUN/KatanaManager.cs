@@ -19,17 +19,15 @@ public class KatanaManager : MonoBehaviour
 
     public void TurnOn () {
         isOff = false;
-        triggerManager.GetComponent<Collider> ().enabled = true;
     }
     public void TurnOff () {
         isOff = true;
-        triggerManager.GetComponent<Collider> ().enabled = false;
     }
     #region Trigger On/Off
     [PunRPC]
     public void RpcTriggerOn()
     {
-//        Debug.Log("trigger turn on");
+        //        Debug.Log("trigger turn on");
         isTriggerOff = false;
         triggerManager.GetComponent<Collider>().enabled = true;
     }

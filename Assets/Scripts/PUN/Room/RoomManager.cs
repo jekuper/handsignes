@@ -14,6 +14,7 @@ public class RoomManager : MonoBehaviourPunCallbacks
     [SerializeField] GameObject playerListItem;
 
     [SerializeField] TMP_InputField roomName;
+    [SerializeField] TMP_Dropdown regionDropdown;
     [SerializeField] TextMeshProUGUI readyButtonText;
     [SerializeField] TextMeshProUGUI nicknameText;
     [SerializeField] TextMeshProUGUI masterText;
@@ -35,6 +36,14 @@ public class RoomManager : MonoBehaviourPunCallbacks
         signleton = this;
         loadingWindow.ShowLoading("serverConnect", "connecting to server...");
 
+        for (int i = 0; i < regionDropdown.options.Count; i++) {
+            if (regionDropdown.options[i].text.Split (", ")[1] == NetworkDataBase.settings.serverRegion) {
+                regionDropdown.value = i;
+                regionDropdown.RefreshShownValue ();
+                break;
+            }
+        }
+
         if (NetworkDataBase.settings.nickname.Trim() == "")
         {
             loadingWindow.HideLoading("serverConnect");
@@ -50,7 +59,7 @@ public class RoomManager : MonoBehaviourPunCallbacks
 
         NetworkDataBase.InitiateLocalPlayerData();
 
-        PhotonNetwork.ConnectUsingSettings ();
+        PhotonNetwork.ConnectUsingSettings (NetworkDataBase.photonServerSettings.AppSettings);
     }
     private void Update()
     {
@@ -62,6 +71,7 @@ public class RoomManager : MonoBehaviourPunCallbacks
     public override void OnConnectedToMaster()
     {
         loadingWindow.HideLoading("serverConnect");
+        Debug.Log (PhotonNetwork.CloudRegion);
         PhotonNetwork.JoinLobby();
     }
     public override void OnDisconnected(DisconnectCause cause)
@@ -224,6 +234,12 @@ public class RoomManager : MonoBehaviourPunCallbacks
     public void LeaveToMenu()
     {
         SceneManager.LoadScene("PlayModeSelect");
+    }
+    public void SwitchRegion () {
+        string region = regionDropdown.options[regionDropdown.value].text.Split (", ")[1];
+        NetworkDataBase.settings.serverRegion = region;
+        NetworkDataBase.SaveSettings ();
+        PhotonNetwork.Disconnect ();
     }
     [PunRPC]
     public void Kick(string reason)

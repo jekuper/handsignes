@@ -17,7 +17,6 @@ public class WallRun : MonoBehaviour
     [SerializeField] private float wallRunJumpForce;
 
     [Header("Camera")]
-    [SerializeField] private Camera cam;
     [SerializeField] private float wallRunfov;
     [SerializeField] private float camTilt;
     [SerializeField] private float camTiltTime;
@@ -42,7 +41,6 @@ public class WallRun : MonoBehaviour
 
     private void Start()
     {
-        cam = NetworkLevelData.singleton.Cam;
         rb = GetComponent<Rigidbody>();
     }
 

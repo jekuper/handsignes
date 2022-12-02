@@ -5,6 +5,7 @@ using System;
 using UnityEngine.Rendering.PostProcessing;
 using Photon.Pun;
 using Photon.Realtime;
+using Newtonsoft.Json;
 
 public enum throwableType {
     Kunai,
@@ -32,42 +33,6 @@ public enum KatanaState
     Earth = 8,
 }
 
-public class ProfileData {
-    public string nickname;
-    public bool isReady = false;
-
-    public bool IsAlive {
-        get { return health > 0; }
-    }
-
-    public float healthMax = 100;
-    public float health = 100;
-
-    public float manaMax = 500;
-    public float mana = 500;
-    public float manaRecoverSpeed = 10;
-
-
-    public int kunaiCountMax = 10;
-    public int kunaiCount = 10;
-
-    public int shurikenCountMax = 10;
-    public int shurikenCount = 10;
-
-    public throwableType throwableInUse = throwableType.Kunai;
-    public BodyState bodyState = BodyState.None;
-    public KatanaState katanaState = KatanaState.None;
-
-    public int teamIndex = 0;
-
-    public ProfileData () { }
-
-    public ProfileData (string _nickname, bool _isReady, int _teamIndex) {
-        nickname = _nickname;
-        isReady = _isReady;
-        teamIndex = _teamIndex;
-    }
-}
 public class InternalProfileData {
     public mouseState mouseState = mouseState.Weapons;
 }
@@ -90,8 +55,15 @@ public class TechnicDescription
 
 public static class NetworkDataBase
 {
+    public static ServerSettings photonServerSettings;
 
-    public static ProfileData LocalUserData = new ProfileData();
+    public static void SaveSettings () {
+        string json = JsonConvert.SerializeObject (settings);
+        FileManager.SaveId ("setttings", json);
+
+        SettingsManager.LoadSettings ();
+    }
+
     public static InternalProfileData LocalInternalUserData = new InternalProfileData();
 
     public static Dictionary<string, PlayerManager> playersManagers = new Dictionary<string, PlayerManager>();
@@ -121,6 +93,7 @@ public static class NetworkDataBase
     }
     public static void ResetLocalProfile () {
         localProfile.Reset ();
+        LocalInternalUserData.mouseState = mouseState.Weapons;
     }
     public static PlayerProfile GetPlayerProfile(string nickname)
     {

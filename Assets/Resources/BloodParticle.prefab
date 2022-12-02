@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2068448243578262575}
   - component: {fileID: 27922251325826394}
   - component: {fileID: 523456857118998487}
-  - component: {fileID: 875291732714985399}
+  - component: {fileID: 8672898605124820247}
   m_Layer: 0
   m_Name: BloodParticle
   m_TagString: Untagged
@@ -170,8 +170,8 @@ ParticleSystem:
     startSpeed:
       serializedVersion: 2
       minMaxState: 3
-      scalar: 3
-      minScalar: 2
+      scalar: 6
+      minScalar: 4
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -222,23 +222,23 @@ ParticleSystem:
         m_RotationOrder: 4
     startColor:
       serializedVersion: 2
-      minMaxState: 0
+      minMaxState: 4
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 1, g: 1, b: 1, a: 1}
+      maxColor: {r: 1, g: 0.7464502, b: 0, a: 1}
       maxGradient:
         serializedVersion: 2
-        key0: {r: 1, g: 1, b: 1, a: 1}
-        key1: {r: 1, g: 1, b: 1, a: 1}
-        key2: {r: 0, g: 0, b: 0, a: 0}
-        key3: {r: 0, g: 0, b: 0, a: 0}
+        key0: {r: 0, g: 0, b: 0, a: 1}
+        key1: {r: 1, g: 0.15686275, b: 0, a: 1}
+        key2: {r: 1, g: 0.15686275, b: 0, a: 0}
+        key3: {r: 1, g: 0.7341389, b: 0, a: 0}
         key4: {r: 0, g: 0, b: 0, a: 0}
         key5: {r: 0, g: 0, b: 0, a: 0}
         key6: {r: 0, g: 0, b: 0, a: 0}
         key7: {r: 0, g: 0, b: 0, a: 0}
-        ctime0: 0
-        ctime1: 65535
-        ctime2: 0
-        ctime3: 0
+        ctime0: 42212
+        ctime1: 43562
+        ctime2: 53006
+        ctime3: 54356
         ctime4: 0
         ctime5: 0
         ctime6: 0
@@ -252,7 +252,7 @@ ParticleSystem:
         atime6: 0
         atime7: 0
         m_Mode: 0
-        m_NumColorKeys: 2
+        m_NumColorKeys: 4
         m_NumAlphaKeys: 2
       minGradient:
         serializedVersion: 2
@@ -286,8 +286,8 @@ ParticleSystem:
     startSize:
       serializedVersion: 2
       minMaxState: 3
-      scalar: 0.05
-      minScalar: 0.02
+      scalar: 0.1
+      minScalar: 0.05
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -609,7 +609,7 @@ ParticleSystem:
     gravityModifier:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0.6
+      scalar: 0.1
       minScalar: 0
       maxCurve:
         serializedVersion: 2
@@ -737,7 +737,7 @@ ParticleSystem:
     m_SpriteRenderer: {fileID: 0}
     m_UseMeshMaterialIndex: 0
     m_UseMeshColors: 1
-    alignToDirection: 0
+    alignToDirection: 1
     m_Texture: {fileID: 0}
     m_TextureClipChannel: 3
     m_TextureClipThreshold: 0
@@ -3844,7 +3844,7 @@ ParticleSystem:
     radiusScale: 1
     collidesWith:
       serializedVersion: 2
-      m_Bits: 4294967295
+      m_Bits: 383
     maxCollisionShapes: 256
     quality: 0
     voxelSize: 0.5
@@ -4050,7 +4050,7 @@ ParticleSystem:
     dieWithParticles: 1
     sizeAffectsWidth: 1
     sizeAffectsLifetime: 0
-    inheritParticleColor: 1
+    inheritParticleColor: 0
     generateLightingData: 0
     splitSubEmitterRibbons: 0
     attachRibbonsToTransform: 0
@@ -4058,7 +4058,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 1, g: 1, b: 1, a: 1}
+      maxColor: {r: 0.5377358, g: 0.42654908, b: 0.38808292, a: 1}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -4127,7 +4127,7 @@ ParticleSystem:
         m_Curve:
         - serializedVersion: 3
           time: 0
-          value: 1
+          value: 0.67692375
           inSlope: 0
           outSlope: 0
           tangentMode: 0
@@ -4821,7 +4821,7 @@ ParticleSystemRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: f84a9098d8f55c0459f54d325f00103c, type: 2}
-  - {fileID: 2100000, guid: f84a9098d8f55c0459f54d325f00103c, type: 2}
+  - {fileID: 10306, guid: 0000000000000000f000000000000000, type: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -4856,15 +4856,15 @@ ParticleSystemRenderer:
   m_RenderAlignment: 0
   m_Pivot: {x: 0, y: 0, z: 0}
   m_Flip: {x: 0, y: 0, z: 0}
-  m_UseCustomVertexStreams: 0
+  m_UseCustomVertexStreams: 1
   m_EnableGPUInstancing: 1
   m_ApplyActiveColorSpace: 1
   m_AllowRoll: 1
   m_FreeformStretching: 0
   m_RotateWithStretchDirection: 1
-  m_VertexStreams: 00010304
-  m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
-  m_Mesh1: {fileID: 0}
+  m_VertexStreams: 0001030409
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+  m_Mesh1: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
   m_Mesh2: {fileID: 0}
   m_Mesh3: {fileID: 0}
   m_MeshWeighting: 1
@@ -4872,7 +4872,7 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
---- !u!114 &875291732714985399
+--- !u!114 &8672898605124820247
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -4881,11 +4881,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 2506552692286011621}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9b91ecbcc199f4492b9a91e820070131, type: 3}
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneId: 0
-  serverOnly: 0
-  visible: 0
-  m_AssetId: b2afc00d682420c42b998a9444be9920
-  hasSpawned: 0
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0

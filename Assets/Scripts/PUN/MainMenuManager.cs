@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.Rendering.PostProcessing;
+using Photon.Pun;
 
 public class MainMenuManager : MonoBehaviour
 {
@@ -11,6 +12,8 @@ public class MainMenuManager : MonoBehaviour
     private void Start () {
         version.text = "v"+ Application.version;
         NetworkDataBase.ppProfile = ppProfile;
+        NetworkDataBase.photonServerSettings = PhotonNetwork.PhotonServerSettings;
         SettingsManager.LoadSettings ();
+
     }
 }

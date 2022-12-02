@@ -9,6 +9,7 @@ using UnityEngine.EventSystems;
 
 public class Settings {
     public string nickname = "player";
+    public string serverRegion = "EU";
     public bool effectsEnabled = true;
     public bool isFullsreen = true;
     public Dictionary<string, KeyCode> inputSettings = new Dictionary<string, KeyCode>();
@@ -27,6 +28,7 @@ public class Settings {
 public class SettingsManager : MonoBehaviour
 {
     [SerializeField] TMP_InputField nicknameField;
+    [SerializeField] TMP_Dropdown regionDropdown;
     [SerializeField] TMP_Dropdown resolutionDropdown;
     [SerializeField] CustomToggle effects;
     [SerializeField] CustomToggle fullscreenToogle;
@@ -44,20 +46,28 @@ public class SettingsManager : MonoBehaviour
         Settings set = new Settings ();
 
         set.nickname = nicknameField.text;
+        set.serverRegion = regionDropdown.options[regionDropdown.value].text.Split(", ")[1];
         set.effectsEnabled = effects.isOn;
         set.isFullsreen = fullscreenToogle.isOn;
         set.savedResolution = StringToResolution(dropdownOptions[resolutionDropdown.value]);
 
-        string json = JsonConvert.SerializeObject (set);
-        FileManager.SaveId ("setttings", json);
+        NetworkDataBase.settings = set;
 
-        LoadSettings ();
+        NetworkDataBase.SaveSettings ();
     }
     public void LoadSettingsInternal () {
         Settings set = LoadSettings ();
         nicknameField.text = set.nickname;
         effects.isOn = set.effectsEnabled;
         fullscreenToogle.isOn = set.isFullsreen;
+
+        for(int i = 0; i < regionDropdown.options.Count; i++) {
+            if (regionDropdown.options[i].text.Split(", ")[1] == set.serverRegion) {
+                regionDropdown.value = i;
+                regionDropdown.RefreshShownValue ();
+                break;
+            }
+        }
 
         resolutionDropdown.ClearOptions();
 
@@ -106,9 +116,10 @@ public class SettingsManager : MonoBehaviour
 
         Settings set = JsonConvert.DeserializeObject<Settings> (json);
 
-        NetworkDataBase.LocalUserData.nickname = set.nickname;
         NetworkDataBase.ppProfile.GetSetting<Bloom>().enabled.value = set.effectsEnabled;
         NetworkDataBase.ppProfile.GetSetting<MotionBlur>().enabled.value = set.effectsEnabled;
+        NetworkDataBase.photonServerSettings.AppSettings.FixedRegion = set.serverRegion;
+
 
         int currentResolutionIndex = 0;
         Resolution[] resolutions = Screen.resolutions;

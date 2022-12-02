@@ -29,7 +29,6 @@ public class PlayerController : MonoBehaviour
         }
         GetComponent<PlayerMovement>().enabled = true;
         GetComponent<WallRun>().enabled = true;
-        GetComponent<DashMechanic>().enabled = true;
         GetComponent<ThrowMechanic>().enabled = true;
         GetComponent<KatanaManager>().enabled = true;
         GetComponent<StunManager>().enabled = true;

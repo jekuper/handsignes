@@ -129,7 +129,7 @@ public class PlayerMovement : MonoBehaviour
     }
     void ControlSpeed()
     {
-        if (NetworkDataBase.LocalUserData.bodyState.HasFlag(BodyState.Earth))
+        if (NetworkDataBase.localProfile.bodyState.HasFlag(BodyState.Earth))
         {
             moveSpeed = initMoveSpeed * 0.85f;
         }
