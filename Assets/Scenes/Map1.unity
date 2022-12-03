@@ -4559,10 +4559,10 @@ Transform:
   - {fileID: 367398205}
   - {fileID: 2121091888}
   - {fileID: 1158839327}
+  - {fileID: 1378273215}
   - {fileID: 972548125}
   - {fileID: 2031766888}
   - {fileID: 365395951}
-  - {fileID: 1378273215}
   - {fileID: 780190179}
   - {fileID: 1156422356}
   - {fileID: 1119233809}
@@ -13148,7 +13148,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 454923765}
-  m_RootOrder: 42
+  m_RootOrder: 39
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &1378273216
 BoxCollider:
@@ -17665,14 +17665,14 @@ PrefabInstance:
     - target: {fileID: 8760299894222686403, guid: c21246d0013be064db77c3cdf71990f6, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 443105879}
     - target: {fileID: 8760299894222686403, guid: c21246d0013be064db77c3cdf71990f6, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8760299894222686403, guid: c21246d0013be064db77c3cdf71990f6, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: ToggleTechnicsDescMenu
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 8760299894222686403, guid: c21246d0013be064db77c3cdf71990f6, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
