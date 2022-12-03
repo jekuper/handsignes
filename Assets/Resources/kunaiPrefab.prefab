@@ -15,7 +15,6 @@ GameObject:
   - component: {fileID: 3215789484757528076}
   - component: {fileID: 4953949662690831259}
   - component: {fileID: 7982436860838902937}
-  - component: {fileID: 8852472797725873147}
   m_Layer: 0
   m_Name: kunaiPrefab
   m_TagString: Untagged
@@ -112,11 +111,11 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 968493230773132588}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 0
+  m_IsTrigger: 1
+  m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.94498307, y: 0.67394847, z: 5.4630322}
-  m_Center: {x: 0.022477265, y: 0, z: 2.1863725}
+  m_Size: {x: 2.02, y: 1.63, z: 7.18}
+  m_Center: {x: 0, y: 0, z: 3.03}
 --- !u!114 &4953949662690831259
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -148,28 +147,11 @@ MonoBehaviour:
   ObservedComponentsFoldoutOpen: 1
   Group: 0
   prefixField: -1
-  Synchronization: 3
+  Synchronization: 2
   OwnershipTransfer: 0
-  observableSearch: 0
+  observableSearch: 2
   ObservedComponents:
   - {fileID: 4953949662690831259}
-  - {fileID: 8852472797725873147}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
---- !u!114 &8852472797725873147
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 968493230773132588}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_SynchronizePosition: 1
-  m_SynchronizeRotation: 1
-  m_SynchronizeScale: 1
-  m_UseLocal: 0

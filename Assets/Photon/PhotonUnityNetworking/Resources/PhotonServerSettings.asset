@@ -19,7 +19,7 @@ MonoBehaviour:
     AppIdVoice: 
     AppVersion: 
     UseNameServer: 1
-    FixedRegion: ASIA
+    FixedRegion: EU
     Server: 
     Port: 0
     ProxyServer: 
@@ -61,6 +61,8 @@ MonoBehaviour:
   - ShowWinMenu
   - ReloadScene
   - TurnTrails
+  - Delete
+  - ResetLocalProfile
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

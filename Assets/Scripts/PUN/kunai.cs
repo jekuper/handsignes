@@ -17,6 +17,8 @@ public class kunai : MonoBehaviour, IPunObservable
     //to sync
     public bool isStuck = false;
 
+    private GameObject pin = null;
+
 
     private void Start () {
         rb = GetComponent<Rigidbody> ();
@@ -34,6 +36,10 @@ public class kunai : MonoBehaviour, IPunObservable
     
     private void Update () {
         if (PV.AmOwner) {
+            if (pin != null) {
+                transform.position = pin.transform.position;
+                transform.rotation = pin.transform.rotation;
+            }
             if (Vector3.Distance(startPosition, transform.position) > 35) {
                 PhotonNetwork.Destroy(PV);
             }
@@ -43,19 +49,39 @@ public class kunai : MonoBehaviour, IPunObservable
     private void FixedUpdate () {
         if (PV.AmOwner) {
             RaycastHit hitData;
-            if (!isStuck && Physics.Raycast (transform.position, transform.forward, out hitData, 0.65f)){
-                hit (hitData);
+            if (Physics.Raycast (transform.position, transform.forward, out hitData, 0.65f)){
+                if (!isStuck) {
+                    hit (hitData);
+                }
             }
         }
     }
-
+    private void OnTriggerEnter (Collider other) {
+        lift (other);
+    }
+    private void lift (Collider other) {
+        if (!isStuck || other.isTrigger)
+            return;
+        if (other.transform.gameObject.tag == "Player") {
+            string hitNickname = other.attachedRigidbody.GetComponent<PlayerController> ().manager.localNickname;
+            if (hitNickname == PhotonNetwork.LocalPlayer.NickName &&
+                NetworkDataBase.localProfile.kunai < NetworkDataBase.localProfile.kunaiMax) {
+                NetworkDataBase.localProfile.kunai++;
+                PV.RPC (nameof (Delete), PV.Owner);
+            }
+        }
+    }
     private void hit (RaycastHit hitData) {
         if (!PV.AmOwner || hitData.collider.isTrigger)
             return;
         isStuck = true;
         rb.velocity = Vector3.zero;
         rb.isKinematic = true;
-        transform.parent = hitData.transform;
+        pin = new GameObject ();
+        pin = Instantiate (pin);
+        pin.transform.position = transform.position;
+        pin.transform.rotation = transform.rotation;
+        pin.transform.parent = hitData.transform;
         
 
         if (hitData.transform.gameObject.tag == "Player") {
@@ -66,7 +92,7 @@ public class kunai : MonoBehaviour, IPunObservable
             if (NetworkDataBase.localProfile.teamIndex != NetworkDataBase.GetPlayerProfile(hitNickname).teamIndex) {
                 NetworkDataBase.GetPlayerManagerPV(hitNickname).RPC(nameof(hitProfile.Damage), NetworkDataBase.GetPlayerByNickname(hitNickname), damage);
                 PV.RPC(nameof(playerHitEffect), RpcTarget.All);
-                PhotonNetwork.Destroy (PV);
+                PhotonNetwork.Destroy (gameObject);
             }
         }
     }
@@ -75,16 +101,24 @@ public class kunai : MonoBehaviour, IPunObservable
     public void playerHitEffect () {
         Instantiate (bloodParticle, transform.position, Quaternion.identity);
     }
+    [PunRPC]
+    public void Delete () {
+        PhotonNetwork.Destroy (gameObject);
+    }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
         if (stream.IsWriting)
         {
             stream.SendNext(isStuck);
+            stream.SendNext (transform.position);
+            stream.SendNext (transform.rotation);
         }
         else
         {
             isStuck = (bool)stream.ReceiveNext();
+            transform.position = (Vector3) stream.ReceiveNext ();
+            transform.rotation = (Quaternion) stream.ReceiveNext ();
         }
     }
 }

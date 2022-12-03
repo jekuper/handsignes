@@ -26,9 +26,11 @@ public class PlayerLook : MonoBehaviour, IPunObservable
     float yRotation;
 
     Quaternion shoulderRRotation;
+    Quaternion shoulderLRotation;
     PhotonView PV;
 
     Vector3 shoulderRDefault;
+    Vector3 shoulderLDefault;
 
     private void OnGUI () {
         if (Cursor.lockState != CursorLockMode.Locked || !PV.AmOwner) {
@@ -41,6 +43,7 @@ public class PlayerLook : MonoBehaviour, IPunObservable
     {
         PV = GetComponent<PhotonView> ();
         shoulderRDefault = shoulderR.localEulerAngles;
+        shoulderLDefault = shoulderL.localEulerAngles;
         if (PV.AmOwner) {
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
@@ -67,20 +70,26 @@ public class PlayerLook : MonoBehaviour, IPunObservable
         camPosition.rotation = Quaternion.Euler(xRotation, yRotation, wallRun.tilt);
         headMeshBone.rotation = Quaternion.Euler(xRotation, yRotation, wallRun.tilt);
         shoulderRRotation = Quaternion.Euler (xRotation, shoulderRDefault.y, shoulderRDefault.z);
+        shoulderLRotation = Quaternion.Euler (xRotation, shoulderLDefault.y, shoulderLDefault.z);
         //camPosition.rotation = Quaternion.Euler(xRotation, yRotation, 0);
         //headMeshBone.rotation = Quaternion.Euler(xRotation, yRotation, 0);
     }
     private void LateUpdate()
     {
+        if (NetworkDataBase.LocalInternalUserData.mouseState == mouseState.Weapons) {
         shoulderR.localRotation = shoulderRRotation;
+            //shoulderL.localRotation = shoulderLRotation;
+        }
         //shoulderL.rotation = Quaternion.Euler(xRotation, shoulderL.eulerAngles.y, shoulderL.eulerAngles.z);
     }
 
     public void OnPhotonSerializeView (PhotonStream stream, PhotonMessageInfo info) {
         if (stream.IsWriting) {
             stream.SendNext (shoulderRRotation);
+            stream.SendNext (shoulderLRotation);
         } else {
             shoulderRRotation = (Quaternion)stream.ReceiveNext ();
+            shoulderLRotation = (Quaternion)stream.ReceiveNext ();
         }
     }
 }
