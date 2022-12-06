@@ -17,7 +17,7 @@ public class DashMechanic : MonoBehaviour, IPunObservable
     public float StartDashTime = .3f;
     public float DashSpeed = 10f;
 
-    public bool controlsEnabled = true;
+    public bool controlsEnabled = false;
 
     [SerializeField] Transform camHolder;
     [SerializeField] TrailRenderer[] trails;

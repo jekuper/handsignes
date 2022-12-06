@@ -15,16 +15,18 @@ public class LivingCreature : MonoBehaviour
     {
         get { return health > 0; }
     }
-    public virtual void Die() { }
+    public virtual void Die(PhotonMessageInfo info = new PhotonMessageInfo()) { }
     [PunRPC]
-    public void Damage(float damage)
+    public void Damage(float damage, PhotonMessageInfo info = new PhotonMessageInfo ())
     {
         health -= damage;
         if (health <= 0)
         {
-            Die();
+            Die(info);
         }
+        OnDamage ();
     }
+    public virtual void OnDamage () { }
     public void Heal(float healValue)
     {
         health += healValue;
@@ -117,12 +119,19 @@ public class PlayerProfile : LivingCreature, IPunObservable
         kunai = kunaiMax;
         katanaState = KatanaState.None;
     }
-    public override void Die () {
+    public override void Die (PhotonMessageInfo info = new PhotonMessageInfo()) {
         if (!GetComponent<PhotonView> ().AmOwner)
             return;
+        GameSceneManager.singleton.SendDeathMessage (info);
         if (GetComponent<PlayerManager> ().controller != null)
             PhotonNetwork.Destroy(GetComponent<PlayerManager> ().controller.gameObject);
         NetworkLevelData.singleton.CamHolder.GetComponent<CameraController> ().enabled = true;
         GameSceneManager.singleton.ShowObserveMenu ();
+    }
+    public override void OnDamage () {
+        Debug.Log ("damaged");
+        if (!GetComponent<PhotonView> ().AmOwner)
+            return;
+        GameSceneManager.singleton.IndicateDamage ();
     }
 }

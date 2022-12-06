@@ -191,7 +191,7 @@ TrailRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 443534927779089831}
   m_Enabled: 1
-  m_CastShadows: 0
+  m_CastShadows: 1
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
   m_StaticShadowCaster: 0
@@ -224,7 +224,7 @@ TrailRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Time: 0.5
+  m_Time: 2
   m_Parameters:
     serializedVersion: 3
     widthMultiplier: 1
@@ -240,15 +240,6 @@ TrailRenderer:
         weightedMode: 0
         inWeight: 0.33333334
         outWeight: 0.33333334
-      - serializedVersion: 3
-        time: 1
-        value: 1
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 0
-        weightedMode: 0
-        inWeight: 0
-        outWeight: 0
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
@@ -619,7 +610,7 @@ MonoBehaviour:
   cameraFov: 120
   StartDashTime: 0.1
   DashSpeed: 60
-  controlsEnabled: 1
+  controlsEnabled: 0
   camHolder: {fileID: 0}
   trails:
   - {fileID: 2737066594900191584}
@@ -650,11 +641,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damage: 15
   isOff: 0
+  earthWallImpulse: 30
   noneTexture: {fileID: 2800000, guid: d18afd83f6b72464185c9ea7faddc178, type: 3}
   waterTexture: {fileID: 2800000, guid: c86ba65967d1d4947b080ae38006038b, type: 3}
   fireTexture: {fileID: 2800000, guid: 900c56258abd6f44fa1efa3f5b0e0487, type: 3}
   electroTexture: {fileID: 2800000, guid: 19ac1cfbbe3d9cc4db7f5737496859b7, type: 3}
   earthTexture: {fileID: 2800000, guid: ac89f14442c7a7e4eb4343e94a5c3c68, type: 3}
+  orientation: {fileID: 2013665070654484877}
+  bloodSpawnPoint: {fileID: 7791530715082950050}
   armAnim: {fileID: 5376009461621501365}
   triggerManager: {fileID: 7104547400863012102}
   weaponHolder: {fileID: 6252616236449768247}
@@ -779,7 +773,7 @@ MonoBehaviour:
   ObservedComponentsFoldoutOpen: 1
   Group: 0
   prefixField: -1
-  Synchronization: 2
+  Synchronization: 1
   OwnershipTransfer: 0
   observableSearch: 2
   ObservedComponents:
@@ -1299,7 +1293,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   link: {fileID: 8919462282907054141}
-  bloodSpawnPoint: {fileID: 7791530715082950050}
 --- !u!1 &8791205046075693002
 GameObject:
   m_ObjectHideFlags: 0

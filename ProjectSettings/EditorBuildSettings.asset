@@ -20,4 +20,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/BRLobby.unity
     guid: 54ce578804824ce4db7d204b3b29fafd
+  - enabled: 1
+    path: Assets/Scenes/Credits.unity
+    guid: 693eacad208b33246821468e5f4289e1
   m_configObjects: {}

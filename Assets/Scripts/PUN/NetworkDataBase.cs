@@ -68,6 +68,7 @@ public static class NetworkDataBase
 
     public static Dictionary<string, PlayerManager> playersManagers = new Dictionary<string, PlayerManager>();
     public static Dictionary<string, TechnicDescription> technicDescription = new Dictionary<string, TechnicDescription> ();
+    public static Dictionary<string, bool> starredTechnics = new Dictionary<string, bool> ();
 
     public static Settings settings = new Settings();
     public static PostProcessProfile ppProfile;

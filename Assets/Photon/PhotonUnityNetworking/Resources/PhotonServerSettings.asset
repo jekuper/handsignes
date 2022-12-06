@@ -63,6 +63,8 @@ MonoBehaviour:
   - TurnTrails
   - Delete
   - ResetLocalProfile
+  - RPC_DeathMessage
+  - RPC_LeaveMessage
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

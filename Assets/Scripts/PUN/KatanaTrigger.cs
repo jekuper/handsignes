@@ -6,12 +6,8 @@ using UnityEngine;
 public class KatanaTrigger : MonoBehaviour
 {
     [SerializeField] KatanaManager link;
-    [SerializeField] private Transform bloodSpawnPoint;
 
     private void OnTriggerEnter (Collider other) {
-        if (other.tag == "Player") {
-            link.TriggerResponce (other);
-            GameObject particle = PhotonNetwork.Instantiate ("BloodParticle", bloodSpawnPoint.position, Quaternion.identity);
-        }
+         link.TriggerResponce (other);
     }
 }

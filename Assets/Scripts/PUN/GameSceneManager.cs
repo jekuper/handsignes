@@ -12,6 +12,8 @@ public class GameSceneManager : MonoBehaviourPunCallbacks, IPunObservable
     public float currentTimerValue = -1f;
     [SerializeField] TextMeshProUGUI timerText;
     [SerializeField] UIPositionEffector pauseMenuEffector;
+    [SerializeField] EventChatManager eventChat;
+    [SerializeField] DamageIndicator damageIndicator;
     [SerializeField] GameObject GameUI;
     [SerializeField] GameObject descMenu;
     [SerializeField] GameObject winScreen;
@@ -19,6 +21,8 @@ public class GameSceneManager : MonoBehaviourPunCallbacks, IPunObservable
     [SerializeField] TextMeshProUGUI readyCount;
     [SerializeField] TextMeshProUGUI winMenu_ResultText;
     [SerializeField] UIPositionEffector observeB1, observeB2;
+    [SerializeField] Transform starredTechnicsHolder;
+    [SerializeField] GameObject technicDescShort;
 
     private PhotonView PV;
     private bool isPauseMenuVisible;
@@ -75,9 +79,9 @@ public class GameSceneManager : MonoBehaviourPunCallbacks, IPunObservable
                 ShowPauseMenu();
         }
     }
-    
-    
-    
+
+
+
     #region Timer
     public IEnumerator InitTimer()
     {
@@ -87,7 +91,7 @@ public class GameSceneManager : MonoBehaviourPunCallbacks, IPunObservable
             currentTimerValue -= Time.deltaTime;
             yield return new WaitForEndOfFrame();
         }
-        PV.RPC(nameof(UnFreezeLocal), RpcTarget.All);
+        PV.RPC(nameof(UnFreezeLocal), RpcTarget.AllViaServer);
     }
 
     [PunRPC]
@@ -121,6 +125,7 @@ public class GameSceneManager : MonoBehaviourPunCallbacks, IPunObservable
     public void ShowObserveMenu () {
         if (isWinMenuVisible)
             return;
+        damageIndicator.gameObject.SetActive (false);
         GameUI.SetActive (false);
         observeB1.SetFromIndex (1);
         observeB2.SetFromIndex (1);
@@ -201,6 +206,50 @@ public class GameSceneManager : MonoBehaviourPunCallbacks, IPunObservable
         winScreen.SetActive (true);
     }
     #endregion
+    #region DamageIndication
+    public void IndicateDamage () {
+        damageIndicator.Hitted ();
+    }
+    #endregion
+    #region Event Chat
+    public void SendDeathMessage (PhotonMessageInfo info) {
+        if (info.Sender != null)
+            PV.RPC (nameof (RPC_DeathMessage), RpcTarget.All, info.Sender.NickName, PhotonNetwork.LocalPlayer.NickName);
+        else
+            PV.RPC (nameof (RPC_DeathMessage), RpcTarget.All, null, PhotonNetwork.LocalPlayer.NickName);
+    }
+    public void SendLeaveMessage (Player leftPlayer) {
+        if (!PhotonNetwork.IsMasterClient)
+            return;
+        PV.RPC (nameof (RPC_LeaveMessage), RpcTarget.All, leftPlayer.NickName);
+    }
+    [PunRPC]
+    public void RPC_DeathMessage (string killer, string victim) {
+        string message = killer + "<color=\"red\"> killed </color>" + victim;
+        eventChat.DisplayMessage(message);
+    }
+    [PunRPC]
+    public void RPC_LeaveMessage (string leftPlayer) {
+        string message = leftPlayer + "<color=\"yellow\"> left </color>";
+        eventChat.DisplayMessage (message);
+    }
+    #endregion
+    #region starred technics
+    public void UpdateStarredTechnics () {
+        foreach (Transform child in starredTechnicsHolder) {
+            Destroy (child.gameObject);
+        }
+        int count = 0;
+        foreach (var item in NetworkDataBase.starredTechnics) {
+            if (count >= 4)
+                break;
+            if (item.Value == false)
+                continue;
+            count++;
+            Instantiate (technicDescShort, starredTechnicsHolder).GetComponent<starredTechnicBlock>().Load(item.Key);
+        }
+    }
+    #endregion
 
     public void OnLeavePressed()
     {
@@ -214,6 +263,9 @@ public class GameSceneManager : MonoBehaviourPunCallbacks, IPunObservable
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
         SceneManager.LoadScene("BRLobby");
+    }
+    public override void OnPlayerLeftRoom (Player otherPlayer) {
+        SendLeaveMessage (otherPlayer);
     }
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {

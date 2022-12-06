@@ -36,6 +36,7 @@ public class PlayerController : MonoBehaviour
         GetComponent<ParticlesHitResponser>().enabled = true;
         GetComponent<ManaRegenManager>().enabled = true;
         GetComponent<BodyStateManager>().enabled = true;
+        GetComponent<DashMechanic> ().controlsEnabled = true;
     }
 
     [PunRPC]

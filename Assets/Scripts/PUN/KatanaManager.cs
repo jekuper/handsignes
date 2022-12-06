@@ -7,9 +7,12 @@ public class KatanaManager : MonoBehaviour
 {
     public float damage = 15;
     public bool isOff = false;
+    public float earthWallImpulse;
     public Texture noneTexture, waterTexture, fireTexture, electroTexture, earthTexture;
 
     private bool isTriggerOff = false;
+    [SerializeField] private Transform orientation;
+    [SerializeField] private Transform bloodSpawnPoint;
     [SerializeField] private Animator armAnim;
     [SerializeField] private KatanaTrigger triggerManager;
     [SerializeField] private GameObject weaponHolder;
@@ -68,6 +71,8 @@ public class KatanaManager : MonoBehaviour
         if (PV.AmOwner)
         {
             PV.RPC(nameof(RpcTriggerOff), RpcTarget.AllBuffered);
+        } else {
+            GetComponent<Rigidbody> ().isKinematic = true;
         }
     }
 
@@ -84,14 +89,23 @@ public class KatanaManager : MonoBehaviour
     
 
     public void TriggerResponce (Collider other) {
-        if (other.tag == "Player" && !isTriggerOff && PV.AmOwner) {
-            string hitNickname = other.transform.parent.parent.parent.GetComponent<PhotonView>().Owner.NickName;
-            CmdTriggerResponce(hitNickname);
+        if (!isTriggerOff && PV.AmOwner) {
+            if (other.tag == "Player") {
+                string hitNickname = other.transform.parent.parent.parent.GetComponent<PhotonView>().Owner.NickName;
+                CmdTriggerResponce(hitNickname);
+            } else if (other.tag == "EarthWall") {
+                MoveEarthWall (other);
+            }
         }
     }
+    public void MoveEarthWall (Collider wall) { 
+        if (!wall.GetComponent<PhotonView> ().AmOwner)
+            return;
+        wall.GetComponent<earthWallManager> ().AddForce (orientation);
+    }
+    public void CmdTriggerResponce(string nick2) {
+        GameObject particle = PhotonNetwork.Instantiate ("BloodParticle", bloodSpawnPoint.position, Quaternion.identity);
 
-    public void CmdTriggerResponce(string nick2)
-    {
         string nick1 = PV.Owner.NickName;
 
         PlayerProfile hit1Profile = NetworkDataBase.GetPlayerProfile(nick1);

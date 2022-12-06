@@ -109,6 +109,7 @@ GameObject:
   - component: {fileID: 7637564304225164328}
   - component: {fileID: 1660267377831429612}
   - component: {fileID: 1388206268294467081}
+  - component: {fileID: 7935320295982697892}
   - component: {fileID: 4486728143989062304}
   m_Layer: 0
   m_Name: earthPrison
@@ -193,6 +194,22 @@ MonoBehaviour:
   m_SynchronizeLayers:
   - SynchronizeType: 2
     LayerIndex: 0
+--- !u!114 &7935320295982697892
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1556788705910130835}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SynchronizePosition: 1
+  m_SynchronizeRotation: 1
+  m_SynchronizeScale: 1
+  m_UseLocal: 1
 --- !u!114 &4486728143989062304
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -208,11 +225,12 @@ MonoBehaviour:
   ObservedComponentsFoldoutOpen: 1
   Group: 0
   prefixField: -1
-  Synchronization: 3
+  Synchronization: 2
   OwnershipTransfer: 0
   observableSearch: 2
   ObservedComponents:
   - {fileID: 1388206268294467081}
+  - {fileID: 7935320295982697892}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0

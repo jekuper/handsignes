@@ -99,12 +99,16 @@ public class technicsManager : MonoBehaviour {
         technics.Add (tag, new Technic (act, tag, manaCost, description, name));
         if (PV.AmOwner) {
             NetworkDataBase.technicDescription.Add (tag, new TechnicDescription (tag, name, description, false, manaCost));
+            if (!NetworkDataBase.starredTechnics.ContainsKey (tag))
+                NetworkDataBase.starredTechnics.Add (tag, false);
         }
     }
     private void AddTechnic (Func<technicExecutionResult> act, string tag, string description, string name) {
         technics.Add (tag, new Technic (act, tag, description, name));
         if (PV.AmOwner) {
             NetworkDataBase.technicDescription.Add (tag, new TechnicDescription (tag, name, description, true, -9999));
+            if (!NetworkDataBase.starredTechnics.ContainsKey (tag))
+                NetworkDataBase.starredTechnics.Add (tag, false);
         }
     }
 
@@ -215,6 +219,7 @@ public class technicsManager : MonoBehaviour {
         pos.y = transform.position.y - 1f;
 
         GameObject wall = PhotonNetwork.Instantiate ("technics/earthWall", pos, orientation.rotation);
+        wall.transform.position = new Vector3 (wall.transform.position.x, wall.transform.position.y + (wall.GetComponent<earthWallManager>().targetYScale / 2), wall.transform.position.z);
 
         return responce;
     }

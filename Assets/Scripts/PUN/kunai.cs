@@ -82,6 +82,7 @@ public class kunai : MonoBehaviour, IPunObservable
         pin.transform.position = transform.position;
         pin.transform.rotation = transform.rotation;
         pin.transform.parent = hitData.transform;
+        Debug.Log (hitData.transform.gameObject.name);
         
 
         if (hitData.transform.gameObject.tag == "Player") {
