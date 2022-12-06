@@ -13,7 +13,7 @@ _https://github.com/jekuper/handsignes/blob/master/RonikaraSetup.exe_
 
 Itch.io page:
 
-_https://itch.io/dashboard_
+_https://jekuper.itch.io/ronikara_
 
 Telegram channel:
 
