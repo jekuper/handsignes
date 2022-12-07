@@ -3,9 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class earthWallManager : MonoBehaviour
-{
-    [SerializeField] Collider boxCollider;
+public class earthWallManager : MonoBehaviour {
+    [SerializeField] Collider boxCollider1;
+    [SerializeField] Collider boxCollider2;
     [SerializeField] Collider trigger;
     public float lifeTimer = 5;
     public float animationDuration = .5f;
@@ -16,58 +16,67 @@ public class earthWallManager : MonoBehaviour
 
     public KatanaState state;
 
-
     public Quaternion to;
     public Quaternion from;
     public Vector3 targetDirection;
+
+    public Color EarthColor;
+    public Color ElectroColor;
+    public Color WaterColor;
+    public Color FireColor;
 
     private float animationSpeed;
     //0 - increasing in size, 1 - waiting, 2 - decreasing in size
     private int stage = 0;
 
-    private PhotonView PV;
     private float moveTimer = -1f;
+    private PhotonView PV;
+    private Renderer rd;
     private Rigidbody rb;
 
 
     private void Awake () {
         PV = GetComponent<PhotonView> ();
         rb = GetComponent<Rigidbody> ();
-        InitState ();
-        rb.isKinematic = true;
-        //if (!PV.AmOwner)
+        rd = GetComponent<MeshRenderer> ();
+        if (PV.AmOwner)
+            PV.RPC(nameof(InitState), RpcTarget.All, NetworkDataBase.localProfile.katanaState);
 
         animationSpeed = (targetYScale - startYScale) / animationDuration;
         transform.localScale = new Vector3 (transform.localScale.x, startYScale, transform.localScale.z);
         from = transform.rotation;
         to = transform.rotation;
     }
-    private void InitState () {
-        if (!PV.AmOwner)
-            return;
-        return;
-        state = NetworkDataBase.localProfile.katanaState;
+    [PunRPC]
+    private void InitState (KatanaState newState) {
+        state = newState;
         if (state == KatanaState.None)
             state = KatanaState.Earth;
         if (state == KatanaState.Earth) {
-            boxCollider.enabled = true;
+            boxCollider1.enabled = true;
+            boxCollider2.enabled = false;
+            rb.isKinematic = true;
             trigger.enabled = false;
+            rd.material.SetColor ("_Color", EarthColor);
         } else {
-            boxCollider.enabled = true;
-            trigger.enabled = false;
+            boxCollider1.enabled = false;
+            boxCollider2.enabled = true;
+            trigger.enabled = true;
 
             switch (state) {
                 case KatanaState.Water:
+                rd.material.SetColor ("_Color", WaterColor);
                 break;
                 case KatanaState.Fire:
+                rd.material.SetColor ("_Color", FireColor);
                 break;
                 case KatanaState.Electro:
+                rd.material.SetColor ("_Color", ElectroColor);
                 break;
             }
         }
     }
     public void AddForce (Transform source) {
-        return;
         if (state == KatanaState.Earth)
             return;
         from = transform.rotation;
@@ -101,7 +110,7 @@ public class earthWallManager : MonoBehaviour
         }
 
         HandleRotation ();
-//        HandleMovement ();
+        //        HandleMovement ();
     }
     private void HandleRotation () {
         transform.rotation = Quaternion.RotateTowards (transform.rotation, to, rotationSpeed * Time.deltaTime);
@@ -114,8 +123,31 @@ public class earthWallManager : MonoBehaviour
     }
 
     public void OnTriggerEnter (Collider other) {
-        if (state == KatanaState.Earth)
+        if (state == KatanaState.Earth || !PV.AmOwner)
             return;
-
+        if (other.gameObject.tag == "Player") {
+            string hitNickname = other.attachedRigidbody.GetComponent<PlayerController> ().manager.localNickname;
+            PlayerProfile hitProfile = NetworkDataBase.GetPlayerProfile (hitNickname);
+            if (hitProfile == null)
+                return;
+            if (NetworkDataBase.localProfile.teamIndex != NetworkDataBase.GetPlayerProfile (hitNickname).teamIndex) {
+                BodyState bodyState = BodyState.Earth;
+                switch (state) {
+                    case KatanaState.Water:
+                    bodyState = BodyState.Wet;
+                    break;
+                    case KatanaState.Fire:
+                    bodyState = BodyState.OnFire;
+                    break;
+                    case KatanaState.Electro:
+                    bodyState = BodyState.ElectroShock;
+                    break;
+                    case KatanaState.Earth:
+                    bodyState = BodyState.Earth;
+                    break;
+                }
+                NetworkDataBase.GetPlayerManagerPV (hitNickname).RPC (nameof (PlayerProfile.SetBodyState), NetworkDataBase.GetPlayerByNickname (hitNickname), bodyState);
+            }
+        }
     }
 }

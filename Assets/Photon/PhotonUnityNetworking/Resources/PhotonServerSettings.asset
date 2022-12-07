@@ -19,7 +19,7 @@ MonoBehaviour:
     AppIdVoice: 
     AppVersion: 
     UseNameServer: 1
-    FixedRegion: EU
+    FixedRegion: RU
     Server: 
     Port: 0
     ProxyServer: 
@@ -65,6 +65,7 @@ MonoBehaviour:
   - ResetLocalProfile
   - RPC_DeathMessage
   - RPC_LeaveMessage
+  - InitState
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

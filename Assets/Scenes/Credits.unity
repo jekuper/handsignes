@@ -626,15 +626,20 @@ MonoBehaviour:
       m_Calls: []
   m_text: '<color="red">Dzhakhongir Sharipov</color>
 
-    programmer, author
+    programmer, BOSS, Game
+    designer
 
 
-    <color="red">Sobirov
-    Jovid</color>
+    <color="red">Sobirov Jovid</color>
 
-    Dev. team, PR manager
+    programmer, PR manager,
+    Tester
 
-'
+
+    <color="red">Khujamov Asadbek</color>
+
+    Tester, 2D Artist, sound
+    designer'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 7cc44bd178b5ee648920d167a5f65132, type: 2}
   m_sharedMaterial: {fileID: -5255822558132553241, guid: 7cc44bd178b5ee648920d167a5f65132, type: 2}

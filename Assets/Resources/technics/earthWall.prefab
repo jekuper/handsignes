@@ -13,12 +13,13 @@ GameObject:
   - component: {fileID: 3312174885756053722}
   - component: {fileID: 6633358385947297836}
   - component: {fileID: 4003534889251052552}
+  - component: {fileID: 3189557212396282943}
   - component: {fileID: 5605370181379721691}
   - component: {fileID: 6666818835709422212}
   - component: {fileID: 9081654647215930796}
   m_Layer: 3
   m_Name: earthWall
-  m_TagString: EarthWall
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -101,18 +102,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e49e845a4ca44b419a7e7efd7ef189d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  boxCollider: {fileID: 0}
-  trigger: {fileID: 0}
+  boxCollider1: {fileID: 4003534889251052552}
+  boxCollider2: {fileID: 3189557212396282943}
+  trigger: {fileID: 6688600010488437145}
   lifeTimer: 60
   animationDuration: 0.2
   rotationSpeed: 180
   startYScale: 0.01
   targetYScale: 5
-  moveImpulse: 10
+  moveImpulse: 25
   state: 0
   to: {x: 0, y: 0, z: 0, w: 0}
   from: {x: 0, y: 0, z: 0, w: 0}
   targetDirection: {x: 0, y: 0, z: 0}
+  EarthColor: {r: 0.70980394, g: 0.4156863, b: 0.13725491, a: 0}
+  ElectroColor: {r: 0.882353, g: 0, b: 1, a: 0}
+  WaterColor: {r: 0, g: 0.75294125, b: 1, a: 0}
+  FireColor: {r: 1, g: 0.808, b: 0, a: 0}
 --- !u!65 &4003534889251052552
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -126,6 +132,19 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!65 &3189557212396282943
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 315341318854090276}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 0
+  serializedVersion: 2
+  m_Size: {x: 1, y: 0.005, z: 1}
+  m_Center: {x: 0, y: -0.5, z: 0}
 --- !u!114 &5605370181379721691
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -193,7 +212,7 @@ GameObject:
   - component: {fileID: 6688600010488437145}
   m_Layer: 3
   m_Name: trigger
-  m_TagString: Untagged
+  m_TagString: EarthWall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

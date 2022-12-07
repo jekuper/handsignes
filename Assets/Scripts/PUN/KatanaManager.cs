@@ -94,11 +94,11 @@ public class KatanaManager : MonoBehaviour
                 string hitNickname = other.transform.parent.parent.parent.GetComponent<PhotonView>().Owner.NickName;
                 CmdTriggerResponce(hitNickname);
             } else if (other.tag == "EarthWall") {
-                MoveEarthWall (other);
+                MoveEarthWall (other.transform.parent.gameObject);
             }
         }
     }
-    public void MoveEarthWall (Collider wall) { 
+    public void MoveEarthWall (GameObject wall) { 
         if (!wall.GetComponent<PhotonView> ().AmOwner)
             return;
         wall.GetComponent<earthWallManager> ().AddForce (orientation);

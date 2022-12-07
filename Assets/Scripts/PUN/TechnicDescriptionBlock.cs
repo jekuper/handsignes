@@ -16,6 +16,9 @@ public class TechnicDescriptionBlock : MonoBehaviour
     public void Load (TechnicDescription technic) {
         technicTag = technic.tag;
         technicName.text = technic.name;
+        if (NetworkDataBase.starredTechnics[technic.tag]) {
+            star.sprite = starSprite;
+        }
         if (technic.isCalculatedManaCost)
         {
             technicCost.text = "Not fixed";

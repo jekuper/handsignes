@@ -98,17 +98,17 @@ public class technicsManager : MonoBehaviour {
     private void AddTechnic (Func<technicExecutionResult> act, string tag, int manaCost, string description, string name) {
         technics.Add (tag, new Technic (act, tag, manaCost, description, name));
         if (PV.AmOwner) {
-            NetworkDataBase.technicDescription.Add (tag, new TechnicDescription (tag, name, description, false, manaCost));
             if (!NetworkDataBase.starredTechnics.ContainsKey (tag))
                 NetworkDataBase.starredTechnics.Add (tag, false);
+            NetworkDataBase.technicDescription.Add (tag, new TechnicDescription (tag, name, description, false, manaCost));
         }
     }
     private void AddTechnic (Func<technicExecutionResult> act, string tag, string description, string name) {
         technics.Add (tag, new Technic (act, tag, description, name));
         if (PV.AmOwner) {
-            NetworkDataBase.technicDescription.Add (tag, new TechnicDescription (tag, name, description, true, -9999));
             if (!NetworkDataBase.starredTechnics.ContainsKey (tag))
                 NetworkDataBase.starredTechnics.Add (tag, false);
+            NetworkDataBase.technicDescription.Add (tag, new TechnicDescription (tag, name, description, true, -9999));
         }
     }
 

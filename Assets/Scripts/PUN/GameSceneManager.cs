@@ -49,6 +49,7 @@ public class GameSceneManager : MonoBehaviourPunCallbacks, IPunObservable
         HandlePause();
         CheckWinner ();
         HandleWinScreen ();
+        UpdateStarredTechnics ();
     }
     private void HandleSoloKick () {
         if (PhotonNetwork.PlayerList.Length == 1 && !isLeaving) {
