@@ -26,5 +26,6 @@ public class GamePlayManager : MonoBehaviour
     {
         NetworkDataBase.localProfile.teamIndex = index;
         GameObject playerInst = PhotonNetwork.Instantiate ("PlayerPrefab", spawnPoints[index % spawnPoints.Length].position, Quaternion.identity);
+        playerInst.GetComponent<PlayerLook> ().InitiateSpawnRotation(spawnPoints[index % spawnPoints.Length].rotation);
     }
 }

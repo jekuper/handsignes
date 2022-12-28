@@ -175,7 +175,7 @@ public class RoomManager : MonoBehaviourPunCallbacks
             return;
         PhotonNetwork.CurrentRoom.IsOpen = false;
         PhotonNetwork.CurrentRoom.IsVisible = false;
-        PhotonNetwork.LoadLevel("Map1");
+        PhotonNetwork.LoadLevel("Map2");
     }
     public void SwitchUI(string type)
     {

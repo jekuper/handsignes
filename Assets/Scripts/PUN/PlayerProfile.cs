@@ -129,7 +129,6 @@ public class PlayerProfile : LivingCreature, IPunObservable
         GameSceneManager.singleton.ShowObserveMenu ();
     }
     public override void OnDamage () {
-        Debug.Log ("damaged");
         if (!GetComponent<PhotonView> ().AmOwner)
             return;
         GameSceneManager.singleton.IndicateDamage ();

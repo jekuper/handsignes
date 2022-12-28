@@ -172,7 +172,7 @@ public class GameSceneManager : MonoBehaviourPunCallbacks, IPunObservable
     [PunRPC]
     private void ReloadScene () {
         ResetLocalProfile ();
-        PhotonNetwork.LoadLevel ("Map1");
+        PhotonNetwork.LoadLevel ("Map2");
     }
     [PunRPC]
     public void ResetLocalProfile () {

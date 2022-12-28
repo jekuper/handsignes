@@ -8,7 +8,7 @@ public class KatanaManager : MonoBehaviour
     public float damage = 15;
     public bool isOff = false;
     public float earthWallImpulse;
-    public Texture noneTexture, waterTexture, fireTexture, electroTexture, earthTexture;
+    public Material noneMaterial, waterMaterial, fireMaterial, electroMaterial, earthMaterial;
 
     private bool isTriggerOff = false;
     [SerializeField] private Transform orientation;
@@ -47,15 +47,15 @@ public class KatanaManager : MonoBehaviour
     public void RpcShow(KatanaState state)
     {
         if (state == KatanaState.None)
-            katanaRenderer.material.SetTexture("_MainTex", noneTexture);
+            katanaRenderer.materials[2].CopyPropertiesFromMaterial(noneMaterial);
         if (state == KatanaState.Water)
-            katanaRenderer.material.SetTexture("_MainTex", waterTexture);
+            katanaRenderer.materials[2].CopyPropertiesFromMaterial (waterMaterial);
         if (state == KatanaState.Fire)
-            katanaRenderer.material.SetTexture("_MainTex", fireTexture);
+            katanaRenderer.materials[2].CopyPropertiesFromMaterial (fireMaterial);
         if (state == KatanaState.Electro)
-            katanaRenderer.material.SetTexture("_MainTex", electroTexture);
+            katanaRenderer.materials[2].CopyPropertiesFromMaterial (electroMaterial);
         if (state == KatanaState.Earth)
-            katanaRenderer.material.SetTexture("_MainTex", earthTexture);
+            katanaRenderer.materials[2].CopyPropertiesFromMaterial (earthMaterial);
         weaponHolder.SetActive(true);
     }
     [PunRPC]

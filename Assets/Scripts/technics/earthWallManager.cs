@@ -53,14 +53,11 @@ public class earthWallManager : MonoBehaviour {
         if (state == KatanaState.None)
             state = KatanaState.Earth;
         if (state == KatanaState.Earth) {
-            boxCollider1.enabled = true;
-            boxCollider2.enabled = false;
-            rb.isKinematic = true;
             trigger.enabled = false;
+            rb.isKinematic = true;
             rd.material.SetColor ("_Color", EarthColor);
         } else {
-            boxCollider1.enabled = false;
-            boxCollider2.enabled = true;
+            gameObject.layer = 9;
             trigger.enabled = true;
 
             switch (state) {
@@ -77,7 +74,7 @@ public class earthWallManager : MonoBehaviour {
         }
     }
     public void AddForce (Transform source) {
-        if (state == KatanaState.Earth)
+        if (state == KatanaState.Earth || !PV.AmOwner)
             return;
         from = transform.rotation;
         if (Vector3.Angle (transform.forward, source.forward) < Vector3.Angle (transform.forward, -source.forward))

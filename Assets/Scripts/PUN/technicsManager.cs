@@ -219,7 +219,7 @@ public class technicsManager : MonoBehaviour {
         pos.y = transform.position.y - 1f;
 
         GameObject wall = PhotonNetwork.Instantiate ("technics/earthWall", pos, orientation.rotation);
-        wall.transform.position = new Vector3 (wall.transform.position.x, wall.transform.position.y + (wall.GetComponent<earthWallManager>().targetYScale / 2), wall.transform.position.z);
+        wall.transform.position = new Vector3 (wall.transform.position.x, wall.transform.position.y + (wall.GetComponent<earthWallManager>().targetYScale / 2) + 0.3f, wall.transform.position.z);
 
         return responce;
     }

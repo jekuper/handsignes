@@ -10,14 +10,14 @@ TagManager:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - Ground
+  - WallRunGround
   - Water
   - UI
   - noWallClipping
   - interactable
   - postProcessing
-  - 
-  - 
+  - passableWall
+  - Ground
   - 
   - 
   - 

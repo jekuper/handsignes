@@ -49,6 +49,10 @@ public class PlayerLook : MonoBehaviour, IPunObservable
             Cursor.visible = false;
         }
     }
+    public void InitiateSpawnRotation (Quaternion rot) {
+        yRotation = rot.eulerAngles.y;
+        xRotation = rot.eulerAngles.x;
+    }
 
 
 
