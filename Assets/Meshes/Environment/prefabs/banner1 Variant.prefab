@@ -61,7 +61,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 243cd466078ca3546bf72ae70e7c04b8, type: 2}
+  - {fileID: 2100000, guid: 3cda96f527c63544a808920dfdf48aa0, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -190,4 +190,11 @@ MonoBehaviour:
   - {fileID: 2800000, guid: 304d09484e54f0845ae56e7f3da0b4e0, type: 3}
   - {fileID: 2800000, guid: e348d2314b84f8340bcd409de52468b6, type: 3}
   - {fileID: 2800000, guid: 1b34f5bbdc7c3a047b5575e038ea6257, type: 3}
+  hologramColors:
+  - {r: 16.002964, g: 0.4077188, b: 0, a: 0}
+  - {r: 0.19117972, g: 0, b: 2.6082377, a: 0}
+  - {r: 0.87055045, g: 0.29018348, b: 0, a: 0}
+  - {r: 2.6082375, g: 0.04812739, b: 0, a: 0}
+  - {r: 0, g: 7.3772106, b: 1.5835898, a: 0}
+  transitionDuration: 1
   rd: {fileID: 8734726812782645051}

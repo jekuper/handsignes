@@ -33,6 +33,14 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
+    - _hologram_a03ffff4d626455dadff84f4947a2ddb_hologramTexture_2071813291:
+        m_Texture: {fileID: 2800000, guid: 5fd6afc23c492044cb2c6dda2af68eb2, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _hologram_b0751dfe0de54ae196a90b0ac7da9903_hologramTexture_2071813291:
+        m_Texture: {fileID: 2800000, guid: 5fd6afc23c492044cb2c6dda2af68eb2, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _texture1:
         m_Texture: {fileID: 2800000, guid: c0ea8244a144c184faf48d995542d1c9, type: 3}
         m_Scale: {x: 1, y: 1}
@@ -58,5 +66,7 @@ Material:
     - _QueueControl: 0
     - _QueueOffset: 0
     - _blendValue: 0
-    m_Colors: []
+    - _scroll_speed: 0.1
+    m_Colors:
+    - _hologram_Color: {r: 16.002964, g: 0.4077188, b: 0, a: 0}
   m_BuildTextureStacks: []

@@ -52,10 +52,15 @@ public class TechnicDescription
         manaCost = _manaCost;
     }
 }
+public enum GameType {
+    Multiplayer,
+    Singleplayer,
+}
 
 public static class NetworkDataBase
 {
     public static ServerSettings photonServerSettings;
+    public static GameType gameType = GameType.Singleplayer;
 
     public static void SaveSettings () {
         string json = JsonConvert.SerializeObject (settings);

@@ -10,4 +10,7 @@ public class PlayModeSelectManager : MonoBehaviour
         if (PhotonNetwork.IsConnected)
             PhotonNetwork.Disconnect();
     }
+    public void SetGameType (int type) {
+        NetworkDataBase.gameType = (GameType)type;
+    }
 }

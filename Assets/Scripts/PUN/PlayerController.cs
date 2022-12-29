@@ -20,6 +20,9 @@ public class PlayerController : MonoBehaviour
         PV = GetComponent<PhotonView>();
         if (PV.AmOwner)
             PV.RPC(nameof(Initialize), RpcTarget.All, PhotonNetwork.LocalPlayer.NickName);
+        if (NetworkDataBase.gameType == GameType.Singleplayer) {
+            Initialize (NetworkDataBase.settings.nickname);
+        }
     }
     public void UnFreeze()
     {

@@ -20,6 +20,9 @@ public class PlayerManager : MonoBehaviour
 
         if (PV.AmOwner)
             PV.RPC(nameof(Initialize), RpcTarget.AllBuffered, PhotonNetwork.LocalPlayer.NickName);
+        if (NetworkDataBase.gameType == GameType.Singleplayer) {
+            Initialize (NetworkDataBase.settings.nickname);
+        }
     }
 
     [PunRPC]
@@ -30,7 +33,7 @@ public class PlayerManager : MonoBehaviour
 
         if (PV == null)
             PV = GetComponent<PhotonView>();
-        if (PV.AmOwner)
+        if (PV.AmOwner || NetworkDataBase.gameType == GameType.Singleplayer)
         {
             isLocalPlayer = true;
         }
