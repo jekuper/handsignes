@@ -161,19 +161,25 @@ public static class NetworkDataBase
         }
     }
     public static int SearchWinnerTeam () {
-        if (!PhotonNetwork.IsMasterClient)
-            return -1;
-        int winTeamIndex = -1;
-        foreach (Player player in PhotonNetwork.PlayerList) {
-            PlayerProfile profile = GetPlayerProfile (player.NickName);
-            if (profile.IsAlive) {
-                if (winTeamIndex != -1)
-                    return -1;
-                winTeamIndex = profile.teamIndex;
+        if (gameType == GameType.Multiplayer) {
+            if (!PhotonNetwork.IsMasterClient)
+                return -1;
+            int winTeamIndex = -1;
+            foreach (Player player in PhotonNetwork.PlayerList) {
+                PlayerProfile profile = GetPlayerProfile (player.NickName);
+                if (profile.IsAlive) {
+                    if (winTeamIndex != -1)
+                        return -1;
+                    winTeamIndex = profile.teamIndex;
+                }
             }
+            if (winTeamIndex == -1)
+                return 1;
+            return winTeamIndex;
+        } else {
+            if (localProfile.IsAlive)
+                return -1;
+            return 1;
         }
-        if (winTeamIndex == -1)
-            return 0;
-        return winTeamIndex;
     }
 }

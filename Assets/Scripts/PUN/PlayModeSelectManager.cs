@@ -12,5 +12,10 @@ public class PlayModeSelectManager : MonoBehaviour
     }
     public void SetGameType (int type) {
         NetworkDataBase.gameType = (GameType)type;
+        if (NetworkDataBase.gameType == GameType.Singleplayer) {
+            PhotonNetwork.OfflineMode = true;
+        } else {
+            PhotonNetwork.OfflineMode = false;
+        }
     }
 }

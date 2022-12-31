@@ -24,6 +24,9 @@ EditorBuildSettings:
     path: Assets/Scenes/Credits.unity
     guid: 693eacad208b33246821468e5f4289e1
   - enabled: 1
+    path: Assets/Scenes/singlePlayerLobby.unity
+    guid: 0e0ef19705a2d894bb63aea1a7884e36
+  - enabled: 1
     path: Assets/Scenes/Map2.unity
     guid: 2dc1cbe4615effc498917f7320a29e41
   m_configObjects: {}

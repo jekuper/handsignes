@@ -52,7 +52,7 @@ public class GameSceneManager : MonoBehaviourPunCallbacks, IPunObservable
         UpdateStarredTechnics ();
     }
     private void HandleSoloKick () {
-        if (PhotonNetwork.PlayerList.Length == 1 && !isLeaving) {
+        if (PhotonNetwork.PlayerList.Length == 1 && !isLeaving && NetworkDataBase.gameType != GameType.Singleplayer) {
             PhotonNetwork.Disconnect ();
             isLeaving = true;
         }
@@ -263,7 +263,10 @@ public class GameSceneManager : MonoBehaviourPunCallbacks, IPunObservable
         NetworkDataBase.playersManagers.Clear();
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
-        SceneManager.LoadScene("BRLobby");
+        if (NetworkDataBase.gameType == GameType.Multiplayer)
+            SceneManager.LoadScene("BRLobby");
+        else
+            SceneManager.LoadScene("singlePlayerLobby");
     }
     public override void OnPlayerLeftRoom (Player otherPlayer) {
         SendLeaveMessage (otherPlayer);

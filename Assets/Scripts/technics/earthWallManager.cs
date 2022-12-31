@@ -55,20 +55,20 @@ public class earthWallManager : MonoBehaviour {
         if (state == KatanaState.Earth) {
             trigger.enabled = false;
             rb.isKinematic = true;
-            rd.material.SetColor ("_Color", EarthColor);
+            rd.material.SetColor ("_BaseColor", EarthColor);
         } else {
             gameObject.layer = 9;
             trigger.enabled = true;
 
             switch (state) {
                 case KatanaState.Water:
-                rd.material.SetColor ("_Color", WaterColor);
+                rd.material.SetColor ("_BaseColor", WaterColor);
                 break;
                 case KatanaState.Fire:
-                rd.material.SetColor ("_Color", FireColor);
+                rd.material.SetColor ("_BaseColor", FireColor);
                 break;
                 case KatanaState.Electro:
-                rd.material.SetColor ("_Color", ElectroColor);
+                rd.material.SetColor ("_BaseColor", ElectroColor);
                 break;
             }
         }
