@@ -10,6 +10,7 @@ public class PlayerController : MonoBehaviour
     public Transform cameraPosition;
 
     [SerializeField] GameObject canvas;
+    [SerializeField] GameObject snowEmmiter;
     [SerializeField] SkinnedMeshRenderer[] renderers;
     PhotonView PV;
 
@@ -62,6 +63,7 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
+            snowEmmiter.SetActive (false);
             GetComponent<Rigidbody> ().isKinematic = true;
             foreach (SkinnedMeshRenderer renderer in renderers)
             {

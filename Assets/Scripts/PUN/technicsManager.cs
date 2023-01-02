@@ -81,7 +81,7 @@ public class technicsManager : MonoBehaviour {
         AddTechnic (BlowFireParticle, "01210", 150, "creates flow of fire. Each particle have 1 damage. 5 seconds long", "fire flow");
         AddTechnic (BlowWaterParticle, "12010", 150, "creates flow of water. Each particle have 0.5 damage. 5 seconds long", "water flow");
         AddTechnic (EarthWall, "0210", 60, "creates a wall in direction you are looking", "wall");
-        AddTechnic (EarthPrison, "01012", "creates a box around certain player. Before and during using aim on your target player", "earth prison");
+        AddTechnic (EarthPrison, "01012", "creates a box around certain player. Before and during using aim on your target player", "metal prison");
         AddTechnic (LavaFloor, "02012", 120, "replaces floor with lava under you", "Lava Floor");
         AddTechnic (ToogleManaRegen, "2", 0, "Toogles mana regenration. You can not move during mana regen", "regen mana");
         AddTechnic (SetKatanaWater, "00", 0, "sets your katana mode to water. If player's body has wet status, than player's view blurs and damage from electro katana is doubled. Dispells body's fire state", "katana water");
@@ -219,7 +219,7 @@ public class technicsManager : MonoBehaviour {
         pos.y = transform.position.y - 1f;
 
         GameObject wall = PhotonNetwork.Instantiate ("technics/earthWall", pos, orientation.rotation);
-        wall.transform.position = new Vector3 (wall.transform.position.x, wall.transform.position.y + (wall.GetComponent<earthWallManager>().targetYScale / 2) + 0.3f, wall.transform.position.z);
+        wall.transform.position = new Vector3 (wall.transform.position.x, wall.transform.position.y + (wall.GetComponent<earthWallManager>().targetYScale / 2), wall.transform.position.z);
 
         return responce;
     }

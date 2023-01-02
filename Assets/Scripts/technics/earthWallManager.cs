@@ -4,8 +4,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class earthWallManager : MonoBehaviour {
-    [SerializeField] Collider boxCollider1;
-    [SerializeField] Collider boxCollider2;
     [SerializeField] Collider trigger;
     public float lifeTimer = 5;
     public float animationDuration = .5f;
@@ -20,10 +18,10 @@ public class earthWallManager : MonoBehaviour {
     public Quaternion from;
     public Vector3 targetDirection;
 
-    public Color EarthColor;
-    public Color ElectroColor;
-    public Color WaterColor;
-    public Color FireColor;
+    public GameObject EarthWall;
+    public GameObject ElectroWall;
+    public GameObject WaterWall;
+    public GameObject FireWall;
 
     private float animationSpeed;
     //0 - increasing in size, 1 - waiting, 2 - decreasing in size
@@ -52,25 +50,28 @@ public class earthWallManager : MonoBehaviour {
         state = newState;
         if (state == KatanaState.None)
             state = KatanaState.Earth;
+        switch (state) {
+            case KatanaState.Earth:
+            EarthWall.SetActive (true);
+            break;
+            case KatanaState.Water:
+            WaterWall.SetActive (true);
+            break;
+            case KatanaState.Fire:
+            FireWall.SetActive (true);
+            break;
+            case KatanaState.Electro:
+            ElectroWall.SetActive (true);
+            break;
+        }
+
         if (state == KatanaState.Earth) {
             trigger.enabled = false;
             rb.isKinematic = true;
-            rd.material.SetColor ("_BaseColor", EarthColor);
         } else {
             gameObject.layer = 9;
             trigger.enabled = true;
 
-            switch (state) {
-                case KatanaState.Water:
-                rd.material.SetColor ("_BaseColor", WaterColor);
-                break;
-                case KatanaState.Fire:
-                rd.material.SetColor ("_BaseColor", FireColor);
-                break;
-                case KatanaState.Electro:
-                rd.material.SetColor ("_BaseColor", ElectroColor);
-                break;
-            }
         }
     }
     public void AddForce (Transform source) {
@@ -94,6 +95,7 @@ public class earthWallManager : MonoBehaviour {
         }
         if (stage == 1) {
             lifeTimer -= Time.deltaTime;
+            transform.localScale = new Vector3 (transform.localScale.x, targetYScale, transform.localScale.z);
             if (lifeTimer < 0) {
                 stage = 2;
             }
