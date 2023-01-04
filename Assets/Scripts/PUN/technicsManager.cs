@@ -78,10 +78,11 @@ public class technicsManager : MonoBehaviour {
             NetworkDataBase.technicDescription.Clear ();
         }
 
-        AddTechnic (BlowFireParticle, "01210", 150, "creates flow of fire. Each particle have 1 damage. 5 seconds long", "fire flow");
-        AddTechnic (BlowWaterParticle, "12010", 150, "creates flow of water. Each particle have 0.5 damage. 5 seconds long", "water flow");
-        AddTechnic (EarthWall, "0210", 60, "creates a wall in direction you are looking", "wall");
-        AddTechnic (EarthPrison, "01012", "creates a box around certain player. Before and during using aim on your target player", "metal prison");
+        AddTechnic (BlowFireParticle, "01210", 150, "creates flow of fire.", "fire flow");
+        AddTechnic (BlowWaterParticle, "12010", 150, "creates flow of water.", "water flow");
+        AddTechnic (EarthWall, "0210", 60, "creates a wall in direction you are looking. Wall have same element as your katana. Walls with certain elements can be moved using katana attack", "wall");
+        AddTechnic (EarthPrison, "01012", "creates a box around certain player. Aim on your target player", "metal prison");
+        AddTechnic (WallTrap, "1010", 100, "creates a block which is not visible for your enemies. When enemy comes closer to it, it will activate and push this enemy", "wall trap");
         AddTechnic (LavaFloor, "02012", 120, "replaces floor with lava under you", "Lava Floor");
         AddTechnic (ToogleManaRegen, "2", 0, "Toogles mana regenration. You can not move during mana regen", "regen mana");
         AddTechnic (SetKatanaWater, "00", 0, "sets your katana mode to water. If player's body has wet status, than player's view blurs and damage from electro katana is doubled. Dispells body's fire state", "katana water");
@@ -162,11 +163,6 @@ public class technicsManager : MonoBehaviour {
         if (isOff)
             return;
 
-        //        if (ClonesManager.clones[ClonesManager.activeIndex].cloneType == CloneType.Simple && buffer != "0") {
-        //            return;
-        //        }
-
-        //        Debug.Log (buffer);
         if (!NetworkDataBase.technicDescription.ContainsKey (buffer)) {
             return;
         }
@@ -263,6 +259,20 @@ public class technicsManager : MonoBehaviour {
 
         return responce;
     }
+    public technicExecutionResult WallTrap () {
+        technicExecutionResult responce = new technicExecutionResult ();
+
+        RaycastHit info;
+        Vector3 start = NetworkDataBase.localPlayerManager.controller.cameraPosition.position;
+        Vector3 toward = NetworkDataBase.localPlayerManager.controller.cameraPosition.forward;
+        if (Physics.Raycast (start, toward, out info, 20, (1 << 3))) {
+            GameObject WallInst = PhotonNetwork.Instantiate ("technics/OnWallTrap", info.point, Quaternion.LookRotation(info.normal));
+            WallInst.GetComponent<WallTrapManager> ().teamIndex = NetworkDataBase.localProfile.teamIndex;
+            Debug.DrawRay (info.point, info.normal, Color.green, 10000);
+        }
+
+        return responce;
+    }
     public technicExecutionResult SetKatanaWater () {
         technicExecutionResult responce = new technicExecutionResult ();
         NetworkDataBase.localProfile.katanaState = KatanaState.Water;
@@ -278,7 +288,7 @@ public class technicsManager : MonoBehaviour {
     public technicExecutionResult SetKatanaElectro () {
         technicExecutionResult responce = new technicExecutionResult ();
         NetworkDataBase.localProfile.katanaState = KatanaState.Electro;
-        NetworkDataBase.localProfile.UnSetBodyState (BodyState.Earth);
+        NetworkDataBase.localProfile.UnSetBodyState (BodyState.Metal);
         return responce;
     }
     public technicExecutionResult SetKatanaEarth () {

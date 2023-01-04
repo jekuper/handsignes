@@ -3,17 +3,22 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Rendering.PostProcessing;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
 using UnityEngine.UI;
 
 public class BodyStateManager : MonoBehaviour
 {
     [SerializeField] StunManager stun;
     [SerializeField] Sprite[] bodyStatesSprites;
+    [SerializeField] SkinnedMeshRenderer body_rd, head_rd;
+    [SerializeField] Material metalMaterial0, metalMaterial1;
+    [SerializeField] ParticleSystem waterEffect;
+    [SerializeField] ParticleSystem fireEffect;
+    [SerializeField] ParticleSystem electroEffect;
     public float fireDamage = 0.5f;
     public float electroTimer = 10f;
 
-    PostProcessVolume pp;
     UIPositionEffector[] bodyStatesEffectors;
     Image[] bodyStatesImages;
 
@@ -26,7 +31,6 @@ public class BodyStateManager : MonoBehaviour
 
     private void Start()
     {
-        pp = NetworkLevelData.singleton.pp;
         bodyStatesEffectors = NetworkLevelData.singleton.bodyStatesEffectors;
         bodyStatesImages = NetworkLevelData.singleton.bodyStatesImages;
         PV = GetComponent<PhotonView> ();
@@ -41,65 +45,115 @@ public class BodyStateManager : MonoBehaviour
         HandleWater();
         HandleFire();
         HandleElectro();
-        HandleEarth();
+        HandleMetal();
 
         lastState = NetworkDataBase.localProfile.bodyState;
     }
+    #region Water
     private void HandleWater()
     {
         if (NetworkDataBase.localProfile.bodyState.HasFlag(BodyState.Wet) &&
            !lastState.HasFlag(BodyState.Wet))
         {
             BlurCamera();
+            PV.RPC (nameof (RPC_WaterEffect), RpcTarget.All, true);
             AddCell (BodyState.Wet);
         }
         else if (!NetworkDataBase.localProfile.bodyState.HasFlag(BodyState.Wet) &&
           lastState.HasFlag(BodyState.Wet))
         {
             UnBlurCamera();
-            DeleteCell(BodyState.Wet);
+            PV.RPC (nameof (RPC_WaterEffect), RpcTarget.All, false);
+            DeleteCell (BodyState.Wet);
         }
     }
+    [PunRPC]
+    private void RPC_WaterEffect (bool state) {
+        if (state)
+            waterEffect.Play ();
+        else
+            waterEffect.Stop ();
+    }
+    #endregion
+    #region Fire
     private void HandleFire()
     {
         if (NetworkDataBase.localProfile.bodyState.HasFlag(BodyState.OnFire) &&
             !lastState.HasFlag(BodyState.OnFire))
         {
             StartCoroutine(OnFireResponce());
-            AddCell(BodyState.OnFire);
+            PV.RPC (nameof (RPC_FireEffect), RpcTarget.All, true);
+            AddCell (BodyState.OnFire);
         } else if (!NetworkDataBase.localProfile.bodyState.HasFlag(BodyState.OnFire) &&
             lastState.HasFlag(BodyState.OnFire))
         {
+            PV.RPC (nameof (RPC_FireEffect), RpcTarget.All, false);
             DeleteCell(BodyState.OnFire);
         }
     }
+
+    [PunRPC]
+    private void RPC_FireEffect (bool state) {
+        if (state)
+            fireEffect.Play ();
+        else
+            fireEffect.Stop ();
+    }
+    #endregion
+    #region Electro
     private void HandleElectro()
     {
         if (NetworkDataBase.localProfile.bodyState.HasFlag(BodyState.ElectroShock) &&
             !lastState.HasFlag(BodyState.ElectroShock))
         {
             electroCoroutine = StartCoroutine(ElectroResponce());
-            AddCell(BodyState.ElectroShock);
+            PV.RPC (nameof (RPC_ElectroEffect), RpcTarget.All, true);
+            AddCell (BodyState.ElectroShock);
         }
         else if (!NetworkDataBase.localProfile.bodyState.HasFlag(BodyState.ElectroShock) &&
             lastState.HasFlag(BodyState.ElectroShock))
         {
+            PV.RPC (nameof (RPC_ElectroEffect), RpcTarget.All, false);
             DeleteCell(BodyState.ElectroShock);
         }
     }
-    private void HandleEarth()
+    [PunRPC]
+    private void RPC_ElectroEffect (bool state) {
+        if (state)
+            electroEffect.Play ();
+        else
+            electroEffect.Stop ();
+    }
+    #endregion
+    #region Metal
+    private void HandleMetal()
     {
-        if (NetworkDataBase.localProfile.bodyState.HasFlag(BodyState.Earth) &&
-            !lastState.HasFlag(BodyState.Earth))
+        if (NetworkDataBase.localProfile.bodyState.HasFlag(BodyState.Metal) &&
+            !lastState.HasFlag(BodyState.Metal))
         {
-            AddCell(BodyState.Earth);
+            AddCell(BodyState.Metal);
+            PV.RPC (nameof (RPC_MetalEffect), RpcTarget.All, true);
         }
-        else if (!NetworkDataBase.localProfile.bodyState.HasFlag(BodyState.Earth) &&
-          lastState.HasFlag(BodyState.Earth))
+        else if (!NetworkDataBase.localProfile.bodyState.HasFlag(BodyState.Metal) &&
+          lastState.HasFlag(BodyState.Metal))
         {
-            DeleteCell(BodyState.Earth);
+            DeleteCell(BodyState.Metal);
+            PV.RPC (nameof (RPC_MetalEffect), RpcTarget.All, false);
         }
     }
+    [PunRPC]
+    private void RPC_MetalEffect (bool state) {
+        if (!state) {
+            body_rd.materials[0].CopyPropertiesFromMaterial (metalMaterial0);
+            head_rd.materials[0].CopyPropertiesFromMaterial (metalMaterial0);
+        } else {
+            body_rd.materials[0].CopyPropertiesFromMaterial (metalMaterial1);
+            head_rd.materials[0].CopyPropertiesFromMaterial (metalMaterial1);
+        }
+    }
+    #endregion
+
+
     private void AddCell(BodyState state)
     {
         int index = GetFirstFreeUI();
@@ -111,7 +165,7 @@ public class BodyStateManager : MonoBehaviour
             bodyStatesImages[index].sprite = bodyStatesSprites[1];
         if (state == BodyState.ElectroShock)
             bodyStatesImages[index].sprite = bodyStatesSprites[2];
-        if (state == BodyState.Earth)
+        if (state == BodyState.Metal)
             bodyStatesImages[index].sprite = bodyStatesSprites[3];
     }
     private void DeleteCell(BodyState state)
@@ -146,13 +200,20 @@ public class BodyStateManager : MonoBehaviour
 
     private void BlurCamera()
     {
-        DepthOfField blur = pp.profile.GetSetting<DepthOfField> ();
-        blur.enabled.value = true;
+        Volume volume = Camera.main.GetComponent<Volume> ();
+        DepthOfField DOF;
+
+        volume.sharedProfile.TryGet (out DOF);
+
+        DOF.active = true;
     }
-    private void UnBlurCamera()
-    {
-        DepthOfField blur = pp.profile.GetSetting<DepthOfField>();
-        blur.enabled.value = false;
+    private void UnBlurCamera() {
+        Volume volume = Camera.main.GetComponent<Volume> ();
+        DepthOfField DOF;
+
+        volume.sharedProfile.TryGet (out DOF);
+
+        DOF.active = false;
     }
     private IEnumerator OnFireResponce()
     {

@@ -130,7 +130,7 @@ public class earthWallManager : MonoBehaviour {
             if (hitProfile == null)
                 return;
             if (NetworkDataBase.localProfile.teamIndex != NetworkDataBase.GetPlayerProfile (hitNickname).teamIndex) {
-                BodyState bodyState = BodyState.Earth;
+                BodyState bodyState = BodyState.Metal;
                 switch (state) {
                     case KatanaState.Water:
                     bodyState = BodyState.Wet;
@@ -142,7 +142,7 @@ public class earthWallManager : MonoBehaviour {
                     bodyState = BodyState.ElectroShock;
                     break;
                     case KatanaState.Earth:
-                    bodyState = BodyState.Earth;
+                    bodyState = BodyState.Metal;
                     break;
                 }
                 NetworkDataBase.GetPlayerManagerPV (hitNickname).RPC (nameof (PlayerProfile.SetBodyState), NetworkDataBase.GetPlayerByNickname (hitNickname), bodyState);

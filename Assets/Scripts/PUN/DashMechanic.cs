@@ -51,7 +51,7 @@ public class DashMechanic : MonoBehaviour, IPunObservable
                     }
                 }
             }
-            if (Input.GetKeyDown (actionCode) && controlsEnabled && !NetworkDataBase.localProfile.bodyState.HasFlag(BodyState.Earth) 
+            if (Input.GetKeyDown (actionCode) && controlsEnabled && !NetworkDataBase.localProfile.bodyState.HasFlag(BodyState.Metal) 
                 && chargedDashCount > 0 && Cursor.lockState == CursorLockMode.Locked) {
                 StartCoroutine (Dash ());
                 chargedDashCount--;

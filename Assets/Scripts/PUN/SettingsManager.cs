@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using Newtonsoft.Json;
-using UnityEngine.Rendering.PostProcessing;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
 
 public class Settings {
     public string nickname = "player";
@@ -32,6 +33,7 @@ public class SettingsManager : MonoBehaviour
     [SerializeField] TMP_Dropdown resolutionDropdown;
     [SerializeField] CustomToggle effects;
     [SerializeField] CustomToggle fullscreenToogle;
+    [SerializeField] Slider sensivitySlider;
 
     List<string> dropdownOptions = new List<string>();
 
@@ -50,6 +52,8 @@ public class SettingsManager : MonoBehaviour
         set.effectsEnabled = effects.isOn;
         set.isFullsreen = fullscreenToogle.isOn;
         set.savedResolution = StringToResolution(dropdownOptions[resolutionDropdown.value]);
+        set.sensX = sensivitySlider.value;
+        set.sensY = sensivitySlider.value;
 
         NetworkDataBase.settings = set;
 
@@ -60,8 +64,9 @@ public class SettingsManager : MonoBehaviour
         nicknameField.text = set.nickname;
         effects.isOn = set.effectsEnabled;
         fullscreenToogle.isOn = set.isFullsreen;
+        sensivitySlider.value = set.sensX;
 
-        for(int i = 0; i < regionDropdown.options.Count; i++) {
+        for (int i = 0; i < regionDropdown.options.Count; i++) {
             if (regionDropdown.options[i].text.Split(", ")[1] == set.serverRegion) {
                 regionDropdown.value = i;
                 regionDropdown.RefreshShownValue ();
@@ -116,8 +121,16 @@ public class SettingsManager : MonoBehaviour
 
         Settings set = JsonConvert.DeserializeObject<Settings> (json);
 
-        NetworkDataBase.ppProfile.GetSetting<Bloom>().enabled.value = set.effectsEnabled;
-        NetworkDataBase.ppProfile.GetSetting<MotionBlur>().enabled.value = set.effectsEnabled;
+        Volume volume = Camera.main.GetComponent<Volume> ();
+        Bloom bloom;
+        ChromaticAberration CA;
+
+        volume.sharedProfile.TryGet (out bloom);
+        volume.sharedProfile.TryGet (out CA);
+
+        bloom.active = set.effectsEnabled;
+        CA.active = set.effectsEnabled;
+
         NetworkDataBase.photonServerSettings.AppSettings.FixedRegion = set.serverRegion;
 
 

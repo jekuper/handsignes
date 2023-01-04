@@ -80,8 +80,8 @@ public class PlayerLook : MonoBehaviour, IPunObservable
     }
     private void LateUpdate()
     {
-        if (NetworkDataBase.LocalInternalUserData.mouseState == mouseState.Weapons) {
-        shoulderR.localRotation = shoulderRRotation;
+        if (NetworkDataBase.LocalInternalUserData.mouseState == mouseState.Weapons || !PV.AmOwner) {
+            shoulderR.localRotation = shoulderRRotation;
             //shoulderL.localRotation = shoulderLRotation;
         }
         //shoulderL.rotation = Quaternion.Euler(xRotation, shoulderL.eulerAngles.y, shoulderL.eulerAngles.z);

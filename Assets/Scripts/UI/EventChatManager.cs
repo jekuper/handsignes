@@ -2,23 +2,25 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class EventChatManager : MonoBehaviour
 {
     [SerializeField]private TextMeshProUGUI textComponent;
     [SerializeField] private TextMeshProUGUI smallTextComponent;
+    [SerializeField] private GameObject background;
 
     private Coroutine smallTextAnimation = null;
 
     private void Update () {
-        if (Cursor.lockState != CursorLockMode.Locked || Cursor.visible)
-            return;
         if (Input.GetKeyDown (KeyCode.Return)) {
             if (textComponent.alpha > 0.5) {
                 textComponent.alpha = 0;
+                background.SetActive (false);
                 smallTextComponent.gameObject.SetActive (true);
             } else {
                 textComponent.alpha = 1;
+                background.SetActive (true);
                 if (smallTextAnimation != null)
                     StopCoroutine (smallTextAnimation);
                 smallTextComponent.alpha = 0;

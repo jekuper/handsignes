@@ -202,7 +202,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -14.478}
+  m_AnchoredPosition: {x: 0, y: -14.477997}
   m_SizeDelta: {x: 0, y: -28.956}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &278847098
@@ -449,6 +449,8 @@ GameObject:
   - component: {fileID: 613647129}
   - component: {fileID: 613647128}
   - component: {fileID: 613647131}
+  - component: {fileID: 613647133}
+  - component: {fileID: 613647132}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -534,6 +536,56 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a03c90fa7b40b044b461311e5f9eefd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &613647132
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 613647127}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 172515602e62fb746b5d573b38a5fe58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IsGlobal: 1
+  priority: 0
+  blendDistance: 0
+  weight: 1
+  sharedProfile: {fileID: 11400000, guid: 7276a80f3dd76bb46a8dd10f3a434f41, type: 2}
+--- !u!114 &613647133
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 613647127}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a79441f348de89743a2939f4d699eac1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_RenderShadows: 1
+  m_RequiresDepthTextureOption: 2
+  m_RequiresOpaqueTextureOption: 2
+  m_CameraType: 0
+  m_Cameras: []
+  m_RendererIndex: -1
+  m_VolumeLayerMask:
+    serializedVersion: 2
+    m_Bits: 1
+  m_VolumeTrigger: {fileID: 0}
+  m_VolumeFrameworkUpdateModeOption: 2
+  m_RenderPostProcessing: 1
+  m_Antialiasing: 0
+  m_AntialiasingQuality: 2
+  m_StopNaN: 0
+  m_Dithering: 0
+  m_ClearDepth: 1
+  m_AllowXRRendering: 1
+  m_RequiresDepthTexture: 0
+  m_RequiresColorTexture: 0
+  m_Version: 2
 --- !u!1 &706484377
 GameObject:
   m_ObjectHideFlags: 0
@@ -704,7 +756,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -14.478}
+  m_AnchoredPosition: {x: 0, y: -14.477997}
   m_SizeDelta: {x: 0, y: -28.956}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &727419237
@@ -1200,8 +1252,8 @@ Canvas:
   m_GameObject: {fileID: 1247141522}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 0
-  m_Camera: {fileID: 0}
+  m_RenderMode: 1
+  m_Camera: {fileID: 613647129}
   m_PlaneDistance: 100
   m_PixelPerfect: 0
   m_ReceivesEvents: 1

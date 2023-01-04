@@ -22,7 +22,7 @@ public enum BodyState
     Wet = 1,
     OnFire = 2,
     ElectroShock = 4,
-    Earth = 8,
+    Metal = 8,
 }
 public enum KatanaState
 {
@@ -76,7 +76,6 @@ public static class NetworkDataBase
     public static Dictionary<string, bool> starredTechnics = new Dictionary<string, bool> ();
 
     public static Settings settings = new Settings();
-    public static PostProcessProfile ppProfile;
 
     public static PlayerProfile localProfile {
         get {

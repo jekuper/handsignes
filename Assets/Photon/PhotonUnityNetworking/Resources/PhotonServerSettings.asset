@@ -19,7 +19,7 @@ MonoBehaviour:
     AppIdVoice: 
     AppVersion: 
     UseNameServer: 1
-    FixedRegion: RU
+    FixedRegion: EU
     Server: 
     Port: 0
     ProxyServer: 
@@ -66,6 +66,12 @@ MonoBehaviour:
   - RPC_DeathMessage
   - RPC_LeaveMessage
   - InitState
+  - RPC_WaterEffect
+  - RPC_MetalEffect
+  - RPC_FireEffect
+  - RPC_ElectroEffect
+  - RPC_Effect
+  - Activate
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

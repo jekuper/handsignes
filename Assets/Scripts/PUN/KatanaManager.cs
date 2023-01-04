@@ -46,16 +46,18 @@ public class KatanaManager : MonoBehaviour
     [PunRPC]
     public void RpcShow(KatanaState state)
     {
+        Material[] newList = katanaRenderer.materials;
         if (state == KatanaState.None)
-            katanaRenderer.materials[2].CopyPropertiesFromMaterial(noneMaterial);
+            newList[2] = (noneMaterial);
         if (state == KatanaState.Water)
-            katanaRenderer.materials[2].CopyPropertiesFromMaterial (waterMaterial);
+            newList[2] = (waterMaterial);
         if (state == KatanaState.Fire)
-            katanaRenderer.materials[2].CopyPropertiesFromMaterial (fireMaterial);
+            newList[2] = (fireMaterial);
         if (state == KatanaState.Electro)
-            katanaRenderer.materials[2].CopyPropertiesFromMaterial (electroMaterial);
+            newList[2] = (electroMaterial);
         if (state == KatanaState.Earth)
-            katanaRenderer.materials[2].CopyPropertiesFromMaterial (earthMaterial);
+            newList[2] = (earthMaterial);
+        katanaRenderer.materials = newList;
         weaponHolder.SetActive(true);
     }
     [PunRPC]
@@ -132,7 +134,7 @@ public class KatanaManager : MonoBehaviour
                 NetworkDataBase.GetPlayerManagerPV (nick2).RPC (nameof (PlayerProfile.SetBodyState), NetworkDataBase.GetPlayerByNickname (nick2), BodyState.OnFire);
             }
             if (hit1Profile.katanaState.HasFlag(KatanaState.Earth)) {
-                NetworkDataBase.GetPlayerManagerPV (nick2).RPC (nameof (PlayerProfile.SetBodyState), NetworkDataBase.GetPlayerByNickname (nick2), BodyState.Earth);
+                NetworkDataBase.GetPlayerManagerPV (nick2).RPC (nameof (PlayerProfile.SetBodyState), NetworkDataBase.GetPlayerByNickname (nick2), BodyState.Metal);
             }
             NetworkDataBase.GetPlayerManagerPV (nick2).RPC(nameof(PlayerProfile.Damage), NetworkDataBase.GetPlayerByNickname(nick2), damage * damageMultiplier);
         }

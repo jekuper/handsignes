@@ -8,10 +8,8 @@ using Photon.Pun;
 public class MainMenuManager : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI version;
-    [SerializeField] PostProcessProfile ppProfile;
     private void Start () {
         version.text = "v"+ Application.version;
-        NetworkDataBase.ppProfile = ppProfile;
         NetworkDataBase.photonServerSettings = PhotonNetwork.PhotonServerSettings;
         SettingsManager.LoadSettings ();
 

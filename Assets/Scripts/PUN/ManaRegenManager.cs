@@ -7,6 +7,7 @@ public class ManaRegenManager : MonoBehaviour
 {
     [SerializeField] technicsManager techManager;
     [SerializeField] PlayerController controller;
+    [SerializeField] ParticleSystem effect;
     [SerializeField] StunManager stun;
 
     public float manaIncreaseSpeed = 10f;
@@ -25,14 +26,23 @@ public class ManaRegenManager : MonoBehaviour
         if (techManager.isRegeningMana && !lastRegenState)
         {
             stun.Stun(1000000, true, false);
+            PV.RPC (nameof (RPC_Effect), RpcTarget.All, true);
             regenCoroutine = StartCoroutine (Regen (0.1f));
         }
         else if (!techManager.isRegeningMana && lastRegenState)
         {
             stun.StunOff(true, false);
-            StopCoroutine(regenCoroutine);
+            PV.RPC (nameof (RPC_Effect), RpcTarget.All, false);
+            StopCoroutine (regenCoroutine);
         }
         lastRegenState = techManager.isRegeningMana;
+    }
+    [PunRPC]
+    private void RPC_Effect (bool state) {
+        if (state)
+            effect.Play ();
+        else
+            effect.Stop ();
     }
     private IEnumerator Regen (float syncFrequency) {
         float timer = syncFrequency;

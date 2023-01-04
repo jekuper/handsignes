@@ -214,7 +214,7 @@ public class GameSceneManager : MonoBehaviourPunCallbacks, IPunObservable
     #endregion
     #region Event Chat
     public void SendDeathMessage (PhotonMessageInfo info) {
-        if (info.Sender != null)
+        if (info.Sender != null && info.Sender.NickName != PhotonNetwork.LocalPlayer.NickName)
             PV.RPC (nameof (RPC_DeathMessage), RpcTarget.All, info.Sender.NickName, PhotonNetwork.LocalPlayer.NickName);
         else
             PV.RPC (nameof (RPC_DeathMessage), RpcTarget.All, null, PhotonNetwork.LocalPlayer.NickName);
@@ -226,7 +226,11 @@ public class GameSceneManager : MonoBehaviourPunCallbacks, IPunObservable
     }
     [PunRPC]
     public void RPC_DeathMessage (string killer, string victim) {
-        string message = killer + "<color=\"red\"> killed </color>" + victim;
+        string message;
+        if (killer != null)
+            message = killer + "<color=\"red\"> killed </color>" + victim;
+        else
+            message = victim + "<color=\"red\"> died </color>";
         eventChat.DisplayMessage(message);
     }
     [PunRPC]

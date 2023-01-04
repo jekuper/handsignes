@@ -170,8 +170,8 @@ ParticleSystem:
     startSpeed:
       serializedVersion: 2
       minMaxState: 3
-      scalar: 6
-      minScalar: 4
+      scalar: 4
+      minScalar: 2
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -609,7 +609,7 @@ ParticleSystem:
     gravityModifier:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0.1
+      scalar: 0.5
       minScalar: 0
       maxCurve:
         serializedVersion: 2
@@ -3986,7 +3986,7 @@ ParticleSystem:
         m_RotationOrder: 4
     maxLights: 20
   TrailModule:
-    enabled: 1
+    enabled: 0
     mode: 0
     ratio: 1
     lifetime:
@@ -4821,7 +4821,6 @@ ParticleSystemRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: f84a9098d8f55c0459f54d325f00103c, type: 2}
-  - {fileID: 10306, guid: 0000000000000000f000000000000000, type: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
