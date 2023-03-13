@@ -11220,6 +11220,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1216771011}
   - component: {fileID: 1216771010}
+  - component: {fileID: 1216771012}
   m_Layer: 0
   m_Name: Directional Light
   m_TagString: Untagged
@@ -11304,6 +11305,26 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+--- !u!114 &1216771012
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1216771009}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 474bcb49853aa07438625e644c072ee6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Version: 1
+  m_UsePipelineSettings: 1
+  m_AdditionalLightsShadowResolutionTier: 2
+  m_LightLayerMask: 1
+  m_CustomShadowLayers: 0
+  m_ShadowLayerMask: 1
+  m_LightCookieSize: {x: 1, y: 1}
+  m_LightCookieOffset: {x: 0, y: 0}
 --- !u!1 &1219514740
 GameObject:
   m_ObjectHideFlags: 0
@@ -11569,7 +11590,6 @@ MonoBehaviour:
   SpawnPoint: {fileID: 1127104495}
   Cam: {fileID: 1220435452}
   OverflowCam: {fileID: 23364943}
-  pp: {fileID: 0}
   ThrowableImage: {fileID: 1086773567}
   ThrowableCounter: {fileID: 175021788}
   TechnicsTimer: {fileID: 2026263696}
@@ -16258,6 +16278,8 @@ MonoBehaviour:
   sensY: 150
   speed: 4
   shiftSpeed: 13
+  uiGroup: {fileID: 0}
+  observableNicknameUI: {fileID: 0}
 --- !u!1 &1759278807
 GameObject:
   m_ObjectHideFlags: 0
@@ -18326,6 +18348,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   textComponent: {fileID: 2053126962}
   smallTextComponent: {fileID: 1621760907}
+  background: {fileID: 0}
 --- !u!1 &2056263734
 GameObject:
   m_ObjectHideFlags: 0

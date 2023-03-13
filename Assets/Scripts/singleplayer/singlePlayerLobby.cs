@@ -7,30 +7,37 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class singlePlayerLobby : MonoBehaviourPunCallbacks {
+public class singlePlayerLobby : MonoBehaviourPunCallbacks, IConnectionCallbacks {
     public LoadingWindow loadingWindow;
     public TextMeshProUGUI title;
+    public TextMeshProUGUI storyText;
     public Image[] images;
     public mapListItem[] items;
 
     private int currentMapIndex = 0;
 
     private void Start () {
-//        loadingWindow.ShowLoading ("serverConnect", "starting single player mode...");
+        //        loadingWindow.ShowLoading ("serverConnect", "starting single player mode...");
+//        PhotonNetwork.ConnectUsingSettings (NetworkDataBase.photonServerSettings.AppSettings, true);
         PhotonNetwork.NickName = NetworkDataBase.settings.nickname;
         PhotonNetwork.CreateRoom ("defaultRoom");
         Show (0);
+    }
+    public override void OnConnectedToMaster () {
+        Debug.Log ("connected to master 1");
+        PhotonNetwork.CreateRoom ("defaultRoom");
     }
 
     public void Show (int mapIndex) {
         currentMapIndex = mapIndex;
         title.text = items[mapIndex].mapName;
+        storyText.text = items[mapIndex].mapStory;
         for (int i = 0; i < images.Length; i++) {
             images[i].sprite = items[mapIndex].sprites[i];
         }
     }
     public void Load () {
-        SceneManager.LoadScene(items[currentMapIndex].sceneName);
+        SceneChanger.LoadScene(items[currentMapIndex].sceneName);
     }
 
 
@@ -39,6 +46,6 @@ public class singlePlayerLobby : MonoBehaviourPunCallbacks {
         loadingWindow.HideLoading ("serverConnect");
     }
     public void LeaveToMenu () {
-        SceneManager.LoadScene ("PlayModeSelect");
+        SceneChanger.LoadScene ("PlayModeSelect");
     }
 }

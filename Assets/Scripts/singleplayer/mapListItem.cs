@@ -7,6 +7,8 @@ public class mapListItem : MonoBehaviour
 {
     public string sceneName;
     public string mapName;
+    [Multiline]
+    public string mapStory;
     public TextMeshProUGUI text;
     public Sprite[] sprites;
 
