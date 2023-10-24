@@ -1,11 +1,9 @@
-<img
- width="100%" src="https://github.com/jekuper/handsignes/blob/master/readme_supplemental/banner.png?raw=true" alt="banner">
+<img width="100%" src="https://github.com/jekuper/handsignes/blob/master/readme_supplemental/banner.png?raw=true" alt="banner">
 
 # Ronikara game source code
 
 <a href="https://youtu.be/12dc7rE6dtE">
-<img
- width="40%" align="right" src="https://github.com/jekuper/handsignes/blob/master/readme_supplemental/trailer.jpg?raw=true" alt="trailer">
+<img width="40%" align="right" src="https://github.com/jekuper/handsignes/blob/master/readme_supplemental/trailer.jpg?raw=true" alt="trailer">
 </a>
 
 **Ronikara** is a dynamic local network multiplayer first-person shooter (FPS) that leverages the power of Photon Unity Networking 2 (PUN 2) technology. This project boasts an impressive array of over 20 unique game mechanics, an independent server infrastructure, and two exciting playable maps.
@@ -15,6 +13,11 @@
 You'll assume the role of a futuristic cyborg ninja in Ronikara, a character capable of defying gravity by scaling walls with ease. Harness your inner sorcerer as you perform intricate hand-sign combinations to conjure spells and imbue them with the elemental forces of earth, lightning, water, and fire to amplify their potency. This unique blend of abilities and elemental manipulation adds depth and excitement to your gameplay experience.
 
 Delve into the immersive world of Ronikara for a thrilling gaming experience that's bound to captivate you and your group of friends. The game's expansive array of mechanics allows for an endless combination of strategies, promising hours of entertainment. Ronikara's meticulously crafted maps are not just eye candy; they encourage vertical gameplay and interaction, ensuring every session is a unique adventure.
+
+<img width="50%" src="https://github.com/jekuper/handsignes/blob/master/readme_supplemental/2.png?raw=true" alt="screenshots">
+<img width="50%" src="https://github.com/jekuper/handsignes/blob/master/readme_supplemental/3.png?raw=true" alt="screenshots">
+<img width="50%" src="https://github.com/jekuper/handsignes/blob/master/readme_supplemental/4.png?raw=true" alt="screenshots">
+<img width="50%" src="https://github.com/jekuper/handsignes/blob/master/readme_supplemental/1.png?raw=true" alt="screenshots">
 
 ## The Technology Stack
 
