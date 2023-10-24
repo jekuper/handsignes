@@ -1,7 +1,12 @@
 <img
- width="100%" src="https://github.com/jekuper/handsignes/master/readme_supplemental/banner.png?raw=true" alt="banner">
+ width="100%" src="https://github.com/jekuper/handsignes/blob/master/readme_supplemental/banner.png?raw=true" alt="banner">
 
 # Ronikara game source code
+
+<a href="https://youtu.be/12dc7rE6dtE">
+<img
+ width="40%" align="right" src="https://github.com/jekuper/handsignes/blob/master/readme_supplemental/trailer.jpg?raw=true" alt="trailer">
+</a>
 
 **Ronikara** is a dynamic local network multiplayer first-person shooter (FPS) that leverages the power of Photon Unity Networking 2 (PUN 2) technology. This project boasts an impressive array of over 20 unique game mechanics, an independent server infrastructure, and two exciting playable maps.
 
