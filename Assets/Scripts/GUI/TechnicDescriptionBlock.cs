@@ -39,12 +39,18 @@ public class TechnicDescriptionBlock : MonoBehaviour
             if (count < 4) {
                 star.sprite = starSprite;
                 NetworkDataBase.starredTechnics[technicTag] = true;
-                GameSceneManager.singleton.UpdateStarredTechnics ();
+                if (NetworkDataBase.gameType == GameType.Multiplayer)   
+                    GameSceneManager.singleton.UpdateStarredTechnics ();
+                if (NetworkDataBase.gameType == GameType.Singleplayer)
+                    GameSceneManagerSP.singleton.UpdateStarredTechnics ();
             }
         } else {
             star.sprite = starBorderSprite;
             NetworkDataBase.starredTechnics[technicTag] = false;
-            GameSceneManager.singleton.UpdateStarredTechnics ();
+            if (NetworkDataBase.gameType == GameType.Multiplayer)
+                GameSceneManager.singleton.UpdateStarredTechnics ();
+            if (NetworkDataBase.gameType == GameType.Singleplayer)
+                GameSceneManagerSP.singleton.UpdateStarredTechnics ();
         }
     }
     public void OnPressed () {

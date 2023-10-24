@@ -1411,8 +1411,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sceneName: Map2
-  mapName: Mission 2
-  mapStory: 
+  mapName: MAP2
+  mapStory: default multiplayer map
   text: {fileID: 1982307068}
   sprites:
   - {fileID: 21300000, guid: cd56bfc841811c44289d84558f52f7c6, type: 3}
@@ -2363,10 +2363,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sceneName: Level1
-  mapName: Mission #1
-  mapStory: 'A brand new order from the government.
-
-    I need to do my best'
+  mapName: MAP#1
+  mapStory: outline for map1
   text: {fileID: 853282566}
   sprites:
   - {fileID: 21300000, guid: 4b3d08cc7c5233843a4d5b3aa5def172, type: 3}

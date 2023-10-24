@@ -365,38 +365,14 @@ BlendTree:
     m_Motion: {fileID: -8437244040289026209, guid: 4f7bbd8ee2db9e945960d65ec8b8e777, type: 3}
     m_Threshold: 0
     m_Position: {x: 0, y: 0}
-    m_TimeScale: 1
-    m_CycleOffset: 0
-    m_DirectBlendParameter: SpeedHorizontal
-    m_Mirror: 0
-  - serializedVersion: 2
-    m_Motion: {fileID: -6596441729348074770, guid: 4f7bbd8ee2db9e945960d65ec8b8e777, type: 3}
-    m_Threshold: 0.33333334
-    m_Position: {x: 0, y: 0}
-    m_TimeScale: 1
-    m_CycleOffset: 0
-    m_DirectBlendParameter: SpeedHorizontal
-    m_Mirror: 0
-  - serializedVersion: 2
-    m_Motion: {fileID: 6095506969540635753, guid: 4f7bbd8ee2db9e945960d65ec8b8e777, type: 3}
-    m_Threshold: 0.6666667
-    m_Position: {x: 0, y: 0}
-    m_TimeScale: 1
-    m_CycleOffset: 0
-    m_DirectBlendParameter: SpeedHorizontal
-    m_Mirror: 0
-  - serializedVersion: 2
-    m_Motion: {fileID: -6844507223606652634, guid: 4f7bbd8ee2db9e945960d65ec8b8e777, type: 3}
-    m_Threshold: 1
-    m_Position: {x: 0, y: 0}
-    m_TimeScale: 1
+    m_TimeScale: 2.7
     m_CycleOffset: 0
     m_DirectBlendParameter: SpeedHorizontal
     m_Mirror: 0
   m_BlendParameter: randFloat
   m_BlendParameterY: SpeedHorizontal
   m_MinThreshold: 0
-  m_MaxThreshold: 1
+  m_MaxThreshold: 0
   m_UseAutomaticThresholds: 0
   m_NormalizedBlendValues: 0
   m_BlendType: 0
@@ -714,7 +690,7 @@ AnimatorStateTransition:
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 3
-  m_TransitionDuration: 0
+  m_TransitionDuration: 0.1
   m_TransitionOffset: 0
   m_ExitTime: 0
   m_HasExitTime: 0
@@ -1004,7 +980,7 @@ AnimatorStateTransition:
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 3
-  m_TransitionDuration: 0
+  m_TransitionDuration: 0.3
   m_TransitionOffset: 0
   m_ExitTime: 1
   m_HasExitTime: 1
