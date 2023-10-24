@@ -14,10 +14,10 @@ You'll assume the role of a futuristic cyborg ninja in Ronikara, a character cap
 
 Delve into the immersive world of Ronikara for a thrilling gaming experience that's bound to captivate you and your group of friends. The game's expansive array of mechanics allows for an endless combination of strategies, promising hours of entertainment. Ronikara's meticulously crafted maps are not just eye candy; they encourage vertical gameplay and interaction, ensuring every session is a unique adventure.
 
-<img width="50%" src="https://github.com/jekuper/handsignes/blob/master/readme_supplemental/2.png?raw=true" alt="screenshots">
-<img width="50%" src="https://github.com/jekuper/handsignes/blob/master/readme_supplemental/3.png?raw=true" alt="screenshots">
-<img width="50%" src="https://github.com/jekuper/handsignes/blob/master/readme_supplemental/4.png?raw=true" alt="screenshots">
-<img width="50%" src="https://github.com/jekuper/handsignes/blob/master/readme_supplemental/1.png?raw=true" alt="screenshots">
+<img width="50%" align="left" src="https://github.com/jekuper/handsignes/blob/master/readme_supplemental/2.png?raw=true" alt="screenshots">
+<img width="50%" align="right" src="https://github.com/jekuper/handsignes/blob/master/readme_supplemental/3.png?raw=true" alt="screenshots">
+<img width="50%" align="left" src="https://github.com/jekuper/handsignes/blob/master/readme_supplemental/4.png?raw=true" alt="screenshots">
+<img width="50%" align="right" src="https://github.com/jekuper/handsignes/blob/master/readme_supplemental/1.png?raw=true" alt="screenshots">
 
 ## The Technology Stack
 
