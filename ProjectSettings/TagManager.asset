@@ -3,21 +3,19 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags:
-  - PlayerBodyMesh
-  - EarthWall
+  tags: []
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - WallRunGround
+  - 
   - Water
   - UI
-  - noWallClipping
-  - interactable
-  - postProcessing
-  - passableWall
-  - Ground
+  - 
+  - 
+  - 
+  - 
+  - 
   - 
   - 
   - 
