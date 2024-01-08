@@ -20,6 +20,6 @@ public class LobbyListItem : MonoBehaviour {
     }
     public void JoinLobby() {
         Debug.Log("JoinLobby: Player selected to join lobby with steam id of: " + lobbySteamId.ToString());
-//        SteamLobby.instance.JoinLobby(lobbySteamId);
+        SteamLobby.instance.JoinLobby(lobbySteamId);
     }
 }

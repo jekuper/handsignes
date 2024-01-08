@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class LobbySelectionManager : MonoBehaviour
 {
@@ -11,20 +12,55 @@ public class LobbySelectionManager : MonoBehaviour
     public List<GameObject> listOfLobbyListItems = new List<GameObject>();
 
     [SerializeField] GameObject offlineCanvas;
-    [SerializeField] GameObject lobbyListCanvas;
-    [SerializeField] GameObject lobbyCreateCanvas;
 
     [Header("Lobby List UI")]
+    [SerializeField] GameObject lobbyListCanvas;
     [SerializeField] private GameObject LobbyListItemPrefab;
     [SerializeField] private GameObject ContentPanel;
     [SerializeField] private TMP_InputField searchBox;
 
+    [Header("Lobby Create UI")]
+    [SerializeField] GameObject lobbyCreateCanvas;
+    [SerializeField] private TMP_InputField lobbyNameInputField;
+    [SerializeField] private Toggle friendsOnlyToggle;
+
+    public string lobbyName;
+
     private void Awake() {
         MakeInstance();
+    }
+    private void Start() {
+        lobbyNameInputField.text = SteamFriends.GetPersonaName().ToString() + "'s lobby";
     }
     void MakeInstance() {
         if (instance == null)
             instance = this;
+    }
+
+    public void CreateLobbyScene() {
+        offlineCanvas.SetActive(false);
+        lobbyListCanvas.SetActive(false);
+        lobbyCreateCanvas.SetActive(true);
+    }
+
+    public void CreateLobby() {
+        ELobbyType newLobbyType;
+
+        if (lobbyNameInputField.text.Trim() == "") {
+            return;
+        }
+        lobbyName = lobbyNameInputField.text;
+
+        if (friendsOnlyToggle.isOn) {
+            Debug.Log("CreateNewLobby: friendsOnlyToggle is on. Making lobby friends only.");
+            newLobbyType = ELobbyType.k_ELobbyTypeFriendsOnly;
+        }
+        else {
+            Debug.Log("CreateNewLobby: friendsOnlyToggle is OFF. Making lobby public.");
+            newLobbyType = ELobbyType.k_ELobbyTypePublic;
+        }
+
+        SteamLobby.instance.CreateLobby(newLobbyType, lobbyName);
     }
 
     public void GetLobbiesList () {
