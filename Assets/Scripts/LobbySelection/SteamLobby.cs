@@ -13,6 +13,7 @@ public class SteamLobby : MonoBehaviour
     public List<CSteamID> lobbyIDS = new List<CSteamID>();
 
     protected Callback<LobbyMatchList_t> Callback_lobbyList;
+    protected Callback<GameLobbyJoinRequested_t> gameLobbyJoinRequested;
     protected Callback<LobbyDataUpdate_t> Callback_lobbyInfo;
     protected Callback<LobbyEnter_t> lobbyEntered;
     protected Callback<LobbyCreated_t> lobbyCreated;
@@ -28,6 +29,7 @@ public class SteamLobby : MonoBehaviour
 
         MakeInstance();
 
+        gameLobbyJoinRequested = Callback<GameLobbyJoinRequested_t>.Create(OnGameLobbyJoinRequested);
         Callback_lobbyList = Callback<LobbyMatchList_t>.Create(OnGetLobbiesList);
         Callback_lobbyInfo = Callback<LobbyDataUpdate_t>.Create(OnGetLobbyInfo);
         lobbyEntered = Callback<LobbyEnter_t>.Create(OnLobbyEntered);
@@ -55,6 +57,11 @@ public class SteamLobby : MonoBehaviour
 
     public void JoinLobby(CSteamID id) {
         SteamMatchmaking.JoinLobby(id);
+    }
+
+    private void OnGameLobbyJoinRequested(GameLobbyJoinRequested_t callback) {
+        Debug.Log("OnGameLobbyJoinRequested");
+        SteamMatchmaking.JoinLobby(callback.m_steamIDLobby);
     }
 
 
