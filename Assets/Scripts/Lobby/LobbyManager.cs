@@ -45,7 +45,6 @@ public class LobbyManager : MonoBehaviour
     }
 
     public void UpdatePlayerList() {
-        Debug.Log("enter");
         for (int i = 0; i < Game.GamePlayers.Count; i++) {
             if (i >= playerListitems.Count) {
                 GameObject newPlayerListItem = Instantiate(PlayerListItemPrefab, ContentPanel);
@@ -60,6 +59,7 @@ public class LobbyManager : MonoBehaviour
             playerListitems[i].UpdateUI();
         }
         while(playerListitems.Count > Game.GamePlayers.Count) {
+            Destroy(playerListitems[playerListitems.Count - 1].gameObject);
             playerListitems.RemoveAt(playerListitems.Count - 1);
         }
     }
@@ -67,5 +67,9 @@ public class LobbyManager : MonoBehaviour
         currentLobbyId = Game.GetComponent<SteamLobby>().current_lobbyID;
         string lobbyName = SteamMatchmaking.GetLobbyData((CSteamID)currentLobbyId, "name");
         LobbyNameText.text = lobbyName;
+    }
+
+    public void PlayerQuitLobby() {
+        localGamePlayer.QuitLobby();
     }
 }

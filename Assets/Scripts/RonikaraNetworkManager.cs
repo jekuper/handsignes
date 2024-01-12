@@ -10,10 +10,13 @@ public class RonikaraNetworkManager : NetworkManager {
     [SerializeField] public int minPlayers = 1;
     public List<GamePlayer> GamePlayers { get; } = new List<GamePlayer>();
 
-
     public override void OnStartServer() {
         Debug.Log("Mirror Server has started");
+        name = "oldNetworkManager";
 //        ServerChangeScene("Lobby");
+    }
+    public override void OnStopServer() {
+        GamePlayers.Clear();
     }
     public override void OnServerAddPlayer(NetworkConnectionToClient conn) {
         if (SceneManager.GetActiveScene().name == "Lobby") {

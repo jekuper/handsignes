@@ -48,6 +48,23 @@ public class GamePlayer : NetworkBehaviour
         LobbyManager.instance.UpdateUI();
     }
 
+    public void QuitLobby() {
+        if (isLocalPlayer) {
+            if (IsGameLeader) {
+                Game.StopHost();
+            }
+            else {
+                Game.StopClient();
+            }
+        }
+    }
+    private void OnDestroy() {
+        if (isLocalPlayer) {
+            Debug.Log("LobbyPlayer destroyed. Returning to main menu.");
+            SteamMatchmaking.LeaveLobby((CSteamID)LobbyManager.instance.currentLobbyId);
+        }
+    }
+
     public void HandlePlayerNameUpdate(string oldValue, string newValue) {
         Debug.Log("Player name has been updated for: " + oldValue + " to new value: " + newValue);
         LobbyManager.instance.UpdateUI();
@@ -60,5 +77,12 @@ public class GamePlayer : NetworkBehaviour
             this.isPlayerReady = newValue;
         if (isClient)
             LobbyManager.instance.UpdateUI();
+    }
+
+    public override void OnStopClient() {
+        Debug.Log(playerName + " is quiting the game.");
+        Game.GamePlayers.Remove(this);
+        Debug.Log("Removed player from the GamePlayer list: " + this.playerName);
+        LobbyManager.instance.UpdateUI();
     }
 }

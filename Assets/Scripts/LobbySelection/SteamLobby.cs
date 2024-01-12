@@ -36,6 +36,29 @@ public class SteamLobby : MonoBehaviour
         lobbyCreated = Callback<LobbyCreated_t>.Create(OnLobbyCreated);
     }
 
+    private void OnDestroy() {
+        // Unregister callbacks to avoid duplicate calls
+        if (gameLobbyJoinRequested != null) {
+            gameLobbyJoinRequested.Dispose();
+        }
+
+        if (Callback_lobbyList != null) {
+            Callback_lobbyList.Dispose();
+        }
+
+        if (Callback_lobbyInfo != null) {
+            Callback_lobbyInfo.Dispose();
+        }
+
+        if (lobbyEntered != null) {
+            lobbyEntered.Dispose();
+        }
+
+        if (lobbyCreated != null) {
+            lobbyCreated.Dispose();
+        }
+    }
+
     void MakeInstance() {
         if (instance == null)
             instance = this;
@@ -51,6 +74,8 @@ public class SteamLobby : MonoBehaviour
             lobbyIDS.Clear();
 
         SteamMatchmaking.AddRequestLobbyListFilterSlotsAvailable(1);
+        SteamMatchmaking.AddRequestLobbyListStringFilter("GameName", "Ronikara", ELobbyComparison.k_ELobbyComparisonEqual);
+        SteamMatchmaking.AddRequestLobbyListDistanceFilter(ELobbyDistanceFilter.k_ELobbyDistanceFilterWorldwide);
 
         SteamAPICall_t try_getList = SteamMatchmaking.RequestLobbyList();
     }
@@ -80,10 +105,14 @@ public class SteamLobby : MonoBehaviour
             new CSteamID(callback.m_ulSteamIDLobby),
             "name",
             LobbySelectionManager.instance.lobbyName);
+        SteamMatchmaking.SetLobbyData(
+            new CSteamID(callback.m_ulSteamIDLobby),
+            "GameName",
+            "Ronikara");
 
     }
 
-    private bool validateHostAddress(string hostAddress, ref string result) {
+    private static bool validateHostAddress(string hostAddress, ref string result) {
         string pattern = "Ronikara" + Application.version;
         if (pattern.Length > hostAddress.Length)
             return false;
@@ -96,6 +125,12 @@ public class SteamLobby : MonoBehaviour
         result = hostAddress.Substring(0, hostAddress.Length - pattern.Length);
         return true;
     }
+    public static bool ValidLobbyAddress(CSteamID id) {
+        string address = SteamMatchmaking.GetLobbyData(id, "HostAddress");
+
+        return (validateHostAddress(address, ref address));
+    }
+
     private void OnLobbyEntered(LobbyEnter_t callback) {
 
         current_lobbyID = callback.m_ulSteamIDLobby;
@@ -121,7 +156,7 @@ public class SteamLobby : MonoBehaviour
     }
 
     void OnGetLobbiesList (LobbyMatchList_t result) {
-        Debug.Log("Found " + result.m_nLobbiesMatching + " lobbies!");
+        Debug.Log("Found " + result.m_nLobbiesMatching + " lobbies! " + name);
 
         LobbySelectionManager.instance.DestroyOldLobbyListItems();
 

@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c7c695651be6f340a32fef05a7d7c9a, type: 3}
   m_Name: Content Builder Config
   m_EditorClassIdentifier: 
-  username: I88IymTchKoIOrSgskXi4XAvS6SqsVK+T+lfT3Nz0izhuJrcjl0e+VE9iraV7O2mZEKr8sTqAb/Emjy5TkGVCueRksFfI1F2tdJRLJKxdbh118ckPUY/IfoQ1X3BRSRh
-  rememberPassword: 1
-  password: NzPsu4m734tkSZm48RIQdU/1hprKk2YP/SC4JO4H1KexK41Jg610qJJElB5qHS0fKlJkKkzi8OKot5QXuEk98n62rCokn2ghQiNOM9b8AO1t2xOvDs5Tnw+XH1xnWm6o
+  username: GkBC2xi75W5GJT13b7Oth9EgOP37djBnBtuS7tblgXGDcmby863m5R3yitPlwEcVFTV+89QkwLDkYbxrlLkSaF6KFxfQfX5y1YErATjES38E2m+1SF3TAZsLVlF0JHfq
+  rememberPassword: 0
+  password: 
   targetApp: 480
   lastDepot: 0
   depots: []
