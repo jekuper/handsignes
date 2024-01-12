@@ -52,6 +52,16 @@ public class GamePlayer : NetworkBehaviour
         this.HandlePlayerReadyStatusChange(this.isPlayerReady, !this.isPlayerReady);
     }
 
+    public void CanLobbyStartGame() {
+        if (isOwned)
+            CmdCanLobbyStartGame();
+    }
+    [Command]
+    void CmdCanLobbyStartGame() {
+        Game.StartGame();
+    }
+
+
     public override void OnStartClient() {
         Game.GamePlayers.Add(this);
         LobbyManager.instance.UpdateLobbyName();

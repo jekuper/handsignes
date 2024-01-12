@@ -13,6 +13,7 @@ public class LobbyManager : MonoBehaviour
     [SerializeField] private GameObject PlayerListItemPrefab;
     [SerializeField] private Transform ContentPanel;
     [SerializeField] private TextMeshProUGUI ReadyUpButtonText;
+    [SerializeField] private GameObject StartGameButton;
 
     public GamePlayer localGamePlayer;
     public ulong currentLobbyId;
@@ -45,6 +46,7 @@ public class LobbyManager : MonoBehaviour
     public void UpdateUI() {
         UpdatePlayerList();
         UpdateReadyUpButtonText();
+        CheckIfAllPlayersAreReady();
     }
 
     public void UpdatePlayerList() {
@@ -80,6 +82,36 @@ public class LobbyManager : MonoBehaviour
         else
             ReadyUpButtonText.text = "Ready Up";
     }
+
+    void CheckIfAllPlayersAreReady() {
+        Debug.Log("Executing CheckIfAllPlayersAreReady");
+        bool areAllPlayersReady = false;
+        foreach (GamePlayer player in Game.GamePlayers) {
+            if (player.isPlayerReady) {
+                areAllPlayersReady = true;
+            }
+            else {
+                Debug.Log("CheckIfAllPlayersAreReady: Not all players are ready. Waiting for: " + player.playerName);
+                areAllPlayersReady = false;
+                break;
+            }
+        }
+        if (areAllPlayersReady) {
+            Debug.Log("CheckIfAllPlayersAreReady: All players are ready!");
+            if (localGamePlayer != null && localGamePlayer.IsGameLeader) {
+                Debug.Log("CheckIfAllPlayersAreReady: Local player is the game leader. They can start the game now.");
+                StartGameButton.gameObject.SetActive(true);
+            }
+        }
+        else {
+            if (StartGameButton.gameObject.activeInHierarchy)
+                StartGameButton.gameObject.SetActive(false);
+        }
+    }
+    public void StartGame() {
+        localGamePlayer.CanLobbyStartGame();
+    }
+
 
     public void PlayerReadyUp() {
         Debug.Log("Executing PlayerReadyUp");

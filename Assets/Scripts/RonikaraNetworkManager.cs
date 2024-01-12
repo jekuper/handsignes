@@ -34,4 +34,19 @@ public class RonikaraNetworkManager : NetworkManager {
             NetworkServer.AddPlayerForConnection(conn, GamePlayerInstance.gameObject);
         }
     }
+
+    public void StartGame() {
+        if (CanStartGame() && SceneManager.GetActiveScene().name == "Lobby") {
+            ServerChangeScene("Level_1");
+        }
+    }
+    private bool CanStartGame() {
+        if (numPlayers < minPlayers)
+            return false;
+        foreach (GamePlayer player in GamePlayers) {
+            if (!player.isPlayerReady)
+                return false;
+        }
+        return true;
+    }
 }
