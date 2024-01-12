@@ -41,6 +41,16 @@ public class GamePlayer : NetworkBehaviour
     private void CmdSetPlayerName (string newName) {
         this.HandlePlayerNameUpdate(this.playerName, newName);
     }
+    public void ChangeReadyStatus() {
+        Debug.Log("Executing ChangeReadyStatus for player: " + this.playerName);
+        if (isOwned)
+            CmdChangePlayerReadyStatus();
+    }
+    [Command]
+    void CmdChangePlayerReadyStatus() {
+        Debug.Log("Executing CmdChangePlayerReadyStatus on the server for player: " + this.playerName);
+        this.HandlePlayerReadyStatusChange(this.isPlayerReady, !this.isPlayerReady);
+    }
 
     public override void OnStartClient() {
         Game.GamePlayers.Add(this);

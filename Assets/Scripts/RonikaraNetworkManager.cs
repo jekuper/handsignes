@@ -12,7 +12,6 @@ public class RonikaraNetworkManager : NetworkManager {
 
     public override void OnStartServer() {
         Debug.Log("Mirror Server has started");
-        name = "oldNetworkManager";
 //        ServerChangeScene("Lobby");
     }
     public override void OnStopServer() {

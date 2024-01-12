@@ -64,6 +64,10 @@ public class SteamLobby : MonoBehaviour
             instance = this;
     }
 
+    public void InviteFriend() {
+        SteamFriends.ActivateGameOverlayInviteDialog((CSteamID)current_lobbyID);
+    }
+
     public void CreateLobby (ELobbyType type, string lobbyName) {
         SteamMatchmaking.CreateLobby(type, networkManager.maxConnections);
     }

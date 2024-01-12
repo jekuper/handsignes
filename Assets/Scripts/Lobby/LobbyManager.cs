@@ -12,6 +12,7 @@ public class LobbyManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI LobbyNameText;
     [SerializeField] private GameObject PlayerListItemPrefab;
     [SerializeField] private Transform ContentPanel;
+    [SerializeField] private TextMeshProUGUI ReadyUpButtonText;
 
     public GamePlayer localGamePlayer;
     public ulong currentLobbyId;
@@ -38,10 +39,12 @@ public class LobbyManager : MonoBehaviour
 
     public void UpdateLocalGamePlayer(GamePlayer newLocal) {
         localGamePlayer = newLocal;
+        UpdateReadyUpButtonText();
     }
 
     public void UpdateUI() {
         UpdatePlayerList();
+        UpdateReadyUpButtonText();
     }
 
     public void UpdatePlayerList() {
@@ -56,6 +59,7 @@ public class LobbyManager : MonoBehaviour
             playerListitems[i].ConnectionId = Game.GamePlayers[i].ConnectionId;
             playerListitems[i].playerName = Game.GamePlayers[i].playerName;
             playerListitems[i].playerSteamId = Game.GamePlayers[i].playerSteamId;
+            playerListitems[i].isPlayerReady = Game.GamePlayers[i].isPlayerReady;
             playerListitems[i].UpdateUI();
         }
         while(playerListitems.Count > Game.GamePlayers.Count) {
@@ -67,6 +71,23 @@ public class LobbyManager : MonoBehaviour
         currentLobbyId = Game.GetComponent<SteamLobby>().current_lobbyID;
         string lobbyName = SteamMatchmaking.GetLobbyData((CSteamID)currentLobbyId, "name");
         LobbyNameText.text = lobbyName;
+    }
+    void UpdateReadyUpButtonText() {
+        if (localGamePlayer == null)
+            return;
+        if (localGamePlayer.isPlayerReady)
+            ReadyUpButtonText.text = "Unready";
+        else
+            ReadyUpButtonText.text = "Ready Up";
+    }
+
+    public void PlayerReadyUp() {
+        Debug.Log("Executing PlayerReadyUp");
+        localGamePlayer.ChangeReadyStatus();
+    }
+    public void PlayerInviteFriend () {
+        Debug.Log("Executing PlayerInviteFriend");
+        SteamLobby.instance.InviteFriend();
     }
 
     public void PlayerQuitLobby() {

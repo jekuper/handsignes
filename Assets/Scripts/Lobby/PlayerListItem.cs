@@ -29,9 +29,11 @@ public class PlayerListItem : MonoBehaviour
         playerNameText.text = playerName;
         if (isPlayerReady) {
             playerReadyText.text = "Ready";
+            playerReadyText.color = Color.green;
         }
         else {
             playerReadyText.text = "Not Ready";
+            playerReadyText.color = Color.red;
         }
     }
     void GetPlayerAvatar() {
