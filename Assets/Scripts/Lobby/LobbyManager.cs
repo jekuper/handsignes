@@ -15,8 +15,12 @@ public class LobbyManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI ReadyUpButtonText;
     [SerializeField] private GameObject StartGameButton;
 
+    [SerializeField] private GameObject playerListCanvas;
+    [SerializeField] private GameObject levelsListCanvas;
+
     public GamePlayer localGamePlayer;
     public ulong currentLobbyId;
+    public string selectedScene = "Level_1";
 
     private List<PlayerListItem> playerListitems;
     private RonikaraNetworkManager game;
@@ -36,6 +40,18 @@ public class LobbyManager : MonoBehaviour
     void MakeInstance() {
         if (instance == null)
             instance = this;
+    }
+
+    public void ShowPlayerList() {
+        playerListCanvas.SetActive(true);
+        levelsListCanvas.SetActive(false);
+    }
+    public void ShowLevelsList() {
+        playerListCanvas.SetActive(false);
+        levelsListCanvas.SetActive(true);
+    }
+    public void SelectLevel(string level) {
+        selectedScene = level;
     }
 
     public void UpdateLocalGamePlayer(GamePlayer newLocal) {

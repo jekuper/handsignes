@@ -3,6 +3,7 @@ using Steamworks;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GamePlayer : NetworkBehaviour
 {
@@ -44,12 +45,17 @@ public class GamePlayer : NetworkBehaviour
     public void ChangeReadyStatus() {
         Debug.Log("Executing ChangeReadyStatus for player: " + this.playerName);
         if (isOwned)
-            CmdChangePlayerReadyStatus();
+            CmdChangePlayerReadyStatus(!this.isPlayerReady);
+    }
+    public void ChangeReadyStatus(bool newVal) {
+        Debug.Log("Executing ChangeReadyStatus for player: " + this.playerName);
+        if (isOwned)
+            CmdChangePlayerReadyStatus(newVal);
     }
     [Command]
-    void CmdChangePlayerReadyStatus() {
+    void CmdChangePlayerReadyStatus(bool newVal) {
         Debug.Log("Executing CmdChangePlayerReadyStatus on the server for player: " + this.playerName);
-        this.HandlePlayerReadyStatusChange(this.isPlayerReady, !this.isPlayerReady);
+        this.HandlePlayerReadyStatusChange(this.isPlayerReady, newVal);
     }
 
     public void CanLobbyStartGame() {
@@ -95,7 +101,7 @@ public class GamePlayer : NetworkBehaviour
     void HandlePlayerReadyStatusChange(bool oldValue, bool newValue) {
         if (isServer)
             this.isPlayerReady = newValue;
-        if (isClient)
+        if (isClient && LobbyManager.instance != null)
             LobbyManager.instance.UpdateUI();
     }
 

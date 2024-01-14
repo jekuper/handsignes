@@ -35,8 +35,17 @@ public class RonikaraNetworkManager : NetworkManager {
         }
     }
 
+    public override void OnServerReady(NetworkConnectionToClient conn) {
+        base.OnServerReady(conn);
+        if (SceneManager.GetActiveScene().name.Split("_")[0] == "Level")    
+            NetworkClient.localPlayer.GetComponent<GamePlayer>().ChangeReadyStatus(true);
+    }
+
     public void StartGame() {
         if (CanStartGame() && SceneManager.GetActiveScene().name == "Lobby") {
+            foreach (GamePlayer item in GamePlayers) {
+                item.isPlayerReady = false;
+            }
             ServerChangeScene("Level_1");
         }
     }
