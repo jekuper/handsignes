@@ -10,6 +10,8 @@ public class RonikaraNetworkManager : NetworkManager {
     [SerializeField] public int minPlayers = 1;
     public List<GamePlayer> GamePlayers { get; } = new List<GamePlayer>();
 
+    private int spawnpointIndex = 0;
+
     public override void OnStartServer() {
         Debug.Log("Mirror Server has started");
 //        ServerChangeScene("Lobby");
@@ -37,8 +39,10 @@ public class RonikaraNetworkManager : NetworkManager {
 
     public override void OnServerReady(NetworkConnectionToClient conn) {
         base.OnServerReady(conn);
-        if (SceneManager.GetActiveScene().name.Split("_")[0] == "Level")    
-            NetworkClient.localPlayer.GetComponent<GamePlayer>().ChangeReadyStatus(true);
+        if (SceneManager.GetActiveScene().name.Split("_")[0] == "Level") {
+            conn.identity.GetComponent<GamePlayer>().ChangeReadyStatus(true);
+            LevelManager.instance.ServerSpawnPlayer(conn, spawnpointIndex++);
+        }
     }
 
     public void StartGame() {
