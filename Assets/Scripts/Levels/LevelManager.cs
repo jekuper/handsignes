@@ -9,13 +9,13 @@ public class LevelManager : NetworkBehaviour
 {
     public static LevelManager instance;
 
-    [SyncVar] public GameObject localPlayer;
+    [SyncVar] public PlayerManager localPlayer;
+    [SyncVar] public List<PlayerManager> players = new List<PlayerManager>();
 
     [SerializeField] private List<Transform> spawnPoints;
     [SerializeField] private GameObject playerPrefab;
     [SerializeField] private CinemachineVirtualCamera virtualCamera;
 
-    [SyncVar] private List<GameObject> players = new List<GameObject>();
 
     private void Awake() {
         MakeInstance();
@@ -29,17 +29,20 @@ public class LevelManager : NetworkBehaviour
         GameObject obj = Instantiate(playerPrefab, spawnPoints[spawnIndex % spawnPoints.Count].position, Quaternion.identity);
         obj.name = "player [" + conn.ToString() + "]";
         NetworkServer.Spawn(obj, conn);
-        players.Add(obj);
 
-        obj.GetComponent<PlayerManager>().playerNumber = conn.identity.GetComponent<GamePlayer>().playerNumber;
+        PlayerManager pm = obj.GetComponent<PlayerManager>();
+        players.Add(pm);
 
-        TargetUpdateLocalPlayer(conn, obj);
+        pm.playerNumber = conn.identity.GetComponent<GamePlayer>().playerNumber;
+
+        TargetUpdateLocalPlayer(conn, pm);
     }
 
     [TargetRpc]
-    public void TargetUpdateLocalPlayer(NetworkConnection targetConnection, GameObject obj) {
+    public void TargetUpdateLocalPlayer(NetworkConnection targetConnection, PlayerManager obj) {
         localPlayer = obj;
 
         virtualCamera.LookAt = obj.transform;
     }
+
 }

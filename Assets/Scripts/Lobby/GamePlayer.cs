@@ -109,6 +109,8 @@ public class GamePlayer : NetworkBehaviour
         Debug.Log(playerName + " is quiting the game.");
         Game.GamePlayers.Remove(this);
         Debug.Log("Removed player from the GamePlayer list: " + this.playerName);
-        LobbyManager.instance.UpdateUI();
+
+        if (LobbyManager.instance != null)
+            LobbyManager.instance.UpdateUI();
     }
 }

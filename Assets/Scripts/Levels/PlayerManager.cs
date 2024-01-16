@@ -14,4 +14,10 @@ public class PlayerManager : NetworkBehaviour
         else
             name = "player [" + newV + "]";
     }
+
+    public override void OnStopClient() {
+        base.OnStopClient();
+        Debug.Log("Removing player#" + playerNumber.ToString() + " from LevelManager.players");
+        LevelManager.instance.players.Remove(this);
+    }
 }
