@@ -42,7 +42,13 @@ public class LevelManager : NetworkBehaviour
     public void TargetUpdateLocalPlayer(NetworkConnection targetConnection, PlayerManager obj) {
         localPlayer = obj;
 
-        virtualCamera.LookAt = obj.transform;
+        Transform cameraPos = obj.GetComponent<PlayerManager>().CameraPosition;
+
+        virtualCamera.transform.SetParent(cameraPos);
+        virtualCamera.transform.localPosition = Vector3.zero;
+        virtualCamera.transform.localRotation = Quaternion.identity;
+
+        virtualCamera.Follow = cameraPos;
     }
 
 }

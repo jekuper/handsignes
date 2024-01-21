@@ -7,6 +7,9 @@ public class PlayerManager : NetworkBehaviour
 {
     [SyncVar(hook = nameof(OnPlayerNumberChanged))] public int playerNumber = -1;
 
+    public Transform CameraPosition;
+
+
     private void OnPlayerNumberChanged(int old, int newV) {
         Debug.Log("changing playerNumber from " + old.ToString() + " to " + newV.ToString());
         if (playerNumber == NetworkClient.localPlayer.GetComponent<GamePlayer>().playerNumber)
