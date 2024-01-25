@@ -12,10 +12,14 @@ public class PlayerManager : NetworkBehaviour
 
     private void OnPlayerNumberChanged(int old, int newV) {
         Debug.Log("changing playerNumber from " + old.ToString() + " to " + newV.ToString());
-        if (playerNumber == NetworkClient.localPlayer.GetComponent<GamePlayer>().playerNumber)
+        if (playerNumber == NetworkClient.localPlayer.GetComponent<GamePlayer>().playerNumber) {
+            GetComponent<PlayerMovement>().working = true;
             name = "LocalPlayer";
-        else
+        }
+        else {
+            GetComponent<PlayerMovement>().working = false;
             name = "player [" + newV + "]";
+        }
     }
 
     public override void OnStopClient() {

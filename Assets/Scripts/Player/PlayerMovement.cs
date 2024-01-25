@@ -4,6 +4,7 @@ using UnityEngine;
 
 public enum MovementState {
     GroundMovement,
+    AirMovement,
 }
 
 
@@ -12,15 +13,20 @@ public class PlayerMovement : MonoBehaviour
     public bool working = true;
     public float moveSpeed = 1f;
     public List<float> movementMultipliers = new List<float>();
+    public List<float> drags = new List<float>();
     public List<float> velocityLimits = new List<float>();
     public MovementState state = MovementState.GroundMovement;
 
     [SerializeField] Transform orientation;
+    [SerializeField] float groundDistance = 0.1f;
+    [SerializeField] float jumpForce = 1;
+    [SerializeField] LayerMask groundMask;
 
     private Vector3 moveDirection;
 
     private float horizontalMovement;
     private float verticalMovement;
+    private bool isGrounded = false;
 
     private Rigidbody rb;
 
@@ -40,14 +46,48 @@ public class PlayerMovement : MonoBehaviour
             return;
         }
         Move();
-        ControlVelocity();
+        ControlDrag();
+//        ControlVelocity();
     }
+
+    void UpdateGrounded() {
+        bool newGrounded = Physics.CheckSphere(orientation.position, groundDistance, groundMask);
+        isGrounded = newGrounded;
+
+        if (!isGrounded)
+            state = MovementState.AirMovement;
+        else
+            state = MovementState.GroundMovement;
+    }
+
+    private void ControlDrag() {
+        UpdateGrounded();
+        if (state == MovementState.GroundMovement)
+            rb.drag = drags[0];
+        if (state == MovementState.AirMovement)
+            rb.drag = drags[1];
+    }
+
     void ControlInput() {
-        horizontalMovement = Input.GetAxis("Horizontal");
-        verticalMovement = Input.GetAxis("Vertical");
+        horizontalMovement = Input.GetAxisRaw("Horizontal");
+        verticalMovement = Input.GetAxisRaw("Vertical");
         
         moveDirection = orientation.forward * verticalMovement + orientation.right * horizontalMovement;
+
+        if (Input.GetKeyDown(KeyCode.Space)) {
+            UpdateGrounded();
+            Jump();
+        }
     }
+
+    private void Jump() {
+        Debug.Log(isGrounded);
+        if (isGrounded) {
+            rb.velocity = new Vector3(rb.velocity.x, 0, rb.velocity.z);
+            rb.AddForce(orientation.up * jumpForce, ForceMode.Impulse);
+        }
+    }
+
     private void Move() {
         rb.AddForce(moveDirection.normalized * moveSpeed * movementMultipliers[(int)state], ForceMode.Acceleration);
     }
