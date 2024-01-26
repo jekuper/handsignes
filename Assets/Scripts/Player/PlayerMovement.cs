@@ -18,6 +18,7 @@ public class PlayerMovement : MonoBehaviour
     public MovementState state = MovementState.GroundMovement;
 
     [SerializeField] Transform orientation;
+    [SerializeField] Transform groundPos;
     [SerializeField] float groundDistance = 0.1f;
     [SerializeField] float jumpForce = 1;
     [SerializeField] LayerMask groundMask;
@@ -50,8 +51,12 @@ public class PlayerMovement : MonoBehaviour
 //        ControlVelocity();
     }
 
+    void OnDrawGizmos() {
+        Gizmos.DrawWireSphere(groundPos.position, groundDistance);
+    }
+
     void UpdateGrounded() {
-        bool newGrounded = Physics.CheckSphere(orientation.position, groundDistance, groundMask);
+        bool newGrounded = Physics.CheckSphere(groundPos.position, groundDistance, groundMask);
         isGrounded = newGrounded;
 
         if (!isGrounded)

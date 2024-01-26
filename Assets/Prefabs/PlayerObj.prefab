@@ -83,6 +83,37 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 776156532704116139}
   m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &2343514892086342402
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1682518400376565091}
+  m_Layer: 0
+  m_Name: GroundCheck
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1682518400376565091
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2343514892086342402}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0, y: -1, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 804781748614723377}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5578725283893294656
 GameObject:
   m_ObjectHideFlags: 0
@@ -233,6 +264,7 @@ GameObject:
   - component: {fileID: 3764872032433748384}
   - component: {fileID: 4446507529305262311}
   - component: {fileID: 8055638362402536717}
+  - component: {fileID: 8047992407918243561}
   - component: {fileID: 6183364310976413421}
   - component: {fileID: 8575478249159068187}
   - component: {fileID: 897697515895946654}
@@ -257,6 +289,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 155192086927533615}
+  - {fileID: 1682518400376565091}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!136 &2326859597219735334
@@ -341,8 +374,9 @@ MonoBehaviour:
   - 10
   state: 0
   orientation: {fileID: 155192086927533615}
-  groundDistance: 0.1
-  jumpForce: 6
+  groundPos: {fileID: 1682518400376565091}
+  groundDistance: 0.26
+  jumpForce: 10
   groundMask:
     serializedVersion: 2
     m_Bits: 8
@@ -362,6 +396,33 @@ MonoBehaviour:
   sensitivity: 2
   cam: {fileID: 5989999924066960408}
   orientation: {fileID: 155192086927533615}
+  wallRunFov: 60
+  defaultFOV: 40
+  camTilt: 20
+  camTiltTime: 8
+--- !u!114 &8047992407918243561
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6452893858885082459}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc99d9b219d5b9e4289d712178d5e647, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  working: 1
+  orientation: {fileID: 155192086927533615}
+  wallMask:
+    serializedVersion: 2
+    m_Bits: 8
+  wallDistance: 0.7
+  minimumJumpHeight: 1.5
+  wallRunGravity: 5
+  wallRunJumpForce: 7
+  playerCam: {fileID: 8055638362402536717}
+  isWallRuning: 0
 --- !u!54 &6183364310976413421
 Rigidbody:
   m_ObjectHideFlags: 0
